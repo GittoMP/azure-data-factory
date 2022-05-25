@@ -1,0 +1,9 @@
+{
+	"name": "adf-manpower-migration-dev-01",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d34b7e7b-7610-4045-a925-e57aa5ee38fa",
+		"tenantId": "988c4150-985f-4358-b733-ed90fcf4516e"
+	}
+}
