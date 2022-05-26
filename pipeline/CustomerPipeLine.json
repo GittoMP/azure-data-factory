@@ -18,6 +18,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_getfirstcustomer]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
