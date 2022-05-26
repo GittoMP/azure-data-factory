@@ -1,0 +1,7 @@
+{
+	"name": "CustomerPipeLine",
+	"properties": {
+		"description": "Move customer to destination",
+		"annotations": []
+	}
+}
