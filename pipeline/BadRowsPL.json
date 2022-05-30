@@ -1,0 +1,10 @@
+{
+	"name": "BadRowsPL",
+	"properties": {
+		"description": "Test to manage truncation error.",
+		"folder": {
+			"name": "Alessio PLs"
+		},
+		"annotations": []
+	}
+}
