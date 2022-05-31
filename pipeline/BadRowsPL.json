@@ -29,6 +29,20 @@
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "lsBlobStorageAle",
+								"type": "LinkedServiceReference"
+							},
+							"path": ""
+						}
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
