@@ -3,13 +3,33 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "pipeline1",
+				"name": "pipeline1_Customer",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "pipeline1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline2_Product",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline1_Customer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline2",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
