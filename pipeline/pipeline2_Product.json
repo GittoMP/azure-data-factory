@@ -112,7 +112,7 @@
 						},
 						"ExecutionTime": {
 							"value": {
-								"value": "getDate()",
+								"value": "@utcnow()",
 								"type": "Expression"
 							},
 							"type": "DateTime"
