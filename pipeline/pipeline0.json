@@ -29,7 +29,27 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pipeline2",
+						"referenceName": "pipeline2_Product",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline3",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline2_Product",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline3_CustomerOrders",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
