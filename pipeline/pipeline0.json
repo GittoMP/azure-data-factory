@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pipeline1",
+						"referenceName": "pipeline1_Customer",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -36,7 +36,7 @@
 				}
 			},
 			{
-				"name": "pipeline3",
+				"name": "pipeline3_CustomerOrders",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
