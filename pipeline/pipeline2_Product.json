@@ -79,6 +79,62 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "LogError",
+				"description": "",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy Products",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_LogMessage]",
+					"storedProcedureParameters": {
+						"ActivityName": {
+							"value": {
+								"value": "\"pippo\"",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"ExecutionTime": {
+							"value": {
+								"value": "getDate()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"Message": {
+							"value": "\"Message\"",
+							"type": "String"
+						},
+						"PipelineName": {
+							"value": "\"pippo\"",
+							"type": "String"
+						},
+						"Type": {
+							"value": "\"Erroe\"",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_input_sqldb_Raw",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"folder": {
