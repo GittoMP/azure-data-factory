@@ -105,7 +105,7 @@
 					"storedProcedureParameters": {
 						"ActivityName": {
 							"value": {
-								"value": "\"pippo\"",
+								"value": "@pipeline().DataFactory",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -118,15 +118,18 @@
 							"type": "DateTime"
 						},
 						"Message": {
-							"value": "\"Message\"",
+							"value": "Message",
 							"type": "String"
 						},
 						"PipelineName": {
-							"value": "\"pippo\"",
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"Type": {
-							"value": "\"Erroe\"",
+							"value": "Error",
 							"type": "String"
 						}
 					}
