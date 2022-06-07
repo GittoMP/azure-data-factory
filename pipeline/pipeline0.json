@@ -1,0 +1,9 @@
+{
+	"name": "pipeline0",
+	"properties": {
+		"folder": {
+			"name": "Orchestration"
+		},
+		"annotations": []
+	}
+}
