@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlDatabaseDestinationStore",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedServiceAlessio1Input",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Customer"
+		}
+	}
+}
