@@ -1,5 +1,5 @@
 {
-	"name": "InputCustomerFileCSV",
+	"name": "ds_blob_csv_dev",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "dl_blob_dev",
