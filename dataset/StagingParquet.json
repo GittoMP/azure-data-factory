@@ -2,7 +2,7 @@
 	"name": "StagingParquet",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_blob_Parquet_AleSample1_dev",
+			"referenceName": "lsBlobStorageAle",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
