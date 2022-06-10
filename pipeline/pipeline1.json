@@ -289,7 +289,10 @@
 				"inputs": [
 					{
 						"referenceName": "ds_sql_view_Customer",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"sourceTableName": "vAngraficaCustomer"
+						}
 					}
 				],
 				"outputs": [
