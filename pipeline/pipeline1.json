@@ -43,7 +43,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_rawdb_sql_table_Customer_dev",
+						"referenceName": "ds_rawdb_sql_table_customer_dev",
 						"type": "DatasetReference"
 					}
 				],
@@ -59,7 +59,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Backup",
+						"activity": "Truncate Customer RawDB",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -100,10 +100,62 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_rawdb_sql_table_Customer_dev",
+						"referenceName": "ds_rawdb_sql_table_customer_dev",
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Truncate Customer RawDB",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Backup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_input_sqldb_Raw",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "truncate table [dbo].[Customer]"
+						}
+					]
+				}
+			},
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"folder": {
