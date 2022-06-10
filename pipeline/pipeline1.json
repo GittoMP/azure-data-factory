@@ -43,7 +43,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_rawdb_sql_table_Customer",
+						"referenceName": "ds_rawdb_sql_table_Customer_dev",
 						"type": "DatasetReference"
 					}
 				],
@@ -100,7 +100,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_rawdb_sql_table_Customer",
+						"referenceName": "ds_rawdb_sql_table_Customer_dev",
 						"type": "DatasetReference"
 					}
 				]
