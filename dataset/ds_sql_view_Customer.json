@@ -79,7 +79,10 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "vAngraficaCustomer"
+			"table": {
+				"value": "@dataset().sourceTableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
