@@ -95,13 +95,19 @@
 				"inputs": [
 					{
 						"referenceName": "ds_storagemanpowerdev01_storage_contatiners_dev",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": "Customer.csv"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "ds_rawdb_sql_table_customer_dev",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"tableName": "Customer"
+						}
 					}
 				]
 			},
