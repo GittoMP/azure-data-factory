@@ -50,7 +50,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_sql_table_Customer",
+						"referenceName": "ds_rawdb_sql_table_Customer",
 						"type": "DatasetReference"
 					}
 				]

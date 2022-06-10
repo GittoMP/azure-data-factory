@@ -1,5 +1,5 @@
 {
-	"name": "ds_sql_table_Customer",
+	"name": "ds_rawdb_sql_table_Customer",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_input_sqldb_Raw",
