@@ -1,5 +1,5 @@
 {
-	"name": "ds_blob_csv_dev",
+	"name": "ds_storagemanpowerdev01_storage_contatiners_dev",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "dl_blob_dev",

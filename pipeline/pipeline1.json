@@ -49,7 +49,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_blob_csv_dev",
+						"referenceName": "ds_storagemanpowerdev01_storage_contatiners_dev",
 						"type": "DatasetReference"
 					}
 				]
@@ -94,7 +94,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_blob_csv_dev",
+						"referenceName": "ds_storagemanpowerdev01_storage_contatiners_dev",
 						"type": "DatasetReference"
 					}
 				],
