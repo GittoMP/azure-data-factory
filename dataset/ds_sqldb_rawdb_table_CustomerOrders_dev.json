@@ -79,7 +79,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo.CustomerOrders"
+			"schema": "dbo",
+			"table": "CustomerOrders"
 		}
 	}
 }
