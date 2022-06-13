@@ -1,61 +1,6 @@
 {
 	"name": "Main02",
 	"properties": {
-		"activities": [
-			{
-				"name": "pipeline1_Customer",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pipeline1_Customer",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "pipeline2_Product",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "pipeline1_Customer",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pipeline2_Product",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "pipeline3_CustomerOrders",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "pipeline2_Product",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pipeline3_CustomerOrders",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			}
-		],
 		"folder": {
 			"name": "Orchestration"
 		},
