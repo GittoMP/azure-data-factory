@@ -1,5 +1,5 @@
 {
-	"name": "ds_sqldb_adventureLT_view_vAnagraficaCustomer_dev",
+	"name": "ds_sqldb_adventureLT_view_vAllProducts_dev_copy1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqldb_adventureLT_dev",
@@ -73,7 +73,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo.vAnagraficaCustomer"
+			"schema": "dbo.vAllproducts"
 		}
 	}
 }
