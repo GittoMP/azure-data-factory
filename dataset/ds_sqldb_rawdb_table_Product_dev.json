@@ -1,8 +1,8 @@
 {
-	"name": "ds_sqldb_adventureLT_view_vAllProducts_dev",
+	"name": "ds_sqldb_rawdb_table_Product_dev",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sqldb_adventureLT_dev",
+			"referenceName": "ls_sqldb_dbraw_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -70,10 +70,16 @@
 				"type": "datetime",
 				"precision": 23,
 				"scale": 3
+			},
+			{
+				"name": "ExecutionTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo.vAllproducts"
+			"schema": "dbo.Product"
 		}
 	}
 }
