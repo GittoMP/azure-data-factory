@@ -5,6 +5,11 @@
 			"referenceName": "ls_sqldb_adventureLT_dev",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"tableName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
