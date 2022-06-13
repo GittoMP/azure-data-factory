@@ -1,0 +1,12 @@
+{
+	"name": "ls_sqldb_adventureLT_dev",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=sql-server-manpower-01.database.windows.net;initial catalog=sqldb-adventureLT-dev-01;user id=arrow",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDBEN0M3RkQ5LTA2REYtNEE3OS1BMzM2LUM5RkQ3NTgyN0E3MV8zNWM1Mjc2OS05ZDdlLTQxYTctYjg3Ni02NmE2OWUxY2I2NjUiDQp9"
+		}
+	}
+}
