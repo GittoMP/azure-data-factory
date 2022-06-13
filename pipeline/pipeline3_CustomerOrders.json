@@ -44,7 +44,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_sqldb_adventureLT_view_vAnagraficaCustomer_dev",
+						"referenceName": "ds_sqldb_adventureLT_view_vCustomerOrders_dev",
 						"type": "DatasetReference"
 					}
 				],
