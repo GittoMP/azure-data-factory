@@ -81,11 +81,6 @@
 				}
 			}
 		],
-		"variables": {
-			"PIppo": {
-				"type": "String"
-			}
-		},
 		"folder": {
 			"name": "Orchestration"
 		},
