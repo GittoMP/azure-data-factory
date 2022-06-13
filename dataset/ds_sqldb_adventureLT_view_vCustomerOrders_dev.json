@@ -73,7 +73,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo.vCustomerOrders"
+			"schema": "dbo",
+			"table": "vCustomerOrders"
 		}
 	}
 }
