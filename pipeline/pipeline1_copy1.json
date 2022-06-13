@@ -26,25 +26,7 @@
 						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_sql_view_Customer",
-						"type": "DatasetReference",
-						"parameters": {
-							"sourceTableName": "vAngraficaCustomer"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_rawdb_sql_table_customer_dev",
-						"type": "DatasetReference",
-						"parameters": {
-							"tableName": "Customer"
-						}
-					}
-				]
+				}
 			}
 		],
 		"folder": {
