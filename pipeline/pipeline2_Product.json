@@ -118,7 +118,10 @@
 							"type": "DateTime"
 						},
 						"Message": {
-							"value": "Message",
+							"value": {
+								"value": "@{activity('Copy Products').error.message}",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"PipelineName": {
