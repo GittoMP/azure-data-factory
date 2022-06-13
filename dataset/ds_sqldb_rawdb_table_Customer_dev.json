@@ -79,7 +79,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo.Customer"
+			"schema": "dbo",
+			"table": "Customer"
 		}
 	}
 }
