@@ -1,14 +1,9 @@
 {
-	"name": "ds_rawdb_sql_table_customer_dev",
+	"name": "ds_adventureLT_sql_view_Customer_dev",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sqldb_dbraw_dev",
+			"referenceName": "ls_sqldb_adventureLT_dev",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"tableName": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -75,20 +70,11 @@
 				"type": "datetime",
 				"precision": 23,
 				"scale": 3
-			},
-			{
-				"name": "ExecutionTime",
-				"type": "datetime",
-				"precision": 23,
-				"scale": 3
 			}
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": {
-				"value": "@dataset().tableName",
-				"type": "Expression"
-			}
+			"table": "vAngraficaCustomer"
 		}
 	}
 }
