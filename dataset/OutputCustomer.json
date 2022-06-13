@@ -1,10 +1,6 @@
 {
 	"name": "OutputCustomer",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ls_customer_db_adventure",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [

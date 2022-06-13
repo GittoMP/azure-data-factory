@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Customer",
+				"name": "Copy AnagraficaCustomer",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -67,10 +67,6 @@
 					"secureInput": false
 				},
 				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "ls_input_sqldb_Raw",
-					"type": "LinkedServiceReference"
-				},
 				"typeProperties": {
 					"scripts": [
 						{

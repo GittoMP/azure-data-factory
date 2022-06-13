@@ -1,10 +1,6 @@
 {
 	"name": "ds_sql_table_CostomerOrders",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ls_input_sqldb_Raw",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [

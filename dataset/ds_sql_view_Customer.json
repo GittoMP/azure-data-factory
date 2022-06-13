@@ -1,10 +1,6 @@
 {
 	"name": "ds_sql_view_Customer",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ls_output_sqldb_adventure",
-			"type": "LinkedServiceReference"
-		},
 		"parameters": {
 			"sourceTableName": {
 				"type": "string"

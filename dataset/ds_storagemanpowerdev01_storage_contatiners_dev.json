@@ -1,10 +1,6 @@
 {
 	"name": "ds_storagemanpowerdev01_storage_contatiners_dev",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "dl_blob_dev",
-			"type": "LinkedServiceReference"
-		},
 		"parameters": {
 			"fileName": {
 				"type": "string"

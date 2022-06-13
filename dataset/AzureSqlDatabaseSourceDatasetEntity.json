@@ -1,10 +1,6 @@
 {
 	"name": "AzureSqlDatabaseSourceDatasetEntity",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "linkedServiceAlessio1Output",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"typeProperties": {

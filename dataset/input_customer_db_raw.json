@@ -1,10 +1,6 @@
 {
 	"name": "input_customer_db_raw",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ls_customer_db_raw",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [

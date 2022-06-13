@@ -67,10 +67,6 @@
 					"secureInput": false
 				},
 				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "ls_input_sqldb_Raw",
-					"type": "LinkedServiceReference"
-				},
 				"typeProperties": {
 					"scripts": [
 						{
@@ -133,10 +129,6 @@
 							"type": "String"
 						}
 					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ls_input_sqldb_Raw",
-					"type": "LinkedServiceReference"
 				}
 			}
 		],
