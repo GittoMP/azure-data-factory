@@ -32,8 +32,28 @@
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
-					"enableStaging": false
-				}
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqldb_adventureLT_view_vAnagraficaCustomer_dev",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sqldb_rawdb_table_Customer_dev",
+						"type": "DatasetReference"
+					}
+				]
 			},
 			{
 				"name": "Truncate CustomerOrders RawDB",
@@ -47,6 +67,10 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_dbraw_dev",
+					"type": "LinkedServiceReference"
+				},
 				"typeProperties": {
 					"scripts": [
 						{
