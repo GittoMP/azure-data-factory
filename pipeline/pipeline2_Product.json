@@ -132,7 +132,10 @@
 							"type": "String"
 						},
 						"Type": {
-							"value": "@concat(activity('failureType:',activity('Copy Products').error.failureType)",
+							"value": {
+								"value": "@concat('failureType:',activity('Copy Products').error.failureType)",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
