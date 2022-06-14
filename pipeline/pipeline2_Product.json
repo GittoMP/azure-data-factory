@@ -316,7 +316,7 @@
 						},
 						"Destination": {
 							"value": {
-								"value": "@{activity('Copy Products').output.executionDetails[0].sink.name}",
+								"value": "@{activity('Copy Products').output.executionDetails[0].sink}",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -372,7 +372,7 @@
 						},
 						"Source": {
 							"value": {
-								"value": "@{activity('Copy Products').output.executionDetails[0].source.name}",
+								"value": "@{activity('Copy Products').output.executionDetails[0].source}",
 								"type": "Expression"
 							},
 							"type": "String"
