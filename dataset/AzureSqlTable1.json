@@ -9,6 +9,12 @@
 				"DataBaseName": "sqldb-adventureLT-dev-01"
 			}
 		},
+		"parameters": {
+			"tablepippo": {
+				"type": "string",
+				"defaultValue": "uiouo"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
