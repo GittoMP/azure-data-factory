@@ -49,7 +49,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "AzureSqlTable1_dest",
 						"type": "DatasetReference",
 						"parameters": {
 							"tableNameAZureDataSet": {
