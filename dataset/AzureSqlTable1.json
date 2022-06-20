@@ -9,12 +9,6 @@
 				"DataBaseName": "sqldb-adventureLT-dev-01"
 			}
 		},
-		"parameters": {
-			"tableName": {
-				"type": "string",
-				"defaultValue": "popopo"
-			}
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
