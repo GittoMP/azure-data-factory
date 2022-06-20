@@ -10,7 +10,7 @@
 			}
 		},
 		"parameters": {
-			"tablepippo": {
+			"tableNameAZureDataSet": {
 				"type": "string",
 				"defaultValue": "uiouo"
 			}
