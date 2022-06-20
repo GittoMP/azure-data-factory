@@ -11,7 +11,8 @@
 		},
 		"parameters": {
 			"tableNameAZureDataSet": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "vCustomerOrders"
 			}
 		},
 		"annotations": [],
