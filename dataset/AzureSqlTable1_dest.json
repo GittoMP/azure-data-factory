@@ -1,0 +1,29 @@
+{
+	"name": "AzureSqlTable1_dest",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb_dest",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"TableName": "sqldb-dbraw-dev",
+				"ServerName": "sql-server-manpower-01.database.windows.net"
+			}
+		},
+		"parameters": {
+			"tableNameAZureDataSet": {
+				"type": "string",
+				"defaultValue": "Customer"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().tableNameAZureDataSet",
+				"type": "Expression"
+			}
+		}
+	}
+}
