@@ -62,6 +62,10 @@
 			"tableNamePipeline": {
 				"type": "string",
 				"defaultValue": "vCustomerOrders"
+			},
+			"tableNamePipelineDest": {
+				"type": "string",
+				"defaultValue": "Customer"
 			}
 		},
 		"folder": {
