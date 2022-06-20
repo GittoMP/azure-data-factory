@@ -52,7 +52,10 @@
 						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference",
 						"parameters": {
-							"tableNameAZureDataSet": "Customer"
+							"tableNameAZureDataSet": {
+								"value": "@pipeline().parameters.tableNamePipelineDest",
+								"type": "Expression"
+							}
 						}
 					}
 				]
