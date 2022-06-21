@@ -37,7 +37,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "ad_sqldb_AdventureT",
 						"type": "DatasetReference",
 						"parameters": {
 							"tableNameAZureDataSet": {
