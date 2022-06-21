@@ -2,7 +2,7 @@
 	"name": "pipeline_Processo_Client",
 	"properties": {
 		"folder": {
-			"name": "Gio/GroupName Processo Customer/Main Pipeline"
+			"name": "Gio/GroupName Processo Client/Main Pipeline"
 		},
 		"annotations": []
 	}
