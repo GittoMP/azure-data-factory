@@ -1,0 +1,24 @@
+{
+	"name": "pipeline_Orchestrator",
+	"properties": {
+		"activities": [
+			{
+				"name": "pipeline_Customer",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline_Customer",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Gio"
+		},
+		"annotations": []
+	}
+}

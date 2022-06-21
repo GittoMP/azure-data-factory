@@ -1,0 +1,9 @@
+{
+	"name": "pipeline2_error",
+	"properties": {
+		"folder": {
+			"name": "TestLimit"
+		},
+		"annotations": []
+	}
+}
