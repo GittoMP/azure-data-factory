@@ -37,7 +37,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ad_sqldb_AdventureT",
+						"referenceName": "ds_sqldb_AdventureT",
 						"type": "DatasetReference",
 						"parameters": {
 							"tableNameAZureDataSet": {
@@ -49,7 +49,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable1_dest",
+						"referenceName": "das_sqldb_dbraw",
 						"type": "DatasetReference",
 						"parameters": {
 							"tableNameAZureDataSet": {

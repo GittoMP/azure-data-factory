@@ -1,5 +1,5 @@
 {
-	"name": "ad_sqldb_AdventureT",
+	"name": "ds_sqldb_AdventureT",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqldb",

@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable1_dest",
+	"name": "das_sqldb_dbraw",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqldb_dest",
