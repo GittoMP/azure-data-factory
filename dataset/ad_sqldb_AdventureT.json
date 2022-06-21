@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable1",
+	"name": "ad_sqldb_AdventureT",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqldb",
