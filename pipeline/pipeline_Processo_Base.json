@@ -1,8 +1,23 @@
 {
 	"name": "pipeline_Processo_Base",
 	"properties": {
+		"activities": [
+			{
+				"name": "pipeline_Orchestrator_0000",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline_Orchestrator",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
 		"folder": {
-			"name": "Gio/GroupName Processo Base"
+			"name": "Gio/GroupName Processo Base/Main Pipeline"
 		},
 		"annotations": []
 	}

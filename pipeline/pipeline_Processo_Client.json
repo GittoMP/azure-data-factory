@@ -1,6 +1,21 @@
 {
 	"name": "pipeline_Processo_Client",
 	"properties": {
+		"activities": [
+			{
+				"name": "pipeline_Customer_1000",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline_Customer_1000",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
 		"folder": {
 			"name": "Gio/GroupName Processo Customer/Main Pipeline"
 		},
