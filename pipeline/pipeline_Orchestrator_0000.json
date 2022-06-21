@@ -1,21 +1,46 @@
 {
-	"name": "pipeline_Orchestrator",
+	"name": "pipeline_Orchestrator_0000",
 	"properties": {
 		"activities": [
 			{
-				"name": "pipeline_Customer",
+				"name": "pipeline_TabelleBase_0100",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pipeline_Customer1",
+						"referenceName": "pipeline_TabelleBase_0100",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline_TabelleCustomer_0200",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline_TabelleBase_0100",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline_TabelleCustomer_0200",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
 				}
 			}
 		],
+		"parameters": {
+			"Orchestrator": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "Gio"
 		},
