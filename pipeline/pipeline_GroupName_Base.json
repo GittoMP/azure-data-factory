@@ -1,8 +1,8 @@
 {
-	"name": "pipeline_Processo_Base",
+	"name": "pipeline_GroupName_Base",
 	"properties": {
 		"folder": {
-			"name": "Gio/GroupName Processo Base/Main Pipeline"
+			"name": "Gio/GroupName Base/Main Pipeline"
 		},
 		"annotations": []
 	}
