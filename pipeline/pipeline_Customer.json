@@ -421,7 +421,7 @@
 						"referenceName": "das_sqldb_dbraw",
 						"type": "DatasetReference",
 						"parameters": {
-							"tableNameAZureDataSet": " [dbo].[Orchestrator]"
+							"tableNameAZureDataSet": "Orchestrator"
 						}
 					},
 					"firstRowOnly": true
