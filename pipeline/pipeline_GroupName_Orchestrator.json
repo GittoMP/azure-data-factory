@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "pipeline_Processo_Base",
+				"name": "pipeline_GroupName_Base",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
@@ -16,11 +16,11 @@
 				}
 			},
 			{
-				"name": "pipeline_Processo_Client",
+				"name": "pipeline_GroupName_Client",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "pipeline_Processo_Base",
+						"activity": "pipeline_GroupName_Base",
 						"dependencyConditions": [
 							"Succeeded"
 						]
