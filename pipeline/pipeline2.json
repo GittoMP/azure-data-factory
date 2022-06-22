@@ -49,7 +49,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "das_sqldb_dbraw",
+						"referenceName": "ds_sqldb_dbraw",
 						"type": "DatasetReference",
 						"parameters": {
 							"tableNameAZureDataSet": {

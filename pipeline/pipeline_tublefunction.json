@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select * from [dbo].[tbf_AngraficaCustomer]()",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -24,7 +25,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_sqldb_adventureLT_view_vAllProducts_dev",
+						"referenceName": "ds_sqldb_adventure_query",
 						"type": "DatasetReference"
 					}
 				]
