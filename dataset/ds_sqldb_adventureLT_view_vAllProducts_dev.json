@@ -2,8 +2,12 @@
 	"name": "ds_sqldb_adventureLT_view_vAllProducts_dev",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sqldb_adventureLT_dev",
-			"type": "LinkedServiceReference"
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ServerName": "sql-server-manpower-01.database.windows.net",
+				"DataBaseName": "sqldb-adventureLT-dev-01"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
