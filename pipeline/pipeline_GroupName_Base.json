@@ -42,13 +42,59 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@bool(activity('GeStatusTable').output.firstRow.Status)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "OK",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "If Condition1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OK",
+					"value": "TRUE"
+				}
+			},
+			{
+				"name": "FAIL",
+				"description": "FALSE",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "If Condition1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OK",
+					"value": "TRUE"
+				}
 			}
 		],
 		"parameters": {
 			"pipeName": {
 				"type": "string",
 				"defaultValue": "pipeline_GroupName_Base"
+			}
+		},
+		"variables": {
+			"OK": {
+				"type": "String"
 			}
 		},
 		"folder": {
