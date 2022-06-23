@@ -47,7 +47,19 @@
 					"expression": {
 						"value": "@bool(activity('GeStatusTable').output.firstRow.Status)",
 						"type": "Expression"
-					}
+					},
+					"ifTrueActivities": [
+						{
+							"name": "OK_copy1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "OK",
+								"value": "TRUE"
+							}
+						}
+					]
 				}
 			},
 			{
