@@ -50,11 +50,15 @@
 					},
 					"ifFalseActivities": [
 						{
-							"name": "FAILED",
-							"description": "FALSE",
+							"name": "KO",
+							"description": "",
 							"type": "SetVariable",
 							"dependsOn": [],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FAILED",
+								"value": "FALSE"
+							}
 						}
 					],
 					"ifTrueActivities": [
@@ -80,6 +84,9 @@
 		},
 		"variables": {
 			"OK": {
+				"type": "String"
+			},
+			"FAILED": {
 				"type": "String"
 			}
 		},
