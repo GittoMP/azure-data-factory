@@ -48,6 +48,15 @@
 						"value": "@bool(activity('GeStatusTable').output.firstRow.Status)",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "FAILED",
+							"description": "FALSE",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": []
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "OK_copy1",
@@ -60,41 +69,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "OK",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "If Condition1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "OK",
-					"value": "TRUE"
-				}
-			},
-			{
-				"name": "FAIL",
-				"description": "FALSE",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "If Condition1",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "OK",
-					"value": "TRUE"
 				}
 			}
 		],
