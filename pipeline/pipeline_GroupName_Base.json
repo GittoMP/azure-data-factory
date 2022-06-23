@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@bool(activity('GeStatusTable').output.firstRow.Status)",
+						"value": "@bool(equals(1,activity('GeStatusTable').output.firstRow.Status))",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
