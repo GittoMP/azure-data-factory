@@ -1,6 +1,42 @@
 {
 	"name": "pipeline_GroupName_Base",
 	"properties": {
+		"activities": [
+			{
+				"name": "GeStatusTable",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT *  FROM [dbo].[Orchestrator] where GroupName=',pipeline().parameters.pipeName)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"pipeName": {
+				"type": "string",
+				"defaultValue": "pipeline_GroupName_Base"
+			}
+		},
 		"folder": {
 			"name": "Gio/GroupName Base/Main Pipeline"
 		},
