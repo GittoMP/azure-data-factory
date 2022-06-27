@@ -114,6 +114,9 @@
 			"pipeName": {
 				"type": "string",
 				"defaultValue": "pipeline_GroupName_Base"
+			},
+			"paramFromParentPipe": {
+				"type": "string"
 			}
 		},
 		"variables": {
