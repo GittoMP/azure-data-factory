@@ -80,7 +80,22 @@
 										]
 									},
 									{
-										"value": "pl_B"
+										"value": "pl_B",
+										"activities": [
+											{
+												"name": "pl_B",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_B",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									},
 									{
 										"value": "pl_C"
