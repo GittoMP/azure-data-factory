@@ -5,7 +5,14 @@
 			{
 				"name": "pl_B",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "pl_A",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
@@ -23,6 +30,26 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "pl_A",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_C",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_B",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_C",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
