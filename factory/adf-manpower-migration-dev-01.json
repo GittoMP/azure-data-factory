@@ -1,5 +1,13 @@
 {
 	"name": "adf-manpower-migration-dev-01",
+	"properties": {
+		"globalParameters": {
+			"GlobalParamter": {
+				"type": "string",
+				"value": "prova"
+			}
+		}
+	},
 	"location": "westeurope",
 	"identity": {
 		"type": "SystemAssigned",
