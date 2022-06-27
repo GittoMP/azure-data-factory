@@ -67,6 +67,9 @@
 		"variables": {
 			"MainVariable": {
 				"type": "String"
+			},
+			"prova": {
+				"type": "String"
 			}
 		},
 		"folder": {
