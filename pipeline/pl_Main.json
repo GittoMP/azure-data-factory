@@ -98,7 +98,22 @@
 										]
 									},
 									{
-										"value": "pl_C"
+										"value": "pl_C",
+										"activities": [
+											{
+												"name": "pl_C",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_C",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									}
 								]
 							}
