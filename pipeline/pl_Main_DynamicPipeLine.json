@@ -83,13 +83,13 @@
 										"value": "pl_B",
 										"activities": [
 											{
-												"name": "pl_B",
+												"name": "pl_B_Dynamic",
 												"type": "ExecutePipeline",
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "pl_B",
+														"referenceName": "pl_B_Dynamic",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true
