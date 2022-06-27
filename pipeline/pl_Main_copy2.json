@@ -57,7 +57,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@(item().PipelineGroupName)",
+									"value": "@{item().PipelineGroupName}",
 									"type": "Expression"
 								},
 								"cases": [
