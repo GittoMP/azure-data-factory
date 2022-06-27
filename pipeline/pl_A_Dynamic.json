@@ -16,6 +16,11 @@
 				"userProperties": []
 			}
 		],
+		"parameters": {
+			"ExecutionName": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "Esempio"
 		},
