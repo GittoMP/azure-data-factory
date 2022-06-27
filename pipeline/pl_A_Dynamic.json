@@ -3,37 +3,17 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "pl_A_1",
-				"type": "ExecutePipeline",
+				"name": "Lookup1",
+				"type": "Lookup",
 				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pl_A_1",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "pl_A_2",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "pl_A_1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pl_A_2",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"folder": {
