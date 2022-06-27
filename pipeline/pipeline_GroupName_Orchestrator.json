@@ -41,6 +41,11 @@
 				"type": "string"
 			}
 		},
+		"variables": {
+			"MainVariable": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Gio/GroupName Orchestrator/Main Pipeline"
 		},
