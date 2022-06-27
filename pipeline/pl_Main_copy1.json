@@ -62,22 +62,29 @@
 								},
 								"cases": [
 									{
-										"value": "pl_A"
+										"value": "pl_A",
+										"activities": [
+											{
+												"name": "Wait_a",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 1
+												}
+											}
+										]
 									},
 									{
 										"value": "pl_B",
 										"activities": [
 											{
-												"name": "pl_B",
-												"type": "ExecutePipeline",
+												"name": "Wait_b",
+												"type": "Wait",
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
-													"pipeline": {
-														"referenceName": "pl_B",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true
+													"waitTimeInSeconds": 1
 												}
 											}
 										]
