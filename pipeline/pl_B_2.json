@@ -1,6 +1,17 @@
 {
 	"name": "pl_B_2",
 	"properties": {
+		"activities": [
+			{
+				"name": "Wait_B_2",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
 		"folder": {
 			"name": "Esempio"
 		},
