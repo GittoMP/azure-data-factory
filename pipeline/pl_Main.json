@@ -3,59 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "pl_B",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "pl_A",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pl_B",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "pl_A",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pl_A",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "pl_C",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "pl_B",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pl_C",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
 				"name": "Get Group Name execution order",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -115,7 +62,22 @@
 								},
 								"cases": [
 									{
-										"value": "pl_A"
+										"value": "pl_A",
+										"activities": [
+											{
+												"name": "pl_A",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_A",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									},
 									{
 										"value": "pl_B"
