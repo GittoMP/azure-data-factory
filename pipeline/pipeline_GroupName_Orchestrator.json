@@ -19,7 +19,13 @@
 						"referenceName": "pipeline_GroupName_Base",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"paramFromParentPipe": {
+							"value": "@variables('MainVariable')",
+							"type": "Expression"
+						}
+					}
 				}
 			},
 			{
