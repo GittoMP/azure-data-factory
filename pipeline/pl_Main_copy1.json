@@ -93,16 +93,12 @@
 										"value": "pl_C",
 										"activities": [
 											{
-												"name": "pl_C",
-												"type": "ExecutePipeline",
+												"name": "Wait_c",
+												"type": "Wait",
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
-													"pipeline": {
-														"referenceName": "pl_C",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true
+													"waitTimeInSeconds": 1
 												}
 											}
 										]
