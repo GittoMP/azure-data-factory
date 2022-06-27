@@ -34,6 +34,16 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MainVariable",
+					"value": "OK"
+				}
 			}
 		],
 		"parameters": {
