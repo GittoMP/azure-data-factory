@@ -46,7 +46,7 @@
 				"typeProperties": {
 					"variableName": "prova",
 					"value": {
-						"value": "@{activity('Get the Drop Excecution Name').output.value}.value.NewExectution",
+						"value": "@activity('Get the Drop Excecution Name').output.firstRow.NewExecution",
 						"type": "Expression"
 					}
 				}
@@ -96,9 +96,6 @@
 		"variables": {
 			"prova": {
 				"type": "String"
-			},
-			"provaA": {
-				"type": "Array"
 			}
 		},
 		"folder": {
