@@ -104,16 +104,26 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Execute Pipeline1",
-							"type": "ExecutePipeline",
+							"name": "Switch1",
+							"type": "Switch",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pipeline3",
-									"type": "PipelineReference"
+								"on": {
+									"value": "@(item().PipelineGroupName)",
+									"type": "Expression"
 								},
-								"waitOnCompletion": true
+								"cases": [
+									{
+										"value": "pl_A"
+									},
+									{
+										"value": "pl_B"
+									},
+									{
+										"value": "pl_C"
+									}
+								]
 							}
 						}
 					]
