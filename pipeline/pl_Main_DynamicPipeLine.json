@@ -127,6 +127,11 @@
 				"type": "string"
 			}
 		},
+		"variables": {
+			"prova": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Esempio"
 		},

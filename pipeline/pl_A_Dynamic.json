@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Get the Drop Excecution Name",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -13,12 +13,48 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT *\n  FROM [dbo].[PipelineExecutionHistory]\n  where ToBeExecuted = 'YES'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_dbraw",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "Customer"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get the Drop Excecution Name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "prova",
+					"value": {
+						"value": "@{activity('Get the Drop Excecution Name').output.value}.NewExectution",
+						"type": "Expression"
+					}
+				}
 			}
 		],
-		"parameters": {
-			"ExecutionName": {
-				"type": "string"
+		"variables": {
+			"prova": {
+				"type": "String"
 			}
 		},
 		"folder": {
