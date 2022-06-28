@@ -62,7 +62,7 @@
 								},
 								"cases": [
 									{
-										"value": "pl_A",
+										"value": "pl_A_Dynamic",
 										"activities": [
 											{
 												"name": "pl_A_Dynamic",
@@ -80,7 +80,7 @@
 										]
 									},
 									{
-										"value": "pl_B",
+										"value": "pl_B_Dynamic",
 										"activities": [
 											{
 												"name": "pl_B_Dynamic",
@@ -98,7 +98,7 @@
 										]
 									},
 									{
-										"value": "pl_C",
+										"value": "pl_C_Dynamic",
 										"activities": [
 											{
 												"name": "pl_C_Dynamic",

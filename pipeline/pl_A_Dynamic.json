@@ -96,6 +96,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"PipelineName": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"prova": {
 				"type": "String"
