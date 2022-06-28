@@ -71,7 +71,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "pl_A_Dynamic",
+														"referenceName": "pl_A_Dynamic_old",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true
