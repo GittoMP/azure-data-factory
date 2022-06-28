@@ -43,14 +43,7 @@
 			{
 				"name": "Execute each pipeline per group",
 				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Get pipeline to be executed",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
