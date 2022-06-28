@@ -1,6 +1,17 @@
 {
 	"name": "pl_A_Dynamic",
 	"properties": {
+		"activities": [
+			{
+				"name": "Wait_A",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
 		"parameters": {
 			"PipelineName": {
 				"type": "string"

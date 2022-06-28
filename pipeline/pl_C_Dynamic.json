@@ -1,6 +1,17 @@
 {
 	"name": "pl_C_Dynamic",
 	"properties": {
+		"activities": [
+			{
+				"name": "WaitC",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
 		"folder": {
 			"name": "Esempio02_dynamic"
 		},
