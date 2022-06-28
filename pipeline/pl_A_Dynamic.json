@@ -37,7 +37,7 @@
 							"tableNameAZureDataSet": "Customer"
 						}
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			},
 			{
