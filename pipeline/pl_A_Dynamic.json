@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT *\n  FROM [dbo].[PipelineExecutionHistory]\n  where ToBeExecuted = 'YES'",
+						"sqlReaderQuery": {
+							"value": "@SELECT * FROM [dbo].[PipelineExecutionHistory] where ToBeExecuted = variables('prova')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
