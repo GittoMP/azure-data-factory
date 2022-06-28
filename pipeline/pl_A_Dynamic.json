@@ -82,14 +82,6 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"writeBehavior": {
-										"value": "@{item().Destination}",
-										"type": "Expression"
-									},
-									"sqlWriterUseTableLock": false,
-									"upsertSettings": {
-										"useTempDB": true
-									},
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
@@ -116,7 +108,10 @@
 									"referenceName": "ds_sqldb_dbraw",
 									"type": "DatasetReference",
 									"parameters": {
-										"tableNameAZureDataSet": "A1"
+										"tableNameAZureDataSet": {
+											"value": "@{item().Destination}",
+											"type": "Expression"
+										}
 									}
 								}
 							]
