@@ -62,18 +62,7 @@
 								},
 								"cases": [
 									{
-										"value": "pl_A_Dynamic",
-										"activities": [
-											{
-												"name": "pl_A_Dynamic",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"waitOnCompletion": true
-												}
-											}
-										]
+										"value": "pl_A_Dynamic"
 									},
 									{
 										"value": "pl_B_Dynamic",
