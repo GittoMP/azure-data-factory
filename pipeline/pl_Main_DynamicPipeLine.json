@@ -32,7 +32,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEach Group Name",
 				"type": "ForEach",
 				"dependsOn": [
 					{
