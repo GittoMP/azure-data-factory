@@ -1,6 +1,71 @@
 {
 	"name": "pl_C_Dynamic",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy from source to destination",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": {
+							"value": "SELECT * from @{item().Procedure}",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": {
+							"value": "@{item().Destination}",
+							"type": "Expression"
+						},
+						"sqlWriterUseTableLock": false,
+						"upsertSettings": {
+							"useTempDB": true
+						},
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqldb_AdventureT",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "vCustomerOrders"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sqldb_dbraw",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "A1"
+						}
+					}
+				]
+			}
+		],
 		"folder": {
 			"name": "Esempio02_dynamic"
 		},
