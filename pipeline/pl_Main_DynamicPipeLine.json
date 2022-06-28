@@ -127,14 +127,6 @@
 				"type": "string"
 			}
 		},
-		"variables": {
-			"prova": {
-				"type": "String"
-			},
-			"provaA": {
-				"type": "Array"
-			}
-		},
 		"folder": {
 			"name": "Esempio02_dynamic"
 		},
