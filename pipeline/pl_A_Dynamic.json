@@ -73,10 +73,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderStoredProcedureName": {
-										"value": "SELECT * from @{item().Procedure}",
-										"type": "Expression"
-									},
+									"sqlReaderQuery": "SELECT * from @{item().Procedure}",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
