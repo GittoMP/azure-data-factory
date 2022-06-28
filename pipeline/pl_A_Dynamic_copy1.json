@@ -1,0 +1,138 @@
+{
+	"name": "pl_A_Dynamic_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get pipeline to be executed",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipeLineNameExecutionOrder]",
+						"storedProcedureParameters": {
+							"PipelineName": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_dbraw",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "Customer"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Execute each pipeline per group",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get pipeline to be executed",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get pipeline to be executed').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy from source to destination",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": {
+										"value": "SELECT * from @{item().Procedure}",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_sqldb_AdventureT",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableNameAZureDataSet": "vCustomerOrders"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sqldb_dbraw",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableNameAZureDataSet": {
+											"value": "@{item().Destination}",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"PipelineName": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"prova": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Esempio02_dynamic"
+		},
+		"annotations": []
+	}
+}
