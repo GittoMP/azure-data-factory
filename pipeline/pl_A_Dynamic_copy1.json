@@ -1,0 +1,508 @@
+{
+	"name": "pl_A_Dynamic_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get pipeline to be executed",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SetOrchestrationId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipeLineNameExecutionOrder]",
+						"storedProcedureParameters": {
+							"PipelineName": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_dbraw",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "Customer"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Execute each pipeline per group",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get pipeline to be executed",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get pipeline to be executed').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy from source to destination",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "SELECT * from @{item().Procedure}",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_sqldb_AdventureT",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableNameAZureDataSet": "vCustomerOrders"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sqldb_dbraw",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableNameAZureDataSet": {
+											"value": "@{item().Destination}",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "SuccessfulFlow",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "UpdateMatrix",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+								"storedProcedureParameters": {
+									"DropName": {
+										"value": {
+											"value": "@variables('OrchestratorDropName')",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionNumber": {
+										"value": {
+											"value": "@int(variables('OrchestratorExecutionNumber'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"InError": {
+										"value": "'NO'",
+										"type": "String"
+									},
+									"PipelineGroupNameId": {
+										"value": "1",
+										"type": "Int32"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@item().PipelineName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineOrchestratorId": {
+										"value": "100",
+										"type": "Int32"
+									},
+									"StartExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"StopExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_sqldb_dbraw_dev",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "FailureFlow",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy from source to destination",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+								"storedProcedureParameters": {
+									"DropName": {
+										"value": {
+											"value": "@variables('OrchestratorDropName')",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionNumber": {
+										"value": {
+											"value": "@int(variables('OrchestratorExecutionNumber'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"InError": {
+										"value": "'YES'",
+										"type": "String"
+									},
+									"PipelineGroupNameId": {
+										"value": "1",
+										"type": "Int32"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineOrchestratorId": {
+										"value": "100",
+										"type": "Int32"
+									},
+									"StartExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"StopExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_sqldb_dbraw_dev",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "myPLname",
+								"value": {
+									"value": "@{item().MatrixTableName}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "UpdateMatrix",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "SELECT Name from @{item().Destination}",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_sqldb_dbraw",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableNameAZureDataSet": "Customer"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sqldb_dbraw",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableNameAZureDataSet": {
+											"value": "@{item().MatrixTableName}",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Copy from source to destination",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": []
+						}
+					]
+				}
+			},
+			{
+				"name": "GetPipelineOrchestrator",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelineOrchestrator]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_dbraw",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "Customer"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SetOrchestrationDropName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorDropName",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetOrchestrationExecutionNumber",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SetOrchestrationDropName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorExecutionNumber",
+					"value": {
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetOrchestrationNewExecution",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SetOrchestrationExecutionNumber",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorNewExecution",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].NewExecution",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetOrchestrationId",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SetOrchestrationNewExecution",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorrId",
+					"value": {
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].Id)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"OrchestratorDropName": {
+				"type": "String"
+			},
+			"OrchestratorExecutionNumber": {
+				"type": "String"
+			},
+			"OrchestratorNewExecution": {
+				"type": "String"
+			},
+			"OrchestratorrId": {
+				"type": "String"
+			},
+			"myPLname": {
+				"type": "String"
+			},
+			"MatrixTableName": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Esempio02_dynamic"
+		},
+		"annotations": []
+	}
+}
