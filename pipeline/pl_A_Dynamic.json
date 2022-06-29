@@ -162,11 +162,6 @@
 				"userProperties": []
 			}
 		],
-		"parameters": {
-			"qeqwewqe432": {
-				"type": "string"
-			}
-		},
 		"variables": {
 			"OrchestratorDropName": {
 				"type": "String"
