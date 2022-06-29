@@ -131,82 +131,6 @@
 							]
 						},
 						{
-							"name": "SuccessfulFlow",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "UpdateMatrix",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
-								"storedProcedureParameters": {
-									"DropName": {
-										"value": {
-											"value": "@variables('OrchestratorDropName')",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"ExecutionNumber": {
-										"value": {
-											"value": "@int(variables('OrchestratorExecutionNumber'))",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"InError": {
-										"value": "'NO'",
-										"type": "String"
-									},
-									"PipelineGroupNameId": {
-										"value": "1",
-										"type": "Int32"
-									},
-									"PipelineName": {
-										"value": {
-											"value": "@item().PipelineName",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"PipelineOrchestratorId": {
-										"value": "100",
-										"type": "Int32"
-									},
-									"StartExecutionDate": {
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										},
-										"type": "DateTime"
-									},
-									"StopExecutionDate": {
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										},
-										"type": "DateTime"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "ls_sqldb_dbraw_dev",
-								"type": "LinkedServiceReference"
-							}
-						},
-						{
 							"name": "FailureFlow",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
@@ -288,71 +212,12 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "myPLname",
+								"variableName": "MatrixTableName",
 								"value": {
 									"value": "@{item().MatrixTableName}",
 									"type": "Expression"
 								}
 							}
-						},
-						{
-							"name": "UpdateMatrix",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "SELECT Name from @{item().Destination}",
-										"type": "Expression"
-									},
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"sink": {
-									"type": "AzureSqlSink",
-									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "ds_sqldb_dbraw",
-									"type": "DatasetReference",
-									"parameters": {
-										"tableNameAZureDataSet": "Customer"
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "ds_sqldb_dbraw",
-									"type": "DatasetReference",
-									"parameters": {
-										"tableNameAZureDataSet": {
-											"value": "@{item().MatrixTableName}",
-											"type": "Expression"
-										}
-									}
-								}
-							]
 						},
 						{
 							"name": "If Condition1",
@@ -365,7 +230,221 @@
 									]
 								}
 							],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "empty(@{item().MatrixTableName})",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "SuccessfulFlow_WithoutMatrixTable",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "7.00:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+											"storedProcedureParameters": {
+												"DropName": {
+													"value": {
+														"value": "@variables('OrchestratorDropName')",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"ExecutionNumber": {
+													"value": {
+														"value": "@int(variables('OrchestratorExecutionNumber'))",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"InError": {
+													"value": "'NO'",
+													"type": "String"
+												},
+												"PipelineGroupNameId": {
+													"value": "1",
+													"type": "Int32"
+												},
+												"PipelineName": {
+													"value": {
+														"value": "@item().PipelineName",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"PipelineOrchestratorId": {
+													"value": "100",
+													"type": "Int32"
+												},
+												"StartExecutionDate": {
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													},
+													"type": "DateTime"
+												},
+												"StopExecutionDate": {
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													},
+													"type": "DateTime"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ls_sqldb_dbraw_dev",
+											"type": "LinkedServiceReference"
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "SuccessfulFlow",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [
+											{
+												"activity": "UpdateMatrix",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"timeout": "7.00:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+											"storedProcedureParameters": {
+												"DropName": {
+													"value": {
+														"value": "@variables('OrchestratorDropName')",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"ExecutionNumber": {
+													"value": {
+														"value": "@int(variables('OrchestratorExecutionNumber'))",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"InError": {
+													"value": "'NO'",
+													"type": "String"
+												},
+												"PipelineGroupNameId": {
+													"value": "1",
+													"type": "Int32"
+												},
+												"PipelineName": {
+													"value": {
+														"value": "@item().PipelineName",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"PipelineOrchestratorId": {
+													"value": "100",
+													"type": "Int32"
+												},
+												"StartExecutionDate": {
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													},
+													"type": "DateTime"
+												},
+												"StopExecutionDate": {
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													},
+													"type": "DateTime"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ls_sqldb_dbraw_dev",
+											"type": "LinkedServiceReference"
+										}
+									},
+									{
+										"name": "UpdateMatrix",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "7.00:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "AzureSqlSource",
+												"sqlReaderQuery": {
+													"value": "SELECT Name from @{item().Destination}",
+													"type": "Expression"
+												},
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
+											},
+											"sink": {
+												"type": "AzureSqlSink",
+												"writeBehavior": "insert",
+												"sqlWriterUseTableLock": false
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "ds_sqldb_dbraw",
+												"type": "DatasetReference",
+												"parameters": {
+													"tableNameAZureDataSet": "Customer"
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_sqldb_dbraw",
+												"type": "DatasetReference",
+												"parameters": {
+													"tableNameAZureDataSet": {
+														"value": "@{item().MatrixTableName}",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								]
+							}
 						}
 					]
 				}
@@ -494,6 +573,9 @@
 				"type": "String"
 			},
 			"myPLname": {
+				"type": "String"
+			},
+			"MatrixTableName": {
 				"type": "String"
 			}
 		},
