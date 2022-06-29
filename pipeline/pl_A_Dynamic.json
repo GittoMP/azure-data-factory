@@ -153,7 +153,10 @@
 										"type": "String"
 									},
 									"ExecutionNumber": {
-										"value": null,
+										"value": {
+											"value": "@int(variables('OrchestratorExecutionNumber'))",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									},
 									"InError": {
