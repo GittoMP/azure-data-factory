@@ -233,7 +233,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "empty(@{item().MatrixTableName})",
+									"value": "@not(empty(variables('MatrixTableName')))",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
