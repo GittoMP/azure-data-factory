@@ -573,7 +573,7 @@
 			"OrchestratorrId": {
 				"type": "String"
 			},
-			"myPLname": {
+			"MatrixTableName": {
 				"type": "String"
 			}
 		},
