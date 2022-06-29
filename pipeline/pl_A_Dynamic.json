@@ -215,7 +215,7 @@
 							"typeProperties": {
 								"variableName": "MatrixTableName",
 								"value": {
-									"value": "MatrixA1",
+									"value": "@{item().MatrixTableName}",
 									"type": "Expression"
 								}
 							}
