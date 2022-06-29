@@ -34,7 +34,14 @@
 			{
 				"name": "DropName",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "DropName",
@@ -47,10 +54,17 @@
 			{
 				"name": "Array orchestrator",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "ArrayOrchestrator",
+					"variableName": "ArraOrchestrator",
 					"value": {
 						"value": "@activity('GetPipelineOrchestrator').output.value",
 						"type": "Expression"
@@ -61,6 +75,14 @@
 		"parameters": {
 			"pipeLinename": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"DropName": {
+				"type": "String"
+			},
+			"ArraOrchestrator": {
+				"type": "Array"
 			}
 		},
 		"annotations": []
