@@ -198,6 +198,82 @@
 								"referenceName": "ls_sqldb_dbraw_dev",
 								"type": "LinkedServiceReference"
 							}
+						},
+						{
+							"name": "FailureFlow",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy from source to destination",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+								"storedProcedureParameters": {
+									"DropName": {
+										"value": {
+											"value": "@variables('OrchestratorDropName')",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionNumber": {
+										"value": {
+											"value": "@int(variables('OrchestratorExecutionNumber'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"InError": {
+										"value": "'YES'",
+										"type": "String"
+									},
+									"PipelineGroupNameId": {
+										"value": "1",
+										"type": "Int32"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineOrchestratorId": {
+										"value": "100",
+										"type": "Int32"
+									},
+									"StartExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"StopExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_sqldb_dbraw_dev",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
