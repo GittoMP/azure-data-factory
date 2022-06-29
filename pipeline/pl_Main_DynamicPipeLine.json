@@ -141,7 +141,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[sp_UpadateStartExecutionDate]"
+					"storedProcedureName": "[dbo].[sp_UpdateStartExecutionDate]"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_sqldb_dbraw_dev",
