@@ -575,9 +575,6 @@
 			},
 			"myPLname": {
 				"type": "String"
-			},
-			"MatrixTableName": {
-				"type": "String"
 			}
 		},
 		"folder": {

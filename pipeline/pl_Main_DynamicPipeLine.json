@@ -149,6 +149,11 @@
 				}
 			}
 		],
+		"variables": {
+			"MatrixTableName": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Esempio02_dynamic"
 		},
