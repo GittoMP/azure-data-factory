@@ -170,6 +170,15 @@
 		"variables": {
 			"DropName": {
 				"type": "String"
+			},
+			"ArrayOrchestrator": {
+				"type": "Array"
+			},
+			"ExecutionNumber": {
+				"type": "String"
+			},
+			"ArraOrchestrator": {
+				"type": "Array"
 			}
 		},
 		"folder": {
