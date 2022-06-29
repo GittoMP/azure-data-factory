@@ -70,7 +70,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Set MatrixTableName",
+									"activity": "Set CurrenttMatrixTableName",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -207,8 +207,8 @@
 							}
 						},
 						{
-							"name": "Set MatrixTableName",
-							"description": "MatrixA1",
+							"name": "Set CurrenttMatrixTableName",
+							"description": "",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
