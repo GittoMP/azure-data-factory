@@ -52,6 +52,11 @@
 				}
 			}
 		],
+		"variables": {
+			"pippo": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }

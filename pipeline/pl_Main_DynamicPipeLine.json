@@ -131,14 +131,7 @@
 			{
 				"name": "UpdateStartExecutioncDate",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "DropName",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -154,75 +147,6 @@
 					"referenceName": "ls_sqldb_dbraw_dev",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "GetPipelineOrchestrator",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelineOrchestrator]",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_sqldb_dbraw",
-						"type": "DatasetReference",
-						"parameters": {
-							"tableNameAZureDataSet": "Customer"
-						}
-					},
-					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "DropName",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GetPipelineOrchestrator",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "DropName",
-					"value": {
-						"value": "@{activity('GetPipelineOrchestrator').output.value[0].DropName}",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Array orchestrator",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GetPipelineOrchestrator",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "ArrayOrchestrator",
-					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value",
-						"type": "Expression"
-					}
-				}
 			}
 		],
 		"variables": {
@@ -230,6 +154,9 @@
 				"type": "String"
 			},
 			"ArrayOrchestrator": {
+				"type": "Array"
+			},
+			"ArraOrchestrator": {
 				"type": "Array"
 			}
 		},
