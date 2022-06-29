@@ -298,14 +298,7 @@
 						{
 							"name": "UpdateMatrix",
 							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "Copy from source to destination",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -360,6 +353,19 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Copy from source to destination",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": []
 						}
 					]
 				}
