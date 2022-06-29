@@ -219,7 +219,7 @@
 				"typeProperties": {
 					"variableName": "ArrayOrchestrator",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0]",
+						"value": "@activity('GetPipelineOrchestrator').output.value",
 						"type": "Expression"
 					}
 				}
