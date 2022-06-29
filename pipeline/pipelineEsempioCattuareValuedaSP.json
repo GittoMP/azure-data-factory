@@ -46,7 +46,7 @@
 				"typeProperties": {
 					"variableName": "pippo",
 					"value": {
-						"value": "@{activity('GetPipelineOrchestrator').output.value[0].DropName}",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
 						"type": "Expression"
 					}
 				}
@@ -54,6 +54,9 @@
 		],
 		"variables": {
 			"pippo": {
+				"type": "String"
+			},
+			"prova34": {
 				"type": "String"
 			}
 		},

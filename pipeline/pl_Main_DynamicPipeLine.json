@@ -158,6 +158,9 @@
 			},
 			"ArraOrchestrator": {
 				"type": "Array"
+			},
+			"prova34": {
+				"type": "String"
 			}
 		},
 		"folder": {

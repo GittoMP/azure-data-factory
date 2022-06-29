@@ -149,7 +149,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "SetOrchestrationDropName",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -159,7 +159,54 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorDropName",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetOrchestrationExecutionNumber",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorExecutionNumber",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetOrchestrationExecutionNumber_copy1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorNewExecution",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].NewExecution",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
