@@ -160,11 +160,11 @@
 										"type": "Int32"
 									},
 									"InError": {
-										"value": null,
-										"type": "DateTime"
+										"value": "'NO'",
+										"type": "String"
 									},
 									"PipelineGroupNameId": {
-										"value": null,
+										"value": "'1'",
 										"type": "Int32"
 									},
 									"PipelineName": {
