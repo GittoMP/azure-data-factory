@@ -207,6 +207,26 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "SetOrchestrationId",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorrId",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].Id",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
