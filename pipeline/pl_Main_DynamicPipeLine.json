@@ -149,6 +149,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"prova123": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"DropName": {
 				"type": "String"
