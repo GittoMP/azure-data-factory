@@ -146,19 +146,19 @@
 								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
 								"storedProcedureParameters": {
 									"DropName": {
-										"value": "'Drop01'",
+										"value": null,
 										"type": "String"
 									},
 									"ExecutionNumber": {
-										"value": "1",
+										"value": null,
 										"type": "Int32"
 									},
 									"InError": {
-										"value": "'NO'",
+										"value": null,
 										"type": "DateTime"
 									},
 									"PipelineGroupNameId": {
-										"value": "1",
+										"value": null,
 										"type": "Int32"
 									},
 									"PipelineName": {
