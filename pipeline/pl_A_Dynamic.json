@@ -318,7 +318,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "SELECT Name from @{item().MatrixTableName}",
+										"value": "SELECT Name from @{item().Destination}",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
