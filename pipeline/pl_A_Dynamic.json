@@ -157,7 +157,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "DropName",
-								"value": ""
+								"value": {
+									"value": "@{activity('GetPipelineOrchestrator').output.executionDetails[0].DropName}",
+									"type": "Expression"
+								}
 							}
 						}
 					]
