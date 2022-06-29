@@ -190,7 +190,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorExecutionNumber",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber",
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber)",
 						"type": "Expression"
 					}
 				}
@@ -230,7 +230,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorrId",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].Id",
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].Id)",
 						"type": "Expression"
 					}
 				}
