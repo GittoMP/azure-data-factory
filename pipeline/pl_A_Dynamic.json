@@ -163,21 +163,21 @@
 			}
 		],
 		"parameters": {
-			"OrchestratorDropName": {
+			"qeqwewqe432": {
 				"type": "string"
-			},
-			"OrchestratorExecutionNumber": {
-				"type": "int"
-			},
-			"OrchestratorNewExecution": {
-				"type": "string"
-			},
-			"OrchestratorrId": {
-				"type": "int"
 			}
 		},
 		"variables": {
 			"OrchestratorDropName": {
+				"type": "String"
+			},
+			"OrchestratorExecutionNumber": {
+				"type": "String"
+			},
+			"OrchestratorNewExecution": {
+				"type": "String"
+			},
+			"OrchestratorrId": {
 				"type": "String"
 			}
 		},
