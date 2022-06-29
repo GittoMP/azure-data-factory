@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "InsertStartExecutioncDate",
+						"activity": "UpdateStartExecutioncDate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -129,7 +129,7 @@
 				}
 			},
 			{
-				"name": "InsertStartExecutioncDate",
+				"name": "UpdateStartExecutioncDate",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -149,6 +149,11 @@
 				}
 			}
 		],
+		"variables": {
+			"DropName": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Esempio02_dynamic"
 		},
