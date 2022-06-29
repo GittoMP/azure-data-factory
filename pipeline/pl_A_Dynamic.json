@@ -164,7 +164,7 @@
 										"type": "String"
 									},
 									"PipelineGroupNameId": {
-										"value": "'1'",
+										"value": "1",
 										"type": "Int32"
 									},
 									"PipelineName": {
