@@ -290,7 +290,7 @@
 							"typeProperties": {
 								"variableName": "myPLname",
 								"value": {
-									"value": "@item().PipelineName",
+									"value": "@{item().MatrixTableName}",
 									"type": "Expression"
 								}
 							}
