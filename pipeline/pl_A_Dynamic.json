@@ -68,7 +68,14 @@
 						{
 							"name": "Copy from source to destination",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -169,7 +176,7 @@
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@{item().Pipeline}",
+											"value": "@item().Pipeline",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -273,6 +280,19 @@
 							"linkedServiceName": {
 								"referenceName": "ls_sqldb_dbraw_dev",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "myPLname",
+								"value": {
+									"value": "@item().Pipeline",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -399,6 +419,9 @@
 				"type": "String"
 			},
 			"OrchestratorrId": {
+				"type": "String"
+			},
+			"myPLname": {
 				"type": "String"
 			}
 		},
