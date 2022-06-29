@@ -189,7 +189,7 @@
 				}
 			},
 			{
-				"name": "SetOrchestrationExecutionNumber_copy1",
+				"name": "SetOrchestrationNewExecution",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
