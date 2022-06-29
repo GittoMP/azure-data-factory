@@ -5,7 +5,14 @@
 			{
 				"name": "Get pipeline to be executed",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "SetOrchestrationId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -173,7 +180,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "GetPipelineOrchestrator",
+						"activity": "SetOrchestrationDropName",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -193,7 +200,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "GetPipelineOrchestrator",
+						"activity": "SetOrchestrationExecutionNumber",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -213,7 +220,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "GetPipelineOrchestrator",
+						"activity": "SetOrchestrationNewExecution",
 						"dependencyConditions": [
 							"Succeeded"
 						]
