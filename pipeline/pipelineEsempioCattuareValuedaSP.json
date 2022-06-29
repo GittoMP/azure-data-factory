@@ -44,7 +44,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "DropName",
+					"variableName": "pippo",
 					"value": {
 						"value": "@{activity('GetPipelineOrchestrator').output.value[0].DropName}",
 						"type": "Expression"

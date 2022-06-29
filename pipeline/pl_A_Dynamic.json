@@ -149,7 +149,7 @@
 				}
 			},
 			{
-				"name": "Set variable2",
+				"name": "Set variable1",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -177,17 +177,8 @@
 			}
 		},
 		"variables": {
-			"DropName": {
+			"OrchestratorDropName": {
 				"type": "String"
-			},
-			"ArrayOrchestrator": {
-				"type": "Array"
-			},
-			"ExecutionNumber": {
-				"type": "String"
-			},
-			"ArraOrchestrator": {
-				"type": "Array"
 			}
 		},
 		"folder": {
