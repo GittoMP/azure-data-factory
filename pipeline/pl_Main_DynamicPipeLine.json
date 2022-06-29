@@ -131,7 +131,14 @@
 			{
 				"name": "UpdateStartExecutioncDate",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "DropName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -149,8 +156,8 @@
 				}
 			},
 			{
-				"name": "Stored procedure1",
-				"type": "SqlServerStoredProcedure",
+				"name": "GetPipelineOrchestrator",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -161,11 +168,40 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[sp_GetPipelineOrchestrator]"
-				},
-				"linkedServiceName": {
-					"referenceName": "ls_sqldb_dbraw_dev",
-					"type": "LinkedServiceReference"
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelineOrchestrator]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_dbraw",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "Customer"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "DropName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DropName",
+					"value": {
+						"value": "@{activity('GetPipelineOrchestrator').output.executionDetails[0].DropName}",
+						"type": "Expression"
+					}
 				}
 			}
 		],
