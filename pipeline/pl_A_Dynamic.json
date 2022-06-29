@@ -146,10 +146,7 @@
 								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
 								"storedProcedureParameters": {
 									"DropName": {
-										"value": {
-											"value": "@variables('OrchestratorDropName')",
-											"type": "Expression"
-										},
+										"value": "Drop01",
 										"type": "String"
 									},
 									"ExecutionNumber": {
