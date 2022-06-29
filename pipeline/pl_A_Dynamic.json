@@ -176,7 +176,7 @@
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@item().Pipeline",
+											"value": "@item().PipelineName",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -290,7 +290,7 @@
 							"typeProperties": {
 								"variableName": "myPLname",
 								"value": {
-									"value": "@item().Pipeline",
+									"value": "@item().PipelineName",
 									"type": "Expression"
 								}
 							}
