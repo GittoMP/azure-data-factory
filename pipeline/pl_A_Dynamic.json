@@ -213,7 +213,7 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "MatrixTableName",
+								"variableName": "CurrentMatrixTable",
 								"value": {
 									"value": "@{item().MatrixTableName}",
 									"type": "Expression"
@@ -574,6 +574,9 @@
 				"type": "String"
 			},
 			"MatrixTableName": {
+				"type": "String"
+			},
+			"CurrentMatrixTable": {
 				"type": "String"
 			}
 		},
