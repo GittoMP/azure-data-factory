@@ -165,8 +165,64 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "GetPipelineOrchestrator",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelineOrchestrator]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_dbraw",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableNameAZureDataSet": "Customer"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
+		"parameters": {
+			"OrchestratorDropName": {
+				"type": "string"
+			},
+			"OrchestratorExecutionNumber": {
+				"type": "int"
+			},
+			"OrchestratorNewExecution": {
+				"type": "string"
+			},
+			"OrchestratorrId": {
+				"type": "int"
+			}
+		},
 		"variables": {
 			"DropName": {
 				"type": "String"
