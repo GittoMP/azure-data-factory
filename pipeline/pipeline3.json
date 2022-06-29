@@ -50,36 +50,8 @@
 						"type": "Expression"
 					}
 				}
-			},
-			{
-				"name": "Array orchestrator",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GetPipelineOrchestrator",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "ArraOrchestrator",
-					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value",
-						"type": "Expression"
-					}
-				}
 			}
 		],
-		"variables": {
-			"DropName": {
-				"type": "String"
-			},
-			"ArraOrchestrator": {
-				"type": "Array"
-			}
-		},
 		"annotations": []
 	}
 }
