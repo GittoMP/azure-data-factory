@@ -158,7 +158,7 @@
 										"type": "DateTime"
 									},
 									"PipelineGroupNameId": {
-										"value": "",
+										"value": "1",
 										"type": "Int32"
 									},
 									"PipelineName": {
@@ -173,7 +173,10 @@
 										"type": "Int32"
 									},
 									"StartExecutionDate": {
-										"value": "",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"StopExecutionDate": {
