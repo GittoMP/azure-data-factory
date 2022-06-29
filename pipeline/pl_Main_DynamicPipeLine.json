@@ -203,11 +203,34 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Array orchestrator",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ArrayOrchestrator",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0]",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
 			"DropName": {
 				"type": "String"
+			},
+			"ArrayOrchestrator": {
+				"type": "Array"
 			}
 		},
 		"folder": {
