@@ -153,10 +153,7 @@
 										"type": "String"
 									},
 									"ExecutionNumber": {
-										"value": {
-											"value": "@variables('OrchestratorExecutionNumber')",
-											"type": "Expression"
-										},
+										"value": "1",
 										"type": "Int32"
 									},
 									"InError": {
@@ -175,10 +172,7 @@
 										"type": "String"
 									},
 									"PipelineOrchestratorId": {
-										"value": {
-											"value": "@variables('OrchestratorrId')",
-											"type": "Expression"
-										},
+										"value": "100",
 										"type": "Int32"
 									},
 									"StartExecutionDate": {
