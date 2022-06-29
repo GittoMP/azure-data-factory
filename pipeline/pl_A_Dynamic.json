@@ -573,9 +573,6 @@
 			"OrchestratorrId": {
 				"type": "String"
 			},
-			"MatrixTableName": {
-				"type": "String"
-			},
 			"CurrentMatrixTable": {
 				"type": "String"
 			}
