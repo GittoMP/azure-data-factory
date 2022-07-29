@@ -18,7 +18,7 @@
 					"storedProcedureName": "[dbo].[sp_InsertEvent]",
 					"storedProcedureParameters": {
 						"pipeName": {
-							"value": "'A'",
+							"value": "A",
 							"type": "String"
 						}
 					}
