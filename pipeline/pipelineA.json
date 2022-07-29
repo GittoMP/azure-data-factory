@@ -27,6 +27,15 @@
 					"referenceName": "ls_provadb",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "WaitA",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 2
+				}
 			}
 		],
 		"folder": {
