@@ -1,0 +1,9 @@
+{
+	"name": "pipelineB",
+	"properties": {
+		"folder": {
+			"name": "Parallel"
+		},
+		"annotations": []
+	}
+}
