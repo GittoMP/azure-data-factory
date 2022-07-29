@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Stored procedure1",
+				"name": "Stored procedure Insert",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
