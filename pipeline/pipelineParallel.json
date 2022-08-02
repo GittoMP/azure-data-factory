@@ -12,7 +12,7 @@
 						"referenceName": "pipelineA",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": false
+					"waitOnCompletion": true
 				}
 			},
 			{
@@ -25,7 +25,7 @@
 						"referenceName": "pipelineB",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": false
+					"waitOnCompletion": true
 				}
 			},
 			{
@@ -38,7 +38,7 @@
 						"referenceName": "pipelineC",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": false
+					"waitOnCompletion": true
 				}
 			}
 		],
