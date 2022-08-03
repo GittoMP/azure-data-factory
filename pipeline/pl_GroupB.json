@@ -1,6 +1,26 @@
 {
 	"name": "pl_GroupB",
 	"properties": {
+		"activities": [
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "GroupB",
+					"value": "B"
+				}
+			}
+		],
+		"variables": {
+			"GroupB": {
+				"type": "Array"
+			},
+			"GroupC": {
+				"type": "Array"
+			}
+		},
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
