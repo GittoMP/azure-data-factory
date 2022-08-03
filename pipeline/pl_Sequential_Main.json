@@ -1,6 +1,40 @@
 {
 	"name": "pl_Sequential_Main",
 	"properties": {
+		"activities": [
+			{
+				"name": "LookupGetSequentialGroups",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipeLineGroupNameExecutionOrder]",
+						"storedProcedureParameters": {
+							"isSequential": {
+								"type": "Boolean",
+								"value": "TRUE"
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_migration",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
