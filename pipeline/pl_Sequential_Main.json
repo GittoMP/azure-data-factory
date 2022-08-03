@@ -59,6 +59,10 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
+								"on": {
+									"value": "@item().PipelineGroupName",
+									"type": "Expression"
+								},
 								"cases": [
 									{
 										"value": "pl_GroupA",
@@ -85,25 +89,6 @@
 										"value": "pl_GrouopC"
 									}
 								]
-							}
-						},
-						{
-							"name": "Execute Pipeline1",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pl_Generic",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"GroupName": {
-										"value": "@{item().PipelineGroupName}",
-										"type": "Expression"
-									}
-								}
 							}
 						}
 					]
