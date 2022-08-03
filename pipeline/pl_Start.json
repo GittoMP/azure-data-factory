@@ -1,6 +1,34 @@
 {
 	"name": "pl_Start",
 	"properties": {
+		"activities": [
+			{
+				"name": "Execute pl_Parallel_Main",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_Parallel_Main",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": false
+				}
+			},
+			{
+				"name": "Execute pl_Sequential_Main",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_Sequential_Main",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": false
+				}
+			}
+		],
 		"folder": {
 			"name": "Prototype"
 		},
