@@ -1,6 +1,23 @@
 {
 	"name": "pl_Parallel_Main",
 	"properties": {
+		"activities": [
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Parallel",
+					"value": "YES"
+				}
+			}
+		],
+		"variables": {
+			"Parallel": {
+				"type": "Array"
+			}
+		},
 		"folder": {
 			"name": "Prototype/Parallel Groups"
 		},
