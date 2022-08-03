@@ -6,9 +6,18 @@
 				"name": "Append variable1",
 				"type": "AppendVariable",
 				"dependsOn": [],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "groupA",
+					"value": "A"
+				}
 			}
 		],
+		"variables": {
+			"groupA": {
+				"type": "Array"
+			}
+		},
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
