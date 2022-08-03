@@ -1,0 +1,11 @@
+{
+	"name": "pl_Generic",
+	"properties": {
+		"parameters": {
+			"GroupName": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
