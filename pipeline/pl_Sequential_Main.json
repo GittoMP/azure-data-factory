@@ -61,7 +61,22 @@
 							"typeProperties": {
 								"cases": [
 									{
-										"value": "pl_GroupA"
+										"value": "pl_GroupA",
+										"activities": [
+											{
+												"name": "Execute pl_GroupaA",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupA",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									},
 									{
 										"value": "pl_GroupB"
