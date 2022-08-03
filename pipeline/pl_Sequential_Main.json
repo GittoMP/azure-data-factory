@@ -33,6 +33,47 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "ForEachGroup",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LookupGetSequentialGroups",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LookupGetSequentialGroups').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Switch1",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"cases": [
+									{
+										"value": "pl_GroupA"
+									},
+									{
+										"value": "pl_GroupB"
+									},
+									{
+										"value": "pl_GrouopC"
+									}
+								]
+							}
+						}
+					]
+				}
 			}
 		],
 		"folder": {
