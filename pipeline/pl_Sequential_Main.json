@@ -83,10 +83,40 @@
 										]
 									},
 									{
-										"value": "pl_GroupB"
+										"value": "pl_GroupB",
+										"activities": [
+											{
+												"name": "pl_GroupB",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupB",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									},
 									{
-										"value": "pl_GrouopC"
+										"value": "pl_GroupC",
+										"activities": [
+											{
+												"name": "pl_GroupC",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupC",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									}
 								]
 							}
