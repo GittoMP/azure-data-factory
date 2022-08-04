@@ -129,6 +129,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"parDropName": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"OrchestratorId": {
 				"type": "String"
