@@ -28,22 +28,104 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Set OrchestratorId",
 				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": []
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorId",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorId",
+						"type": "Expression"
+					}
+				}
 			},
 			{
-				"name": "Set variable2",
+				"name": "Set OrchestratorDropId",
 				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": []
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorDropId",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorDropId",
+						"type": "Expression"
+					}
+				}
 			},
 			{
-				"name": "Set variable3",
+				"name": "Set OrchestratorDropName",
 				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": []
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorDropId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorDropName",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorDropName",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestratorExecutionNumber",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorDropName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorExecutionNumber",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorExecutionNumber",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestratorNewExecution",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorExecutionNumber",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OrchestratorNewExecution",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorNewExecution",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
