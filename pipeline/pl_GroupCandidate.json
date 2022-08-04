@@ -1,5 +1,5 @@
 {
-	"name": "pl_GroupCandidate_copy1",
+	"name": "pl_GroupCandidate",
 	"properties": {
 		"activities": [
 			{
@@ -24,7 +24,8 @@
 					"dataset": {
 						"referenceName": "ds_sqldb_migration",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
