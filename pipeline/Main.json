@@ -3,27 +3,16 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute Pipeline1",
+				"name": "Execute child",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
-				"userProperties": [
-					{
-						"name": "userproperty",
-						"value": "ijijij"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "child",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"": {
-							"value": "@pipeline().parameters.databasename",
-							"type": "Expression"
-						}
-					}
+					"waitOnCompletion": false
 				}
 			}
 		],
@@ -31,6 +20,11 @@
 			"databasename": {
 				"type": "string",
 				"defaultValue": "db01"
+			}
+		},
+		"variables": {
+			"childv": {
+				"type": "String"
 			}
 		},
 		"folder": {
