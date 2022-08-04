@@ -74,7 +74,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "pl_GroupA_appendvariable",
+														"referenceName": "pl_GroupA",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true
