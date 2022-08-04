@@ -9,6 +9,11 @@
 				"type": "string"
 			}
 		},
+		"variables": {
+			"varpippo": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "PassingParameter"
 		},
