@@ -42,7 +42,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorId",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorId",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].Id",
 						"type": "Expression"
 					}
 				}
@@ -62,7 +62,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorDropId",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorDropId",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropId",
 						"type": "Expression"
 					}
 				}
@@ -82,7 +82,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorDropName",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorDropName",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
 						"type": "Expression"
 					}
 				}
@@ -102,7 +102,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorExecutionNumber",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorExecutionNumber",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber",
 						"type": "Expression"
 					}
 				}
@@ -122,7 +122,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorNewExecution",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].OrchestratorNewExecution",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].NewExecution",
 						"type": "Expression"
 					}
 				}
