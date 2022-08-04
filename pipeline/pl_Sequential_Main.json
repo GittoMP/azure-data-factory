@@ -134,6 +134,10 @@
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupCandidate",
+														"type": "PipelineReference"
+													},
 													"waitOnCompletion": false
 												}
 											}
@@ -185,7 +189,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "varDropName",
-					"value": ""
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"type": "Expression"
+					}
 				}
 			}
 		],
