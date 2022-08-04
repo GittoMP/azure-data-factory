@@ -103,7 +103,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorExecutionNumber",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber",
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber)",
 						"type": "Expression"
 					}
 				}
@@ -143,7 +143,7 @@
 				"type": "String"
 			},
 			"OrchestratorNewExecution": {
-				"type": "String"
+				"type": "Boolean"
 			}
 		},
 		"folder": {
