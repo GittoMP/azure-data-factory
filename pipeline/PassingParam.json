@@ -1,0 +1,12 @@
+{
+	"name": "PassingParam",
+	"properties": {
+		"parameters": {
+			"databasename": {
+				"type": "string",
+				"defaultValue": "db01"
+			}
+		},
+		"annotations": []
+	}
+}
