@@ -4,6 +4,9 @@
 		"parameters": {
 			"pipoo": {
 				"type": "string"
+			},
+			"pippo2": {
+				"type": "string"
 			}
 		},
 		"folder": {
