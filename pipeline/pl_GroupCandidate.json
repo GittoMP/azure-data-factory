@@ -63,7 +63,7 @@
 				"typeProperties": {
 					"variableName": "OrchestratorDropId",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropId",
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].DropId)",
 						"type": "Expression"
 					}
 				}
