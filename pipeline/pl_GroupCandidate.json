@@ -46,6 +46,23 @@
 				"userProperties": []
 			}
 		],
+		"variables": {
+			"OrchestratorId": {
+				"type": "String"
+			},
+			"OrchestratorDropId": {
+				"type": "String"
+			},
+			"OrchestratorDropName": {
+				"type": "String"
+			},
+			"OrchestratorExecutionNumber": {
+				"type": "String"
+			},
+			"OrchestratorNewExecution": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
