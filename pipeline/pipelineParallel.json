@@ -50,9 +50,9 @@
 			}
 		],
 		"parameters": {
-			"MainParamenter": {
+			"database": {
 				"type": "string",
-				"defaultValue": "Main"
+				"defaultValue": "db1"
 			}
 		},
 		"folder": {
