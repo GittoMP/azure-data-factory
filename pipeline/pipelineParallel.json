@@ -49,6 +49,18 @@
 				}
 			}
 		],
+		"parameters": {
+			"MainParamenter": {
+				"type": "string",
+				"defaultValue": "Main"
+			}
+		},
+		"variables": {
+			"MAinVariable": {
+				"type": "String",
+				"defaultValue": "pippo"
+			}
+		},
 		"folder": {
 			"name": "Parallel"
 		},
