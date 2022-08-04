@@ -1,11 +1,35 @@
 {
-	"name": "PassingParam",
+	"name": "Main",
 	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "child",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"": {
+							"value": "@pipeline().parameters.databasename",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
 		"parameters": {
 			"databasename": {
 				"type": "string",
 				"defaultValue": "db01"
 			}
+		},
+		"folder": {
+			"name": "PassingParameter"
 		},
 		"annotations": []
 	}
