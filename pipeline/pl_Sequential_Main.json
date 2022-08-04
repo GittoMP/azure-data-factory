@@ -117,6 +117,24 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "pl_GroupCandidate",
+										"activities": [
+											{
+												"name": "Execute pl_GroupCandidate",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupCandidate",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": false
+												}
+											}
+										]
 									}
 								]
 							}
