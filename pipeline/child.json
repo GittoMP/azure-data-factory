@@ -1,6 +1,11 @@
 {
 	"name": "child",
 	"properties": {
+		"parameters": {
+			"pipoo": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "PassingParameter"
 		},
