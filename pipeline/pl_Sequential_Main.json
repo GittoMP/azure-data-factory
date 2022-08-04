@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "GetPipelineOrchestrator",
+						"activity": "Set OrchestrationDropName",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -170,19 +170,25 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Set OrchestrationDropName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"parameters": {
 			"OrchestrationDropName": {
-				"type": "string"
-			}
-		},
-		"variables": {
-			"myID": {
-				"type": "String"
-			},
-			"MyDropName": {
-				"type": "String"
+				"type": "string",
+				"defaultValue": "@activity('GetPipelineOrchestrator').output.value[0].DropName"
 			}
 		},
 		"folder": {
