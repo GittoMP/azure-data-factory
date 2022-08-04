@@ -1,0 +1,9 @@
+{
+	"name": "child",
+	"properties": {
+		"folder": {
+			"name": "PassingParameter"
+		},
+		"annotations": []
+	}
+}
