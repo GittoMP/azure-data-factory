@@ -12,7 +12,13 @@
 						"referenceName": "child",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": false
+					"waitOnCompletion": false,
+					"parameters": {
+						"pipoo": {
+							"value": "@pipeline().parameters.databasename",
+							"type": "Expression"
+						}
+					}
 				}
 			}
 		],
