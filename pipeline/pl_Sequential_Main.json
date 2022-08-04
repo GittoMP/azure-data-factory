@@ -191,6 +191,11 @@
 				"defaultValue": "@activity('GetPipelineOrchestrator').output.value[0].DropName"
 			}
 		},
+		"variables": {
+			"varDropName": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
