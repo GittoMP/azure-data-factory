@@ -182,15 +182,13 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varDropName",
+					"value": ""
+				}
 			}
 		],
-		"parameters": {
-			"OrchestrationDropName": {
-				"type": "string",
-				"defaultValue": "@activity('GetPipelineOrchestrator').output.value[0].DropName"
-			}
-		},
 		"variables": {
 			"varDropName": {
 				"type": "String"
