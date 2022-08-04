@@ -143,6 +143,14 @@
 				}
 			}
 		],
+		"variables": {
+			"myID": {
+				"type": "String"
+			},
+			"MyDropName": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
