@@ -112,6 +112,25 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Execute each pipeline per group",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineToBeExecuted",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetPipelineToBeExecuted').output",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
