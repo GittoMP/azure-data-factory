@@ -198,7 +198,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "varOrchestratorId",
+					"variableName": "varDropName",
 					"value": {
 						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
 						"type": "Expression"
@@ -220,7 +220,7 @@
 				"typeProperties": {
 					"variableName": "varOrchestratorId",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].Id",
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].Id)",
 						"type": "Expression"
 					}
 				}
