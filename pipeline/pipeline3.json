@@ -45,10 +45,7 @@
 				"outputs": [
 					{
 						"referenceName": "ds_sqldb_raw",
-						"type": "DatasetReference",
-						"parameters": {
-							"DestinationTableName": "[dbo].[Candidate]"
-						}
+						"type": "DatasetReference"
 					}
 				]
 			}
