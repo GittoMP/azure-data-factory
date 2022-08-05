@@ -135,7 +135,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "pl_GroupCandidate",
+														"referenceName": "pl_GroupCandidate_parziale",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": false,
