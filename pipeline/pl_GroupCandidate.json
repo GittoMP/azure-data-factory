@@ -156,7 +156,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "select * from @{item().Procedure}",
+									"sqlReaderQuery": {
+										"value": "select * from @{item().Procedure}",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -164,7 +167,6 @@
 									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
-									"tableOption": "autoCreate",
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
@@ -186,10 +188,7 @@
 							"outputs": [
 								{
 									"referenceName": "ds_sqldb_raw",
-									"type": "DatasetReference",
-									"parameters": {
-										"DestinationTableName": "@{item().Destination}"
-									}
+									"type": "DatasetReference"
 								}
 							]
 						}
