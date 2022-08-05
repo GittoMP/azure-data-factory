@@ -9,11 +9,6 @@
 				"DatabaseName": "sqldb-my_italy_new"
 			}
 		},
-		"parameters": {
-			"SourceTableName": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": []
