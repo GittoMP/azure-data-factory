@@ -40,7 +40,10 @@
 							"type": "Int32"
 						},
 						"PipelineName": {
-							"value": "pl_GroupCandidate",
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"PipelineOrchestratorId": {
