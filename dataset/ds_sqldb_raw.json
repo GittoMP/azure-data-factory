@@ -3,7 +3,16 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_raw",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ServerName": "sql-server-manpower-dev.database.windows.net",
+				"DatabaseName": "sqldb-raw"
+			}
+		},
+		"parameters": {
+			"DestTableName": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
