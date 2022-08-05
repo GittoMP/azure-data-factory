@@ -9,11 +9,6 @@
 				"DatabaseName": "sqldb-raw"
 			}
 		},
-		"parameters": {
-			"DestTableName": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": []

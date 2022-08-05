@@ -188,13 +188,7 @@
 							"outputs": [
 								{
 									"referenceName": "ds_sqldb_raw",
-									"type": "DatasetReference",
-									"parameters": {
-										"DestTableName": {
-											"value": "@{item().Destination}",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							]
 						}
