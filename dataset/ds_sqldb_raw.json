@@ -16,10 +16,6 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
-		"typeProperties": {
-			"schema": "dbo",
-			"table": "Prova"
-		}
+		"schema": []
 	}
 }
