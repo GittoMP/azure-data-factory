@@ -179,7 +179,10 @@
 							"inputs": [
 								{
 									"referenceName": "ds_sqldb_my_italy_new",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"SourceTableName": "@{item().Procedure}"
+									}
 								}
 							],
 							"outputs": [
