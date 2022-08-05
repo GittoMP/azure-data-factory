@@ -1,0 +1,12 @@
+{
+	"name": "ds_sqldb_my_italy_new",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_my_italy_new",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
