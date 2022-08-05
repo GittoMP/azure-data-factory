@@ -78,19 +78,19 @@
 		],
 		"parameters": {
 			"parOrchestratorId": {
-				"type": "string"
+				"type": "int"
 			},
 			"parDropId": {
-				"type": "string"
+				"type": "int"
 			},
 			"parDropName": {
 				"type": "string"
 			},
 			"parExecutionNumber": {
-				"type": "string"
+				"type": "int"
 			},
 			"parNewExecution": {
-				"type": "string"
+				"type": "bool"
 			}
 		},
 		"folder": {
