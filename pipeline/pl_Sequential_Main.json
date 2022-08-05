@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorDropName",
+						"activity": "Set OrchestratorId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -201,6 +201,26 @@
 					"variableName": "varOrchestratorId",
 					"value": {
 						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestratorId",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorDropName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varOrchestratorId",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].Id",
 						"type": "Expression"
 					}
 				}
