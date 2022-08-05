@@ -18,17 +18,11 @@
 					"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
 					"storedProcedureParameters": {
 						"DropName": {
-							"value": {
-								"value": "@pipeline().parameters.parDropName",
-								"type": "Expression"
-							},
+							"value": "Drop2",
 							"type": "String"
 						},
 						"ExecutionNumber": {
-							"value": {
-								"value": "@pipeline().parameters.parExecutionNumber",
-								"type": "Expression"
-							},
+							"value": "2",
 							"type": "Int32"
 						},
 						"InError": {
