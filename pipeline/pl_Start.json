@@ -21,6 +21,10 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_Sequential_Main",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": false
 				}
 			}
