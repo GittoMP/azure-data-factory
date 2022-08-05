@@ -94,7 +94,7 @@
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@pipeline().Pipeline",
+											"value": "@activity('GetPipelineToBeExecuted').output.value[0].PipelineName",
 											"type": "Expression"
 										},
 										"type": "String"

@@ -31,7 +31,7 @@
 		],
 		"concurrency": 5,
 		"folder": {
-			"name": "Parallel"
+			"name": "Test vari/Parallel"
 		},
 		"annotations": []
 	}
