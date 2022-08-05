@@ -134,29 +134,11 @@
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
-													"waitOnCompletion": false,
-													"parameters": {
-														"parOrchestratorId": {
-															"value": "@int(variables('varOrchestratorId'))",
-															"type": "Expression"
-														},
-														"parDropId": {
-															"value": "@int(variables('varDropId'))",
-															"type": "Expression"
-														},
-														"parDropName": {
-															"value": "@variables('varDropName')",
-															"type": "Expression"
-														},
-														"parExecutionNumber": {
-															"value": "@int(variables('varExecutionNumber'))",
-															"type": "Expression"
-														},
-														"parNewExecution": {
-															"value": "@variables('varNewExecution')",
-															"type": "Expression"
-														}
-													}
+													"pipeline": {
+														"referenceName": "pl_GroupCandidate",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": false
 												}
 											}
 										]
