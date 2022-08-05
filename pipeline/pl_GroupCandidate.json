@@ -144,7 +144,14 @@
 						{
 							"name": "Copy from GroupCandidate",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -167,7 +174,6 @@
 									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
-									"tableOption": "autoCreate",
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
@@ -198,6 +204,19 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "varStartPipelineExecutionDate",
+								"value": {
+									"value": "@utcnow()",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -218,6 +237,11 @@
 			},
 			"parNewExecution": {
 				"type": "bool"
+			}
+		},
+		"variables": {
+			"varStartPipelineExecutionDate": {
+				"type": "String"
 			}
 		},
 		"folder": {
