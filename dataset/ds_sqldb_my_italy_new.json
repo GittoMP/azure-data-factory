@@ -3,7 +3,16 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_my_italy_new",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ServerName": "sql-server-manpower-dev.database.windows.net",
+				"DatabaseName": "sqldb-my_italy_new"
+			}
+		},
+		"parameters": {
+			"SourceTableName": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
