@@ -118,7 +118,7 @@
 									},
 									"StartExecutionDate": {
 										"value": {
-											"value": "@utcnow()",
+											"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
 											"type": "Expression"
 										},
 										"type": "DateTime"
@@ -146,7 +146,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Set variable1",
+									"activity": "Set StartPipelineExecutionDate",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -206,7 +206,7 @@
 							]
 						},
 						{
-							"name": "Set variable1",
+							"name": "Set StartPipelineExecutionDate",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
