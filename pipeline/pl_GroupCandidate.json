@@ -51,7 +51,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('GetPipelineToBeExecuted').output",
+						"value": "@activity('GetPipelineToBeExecuted').output.value",
 						"type": "Expression"
 					},
 					"activities": [
