@@ -5,14 +5,7 @@
 			{
 				"name": "LookupGetSequentialGroups",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "Set OrchestrationDropName",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -186,6 +179,26 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
+						"activity": "Set OrchestrationId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varOrchestratorId",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestrationId",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
 						"activity": "GetPipelineOrchestrator",
 						"dependencyConditions": [
 							"Succeeded"
@@ -194,16 +207,28 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "varDropName",
+					"variableName": "varOrchestratorId",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].Id",
 						"type": "Expression"
 					}
 				}
 			}
 		],
 		"variables": {
+			"varOrchestratorId": {
+				"type": "String"
+			},
+			"varDropId": {
+				"type": "String"
+			},
 			"varDropName": {
+				"type": "String"
+			},
+			"varExecutionNumber": {
+				"type": "String"
+			},
+			"varNewExecution": {
 				"type": "String"
 			}
 		},
