@@ -138,7 +138,29 @@
 														"referenceName": "pl_GroupCandidate",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": false
+													"waitOnCompletion": false,
+													"parameters": {
+														"parOrchestratorId": {
+															"value": "@variables('varOrchestratorId')",
+															"type": "Expression"
+														},
+														"parDropId": {
+															"value": "@variables('varDropId')",
+															"type": "Expression"
+														},
+														"parDropName": {
+															"value": "@variables('varDropName')",
+															"type": "Expression"
+														},
+														"parExecutionNumber": {
+															"value": "@variables('varExecutionNumber')",
+															"type": "Expression"
+														},
+														"parNewExecution": {
+															"value": "@variables('varNewExecution')",
+															"type": "Expression"
+														}
+													}
 												}
 											}
 										]
