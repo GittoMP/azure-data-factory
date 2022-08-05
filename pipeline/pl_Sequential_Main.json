@@ -138,13 +138,7 @@
 														"referenceName": "pl_GroupCandidate",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": false,
-													"parameters": {
-														"parDropName": {
-															"value": "@variables('varDropName')",
-															"type": "Expression"
-														}
-													}
+													"waitOnCompletion": false
 												}
 											}
 										]

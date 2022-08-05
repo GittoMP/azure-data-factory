@@ -52,7 +52,10 @@
 							"type": "DateTime"
 						},
 						"StopExecutionDate": {
-							"value": "@utcnow()",
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
 							"type": "DateTime"
 						}
 					}
@@ -68,7 +71,19 @@
 			}
 		],
 		"parameters": {
+			"parOrchestratorId": {
+				"type": "string"
+			},
+			"parDropId": {
+				"type": "string"
+			},
 			"parDropName": {
+				"type": "string"
+			},
+			"parExecutionNumber": {
+				"type": "string"
+			},
+			"parNewExecution": {
 				"type": "string"
 			}
 		},
