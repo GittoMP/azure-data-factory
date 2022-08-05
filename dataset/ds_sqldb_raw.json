@@ -19,7 +19,10 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "Candidate"
+			"table": {
+				"value": "@dataset().DestinationTableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
