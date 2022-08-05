@@ -25,7 +25,10 @@
 							"type": "String"
 						},
 						"ExecutionNumber": {
-							"value": "1",
+							"value": {
+								"value": "@pipeline().parameters.parExecutionNumber",
+								"type": "Expression"
+							},
 							"type": "Int32"
 						},
 						"InError": {
@@ -41,7 +44,10 @@
 							"type": "String"
 						},
 						"PipelineOrchestratorId": {
-							"value": "1",
+							"value": {
+								"value": "@pipeline().parameters.parOrchestratorId",
+								"type": "Expression"
+							},
 							"type": "Int32"
 						},
 						"StartExecutionDate": {
