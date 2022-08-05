@@ -292,7 +292,7 @@
 				"typeProperties": {
 					"variableName": "varNewExecution",
 					"value": {
-						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].NewExecution)",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].NewExecution",
 						"type": "Expression"
 					}
 				}
