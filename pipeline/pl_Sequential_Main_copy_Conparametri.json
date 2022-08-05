@@ -1,0 +1,323 @@
+{
+	"name": "pl_Sequential_Main_copy_Conparametri",
+	"properties": {
+		"activities": [
+			{
+				"name": "LookupGetSequentialGroups",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorNewExecution",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipeLineGroupNameExecutionOrder]",
+						"storedProcedureParameters": {
+							"isSequential": {
+								"type": "Boolean",
+								"value": "TRUE"
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_migration",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachGroup",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LookupGetSequentialGroups",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LookupGetSequentialGroups').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Switch1",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"on": {
+									"value": "@item().PipelineGroupName",
+									"type": "Expression"
+								},
+								"cases": [
+									{
+										"value": "pl_GroupA",
+										"activities": [
+											{
+												"name": "Execute pl_GroupA",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupA",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "pl_GroupB",
+										"activities": [
+											{
+												"name": "pl_GroupB",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupB",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "pl_GroupC",
+										"activities": [
+											{
+												"name": "pl_GroupC",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupC",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "pl_GroupCandidate",
+										"activities": [
+											{
+												"name": "Execute pl_GroupCandidate",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupCandidate",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": false,
+													"parameters": {
+														"parOrchestratorId": {
+															"value": "@int(variables('varOrchestratorId'))",
+															"type": "Expression"
+														},
+														"parDropId": {
+															"value": "@int(variables('varDropId'))",
+															"type": "Expression"
+														},
+														"parDropName": {
+															"value": "@variables('varDropName')",
+															"type": "Expression"
+														},
+														"parExecutionNumber": {
+															"value": "@int(variables('varExecutionNumber'))",
+															"type": "Expression"
+														},
+														"parNewExecution": {
+															"value": "@variables('varNewExecution')",
+															"type": "Expression"
+														}
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "GetPipelineOrchestrator",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelineOrchestrator]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_migration",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set OrchestratorDropName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorDropId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varOrchestratorId",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestratorId",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetPipelineOrchestrator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varOrchestratorId",
+					"value": {
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].Id)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestratorDropId",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varDropId",
+					"value": {
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].DropId)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestratorExecutionNumber",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorDropName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varExecutionNumber",
+					"value": {
+						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set OrchestratorNewExecution",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set OrchestratorExecutionNumber",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varNewExecution",
+					"value": {
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].NewExecution",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"varOrchestratorId": {
+				"type": "String"
+			},
+			"varDropId": {
+				"type": "String"
+			},
+			"varDropName": {
+				"type": "String"
+			},
+			"varExecutionNumber": {
+				"type": "String"
+			},
+			"varNewExecution": {
+				"type": "Boolean"
+			}
+		},
+		"folder": {
+			"name": "Prototype/Sequential Groups"
+		},
+		"annotations": []
+	}
+}
