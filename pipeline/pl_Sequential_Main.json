@@ -202,26 +202,6 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varOrchestratorId",
-					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set OrchestratorId",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
 						"activity": "GetPipelineOrchestrator",
 						"dependencyConditions": [
 							"Succeeded"
@@ -232,7 +212,7 @@
 				"typeProperties": {
 					"variableName": "varOrchestratorId",
 					"value": {
-						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].Id)",
+						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
 						"type": "Expression"
 					}
 				}
