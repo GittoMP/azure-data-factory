@@ -21,10 +21,6 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pl_Sequential_Main_parziale",
-						"type": "PipelineReference"
-					},
 					"waitOnCompletion": false
 				}
 			}

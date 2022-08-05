@@ -134,10 +134,6 @@
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
-													"pipeline": {
-														"referenceName": "pl_GroupCandidate_parziale",
-														"type": "PipelineReference"
-													},
 													"waitOnCompletion": false,
 													"parameters": {
 														"parOrchestratorId": {
