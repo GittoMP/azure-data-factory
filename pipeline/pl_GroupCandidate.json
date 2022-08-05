@@ -89,12 +89,15 @@
 										"type": "String"
 									},
 									"PipelineGroupNameId": {
-										"value": "1",
+										"value": {
+											"value": "@item().PipelineGroupNameId",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@activity('GetPipelineToBeExecuted').output.value[0].PipelineName",
+											"value": "@item().PipelineName",
 											"type": "Expression"
 										},
 										"type": "String"
