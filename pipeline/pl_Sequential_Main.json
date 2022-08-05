@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorNewExecution",
+						"activity": "Set OrchestratorDropName",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -202,7 +202,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorDropId",
+						"activity": "Set OrchestratorId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -233,66 +233,6 @@
 					"variableName": "varOrchestratorId",
 					"value": {
 						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].Id)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set OrchestratorDropId",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Set OrchestratorId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varDropId",
-					"value": {
-						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].DropId)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set OrchestratorExecutionNumber",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Set OrchestratorDropName",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varExecutionNumber",
-					"value": {
-						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set OrchestratorNewExecution",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Set OrchestratorExecutionNumber",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varNewExecution",
-					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].NewExecution",
 						"type": "Expression"
 					}
 				}
