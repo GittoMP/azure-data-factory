@@ -98,6 +98,10 @@
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_GroupB",
+														"type": "PipelineReference"
+													},
 													"waitOnCompletion": true
 												}
 											}
