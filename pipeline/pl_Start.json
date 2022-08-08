@@ -52,14 +52,14 @@
 					"storedProcedureParameters": {
 						"DropName": {
 							"value": {
-								"value": "@pipeline().parameters.parDropName",
+								"value": "dropname",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
 						"ExecutionNumber": {
 							"value": {
-								"value": "@pipeline().parameters.parExecutionNumber",
+								"value": "300",
 								"type": "Expression"
 							},
 							"type": "Int32"
@@ -70,7 +70,7 @@
 						},
 						"PipelineGroupNameId": {
 							"value": {
-								"value": "@pipeline().GroupId",
+								"value": "400",
 								"type": "Expression"
 							},
 							"type": "Int32"
@@ -84,14 +84,14 @@
 						},
 						"PipelineOrchestratorId": {
 							"value": {
-								"value": "@pipeline().parameters.parOrchestratorId",
+								"value": "@pipeline().GroupId",
 								"type": "Expression"
 							},
 							"type": "Int32"
 						},
 						"StartExecutionDate": {
 							"value": {
-								"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+								"value": "@utcnow()",
 								"type": "Expression"
 							},
 							"type": "DateTime"
