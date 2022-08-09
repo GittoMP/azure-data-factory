@@ -59,9 +59,20 @@
 						{
 							"name": "If Condition1",
 							"type": "IfCondition",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Lookup Read Execution Failed",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
+								"expression": {
+									"value": "@activity('Lookup Read Execution Failed').output.value",
+									"type": "Expression"
+								},
 								"ifFalseActivities": [
 									{
 										"name": "sp_UpdateLogEvents_copy1_copy1",
