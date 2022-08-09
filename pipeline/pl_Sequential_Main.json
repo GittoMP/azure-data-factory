@@ -61,114 +61,6 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Switch1",
-							"type": "Switch",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"on": {
-									"value": "@item().PipelineGroupName",
-									"type": "Expression"
-								},
-								"cases": [
-									{
-										"value": "pl_GroupA",
-										"activities": [
-											{
-												"name": "Execute pl_GroupA",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "pl_GroupA",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true
-												}
-											}
-										]
-									},
-									{
-										"value": "pl_GroupB",
-										"activities": [
-											{
-												"name": "pl_GroupB",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "pl_GroupB",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true
-												}
-											}
-										]
-									},
-									{
-										"value": "pl_GroupC",
-										"activities": [
-											{
-												"name": "pl_GroupC",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "pl_GroupC",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true
-												}
-											}
-										]
-									},
-									{
-										"value": "pl_GroupCandidate",
-										"activities": [
-											{
-												"name": "Execute pl_GroupCandidate",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "pl_GroupCandidate",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": false,
-													"parameters": {
-														"parOrchestratorId": {
-															"value": "@variables('varOrchestratorId')",
-															"type": "Expression"
-														},
-														"parDropId": {
-															"value": "@variables('varDropId')",
-															"type": "Expression"
-														},
-														"parDropName": {
-															"value": "@variables('varDropName')",
-															"type": "Expression"
-														},
-														"parExecutionNumber": {
-															"value": "@variables('varExecutionNumber')",
-															"type": "Expression"
-														},
-														"parNewExecution": {
-															"value": "@variables('varNewExecution')",
-															"type": "Expression"
-														}
-													}
-												}
-											}
-										]
-									}
-								]
-							}
-						},
-						{
 							"name": "If Condition1",
 							"type": "IfCondition",
 							"dependsOn": [],
@@ -285,6 +177,21 @@
 													]
 												}
 											]
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Set varGlobalError",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "varGlobalError",
+											"value": {
+												"value": "@pipeline().RunId",
+												"type": "Expression"
+											}
 										}
 									}
 								]
@@ -435,6 +342,9 @@
 			},
 			"varNewExecution": {
 				"type": "Boolean"
+			},
+			"varGlobalError": {
+				"type": "String"
 			}
 		},
 		"folder": {
