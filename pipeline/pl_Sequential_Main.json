@@ -147,7 +147,7 @@
 													"value": "pl_GroupCandidate",
 													"activities": [
 														{
-															"name": "Execute pl_GroupCandidate_copy1",
+															"name": "Execute pl_GroupCandidate",
 															"type": "ExecutePipeline",
 															"dependsOn": [],
 															"userProperties": [],
