@@ -70,7 +70,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@activity('Lookup Read Execution Failed').output.value",
+									"value": "@activity('Lookup Read Execution Failed').output.firstRow.Failed",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
