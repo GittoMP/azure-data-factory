@@ -62,10 +62,6 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"expression": {
-									"value": "@pipeline().globalParameters.GlobalStopExecution",
-									"type": "Expression"
-								},
 								"ifFalseActivities": [
 									{
 										"name": "sp_UpdateLogEvents_copy1_copy1",
@@ -450,6 +446,31 @@
 										}
 									}
 								]
+							}
+						},
+						{
+							"name": "Lookup Read Execution Failed",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "select Failed from dbo.PipelineOrchestrator where ToBeExecuted = 1",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_sqldb_migration",
+									"type": "DatasetReference"
+								}
 							}
 						}
 					]
