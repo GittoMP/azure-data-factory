@@ -74,7 +74,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@activity('LookupGroup ReadExecutionFailed').output.value",
+									"value": "@activity('LookupGroup ReadExecutionFailed').output.firstRow.Failed",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
@@ -226,7 +226,8 @@
 								"dataset": {
 									"referenceName": "ds_sqldb_migration",
 									"type": "DatasetReference"
-								}
+								},
+								"firstRowOnly": true
 							}
 						}
 					]
