@@ -79,7 +79,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "switch_ForEachGroup",
+										"name": "Switch_ForEachGroup",
 										"type": "Switch",
 										"dependsOn": [],
 										"userProperties": [],
