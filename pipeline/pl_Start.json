@@ -1,5 +1,5 @@
 {
-	"name": "pl_DateStart",
+	"name": "pl_Start",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pl_Start",
+						"referenceName": "pl_PipelinesExecution",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
