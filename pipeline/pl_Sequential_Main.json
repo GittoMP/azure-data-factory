@@ -111,7 +111,7 @@
 													"value": "pl_GroupB",
 													"activities": [
 														{
-															"name": "pl_GroupB_copy1",
+															"name": "pl_GroupB",
 															"type": "ExecutePipeline",
 															"dependsOn": [],
 															"userProperties": [],
