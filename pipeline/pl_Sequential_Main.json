@@ -93,7 +93,7 @@
 													"value": "pl_GroupA",
 													"activities": [
 														{
-															"name": "Execute pl_GroupA_copy1",
+															"name": "Execute pl_GroupA",
 															"type": "ExecutePipeline",
 															"dependsOn": [],
 															"userProperties": [],
