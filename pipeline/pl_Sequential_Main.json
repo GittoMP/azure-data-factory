@@ -129,7 +129,7 @@
 													"value": "pl_GroupC",
 													"activities": [
 														{
-															"name": "pl_GroupC_copy1",
+															"name": "pl_GroupC",
 															"type": "ExecutePipeline",
 															"dependsOn": [],
 															"userProperties": [],
