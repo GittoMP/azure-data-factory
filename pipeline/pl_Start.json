@@ -53,7 +53,7 @@
 					{
 						"activity": "Execute pl_Start",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
