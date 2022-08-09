@@ -12,7 +12,7 @@
 						"referenceName": "pl_Parallel_Main",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": false
+					"waitOnCompletion": true
 				}
 			},
 			{
@@ -25,7 +25,7 @@
 						"referenceName": "pl_Sequential_Main",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": false
+					"waitOnCompletion": true
 				}
 			}
 		],
