@@ -165,7 +165,7 @@
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "Set StartPipelineExecutionDate_copy1",
+												"activity": "SetStartPipelineExecutionDate1",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -226,7 +226,7 @@
 										]
 									},
 									{
-										"name": "Set StartPipelineExecutionDate_copy1",
+										"name": "SetStartPipelineExecutionDate1",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
