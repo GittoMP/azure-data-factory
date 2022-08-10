@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute_pl_Parallel_Main",
+				"name": "execute_pl_Parallel_Main",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
