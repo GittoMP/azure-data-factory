@@ -509,6 +509,9 @@
 			},
 			"parNewExecution": {
 				"type": "bool"
+			},
+			"parPlanId": {
+				"type": "string"
 			}
 		},
 		"variables": {
