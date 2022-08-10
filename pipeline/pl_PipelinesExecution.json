@@ -16,13 +16,13 @@
 				}
 			},
 			{
-				"name": "Execute_pl_Sequential_Main",
+				"name": "execute_pl_SequentialMain",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pl_Sequential_Main",
+						"referenceName": "pl_SequentialMain",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
