@@ -17,12 +17,19 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipeLineNameExecutionOrder]",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelinePlan]",
 						"storedProcedureParameters": {
 							"PipelineName": {
 								"type": "String",
 								"value": {
 									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							},
+							"PlanId": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parPlanId",
 									"type": "Expression"
 								}
 							}
