@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "LookupGetGroupPlan",
+				"name": "lookup_GetGroupPlan",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -46,7 +46,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LookupGetGroupPlan",
+						"activity": "lookup_GetGroupPlan",
 						"dependencyConditions": [
 							"Succeeded"
 						]
