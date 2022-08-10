@@ -61,11 +61,11 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "If Condition1",
+							"name": "if_GroupExecutionFailed",
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "LookupExecutionFailedStatus",
+									"activity": "lookup_ExecutionFailedStatus",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -255,7 +255,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "Set varGlobalError",
+										"name": "setvar_varGlobalError",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
@@ -271,7 +271,7 @@
 							}
 						},
 						{
-							"name": "LookupExecutionFailedStatus",
+							"name": "lookup_ExecutionFailedStatus",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
