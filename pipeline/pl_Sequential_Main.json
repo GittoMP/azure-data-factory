@@ -65,7 +65,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "LookupGroup ReadExecutionFailed",
+									"activity": "LookupExecutionFailedStatus",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -74,7 +74,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@activity('LookupGroup ReadExecutionFailed').output.firstRow.Failed",
+									"value": "@activity('LookupExecutionFailedStatus').output.firstRow.Failed",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
@@ -205,7 +205,7 @@
 							}
 						},
 						{
-							"name": "LookupGroup ReadExecutionFailed",
+							"name": "LookupExecutionFailedStatus",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
