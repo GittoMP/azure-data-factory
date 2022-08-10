@@ -27,7 +27,8 @@
 						"sqlReaderStoredProcedureName": "[dbo].[sp_GetGroupPlan]",
 						"storedProcedureParameters": {
 							"isSequential": {
-								"type": "Boolean"
+								"type": "Boolean",
+								"value": "True"
 							},
 							"planId": {
 								"type": "Int32",
