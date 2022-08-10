@@ -221,7 +221,7 @@
 							}
 						},
 						{
-							"name": "sp_UpdateLogEvents_OnSuccess1",
+							"name": "sp_UpdateLogEvents_OnSuccess",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
