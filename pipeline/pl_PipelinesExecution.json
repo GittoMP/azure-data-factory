@@ -3,13 +3,13 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "execute_pl_Parallel_Main",
+				"name": "execute_pl_ParallelMain",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pl_Parallel_Main",
+						"referenceName": "pl_ParallelMain",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
