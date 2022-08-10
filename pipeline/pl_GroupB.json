@@ -511,7 +511,7 @@
 				"type": "bool"
 			},
 			"parPlanId": {
-				"type": "string"
+				"type": "int"
 			}
 		},
 		"variables": {
