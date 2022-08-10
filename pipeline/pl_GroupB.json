@@ -79,7 +79,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "Copy from GroupCandidate_copy1",
+												"activity": "CopyGroupCandidate",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -161,7 +161,7 @@
 										}
 									},
 									{
-										"name": "Copy from GroupCandidate_copy1",
+										"name": "CopyGroupCandidate",
 										"type": "Copy",
 										"dependsOn": [
 											{
@@ -329,7 +329,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "Copy from GroupCandidate_copy1",
+												"activity": "CopyGroupCandidate",
 												"dependencyConditions": [
 													"Failed"
 												]
