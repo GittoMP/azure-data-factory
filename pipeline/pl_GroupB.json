@@ -57,7 +57,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "If Condition1",
+							"name": "If_PipelineFailed",
 							"type": "IfCondition",
 							"dependsOn": [
 								{
