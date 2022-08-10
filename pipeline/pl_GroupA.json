@@ -98,7 +98,7 @@
 									},
 									"PipelineGroupNameId": {
 										"value": {
-											"value": "@item().PipelineGroupNameId",
+											"value": "@item().GroupPlanId\n",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -262,7 +262,7 @@
 									},
 									"PipelineGroupNameId": {
 										"value": {
-											"value": "@item().PipelineGroupNameId",
+											"value": "@item().GroupPlanId",
 											"type": "Expression"
 										},
 										"type": "Int32"
