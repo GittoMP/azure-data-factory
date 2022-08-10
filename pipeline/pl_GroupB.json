@@ -489,7 +489,7 @@
 			}
 		],
 		"parameters": {
-			"parOrchestratorId": {
+			"parExecutionConfigurationId": {
 				"type": "int"
 			},
 			"parDropId": {
