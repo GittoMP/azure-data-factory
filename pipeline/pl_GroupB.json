@@ -75,11 +75,11 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "sp_UpdateLogEvents_copy1_copy1",
+										"name": "sp_UpdateLogEvents",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "CopyGroupCandidate",
+												"activity": "CopyGroupB",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -94,7 +94,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+											"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
 											"storedProcedureParameters": {
 												"DropName": {
 													"value": {
@@ -161,7 +161,7 @@
 										}
 									},
 									{
-										"name": "CopyGroupCandidate",
+										"name": "CopyGroupB",
 										"type": "Copy",
 										"dependsOn": [
 											{
@@ -329,7 +329,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "CopyGroupCandidate",
+												"activity": "CopyGroupB",
 												"dependencyConditions": [
 													"Failed"
 												]
