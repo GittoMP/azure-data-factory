@@ -239,7 +239,7 @@
 										}
 									},
 									{
-										"name": "Error sp_UpdateLogEvents_copy1",
+										"name": "Error sp_UpdateLogEvents",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
