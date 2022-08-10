@@ -47,7 +47,7 @@
 				}
 			},
 			{
-				"name": "SP_UpdateEndDate",
+				"name": "sp_UpdateEndDate",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
