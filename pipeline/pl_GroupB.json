@@ -405,9 +405,23 @@
 													},
 													"type": "String"
 												},
+												"ExecutionConfigurationId": {
+													"value": {
+														"value": "@pipeline().parameters.parExecutionConfigurationId",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
 												"ExecutionNumber": {
 													"value": {
 														"value": "@pipeline().parameters.parExecutionNumber",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"GroupPlanId": {
+													"value": {
+														"value": "@item().GroupPlanId",
 														"type": "Expression"
 													},
 													"type": "Int32"
@@ -416,26 +430,12 @@
 													"value": "Skipped",
 													"type": "String"
 												},
-												"PipelineGroupNameId": {
-													"value": {
-														"value": "@item().GroupPlanId",
-														"type": "Expression"
-													},
-													"type": "Int32"
-												},
 												"PipelineName": {
 													"value": {
 														"value": "@item().PipelineName",
 														"type": "Expression"
 													},
 													"type": "String"
-												},
-												"PipelineOrchestratorId": {
-													"value": {
-														"value": "@pipeline().parameters.parExecutionConfigurationId",
-														"type": "Expression"
-													},
-													"type": "Int32"
 												},
 												"StartExecutionDate": {
 													"value": {
