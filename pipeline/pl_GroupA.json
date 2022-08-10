@@ -57,7 +57,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "sp_UpdateLogEvents_copy1",
+							"name": "sp_UpdateLogEvents",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
