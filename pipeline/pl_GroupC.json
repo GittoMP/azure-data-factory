@@ -25,6 +25,13 @@
 									"value": "@pipeline().Pipeline",
 									"type": "Expression"
 								}
+							},
+							"PlanId": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parPlanId",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
