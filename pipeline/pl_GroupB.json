@@ -51,17 +51,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('GetPipelineToBeExecuted').output.value",
+						"value": "@activity('lookup_GetPipelineToBeExecuted').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "If_PipelineFailed",
+							"name": "if_PipelineFailed",
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "Lookup_ReadExecutionFailed",
+									"activity": "lookup_ReadExecutionFailed",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -70,7 +70,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@activity('Lookup_ReadExecutionFailed').output.firstRow.Failed",
+									"value": "@activity('lookup_GetPipelineToBeExecuted').output.firstRow.Failed",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
@@ -358,7 +358,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "SetStartPipelineExecutionDateTrue",
+										"name": "setvar_StartPipelineExecutionDateTrue",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
@@ -375,7 +375,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "SetStartPipelineExecutionDateTrue",
+												"activity": "setvar_StartPipelineExecutionDateTrue",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -460,7 +460,7 @@
 							}
 						},
 						{
-							"name": "Lookup_ReadExecutionFailed",
+							"name": "lookup_ReadExecutionFailed",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
