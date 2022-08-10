@@ -358,7 +358,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "Set StartPipelineExecutionDate",
+										"name": "SetStartPipelineExecutionDate",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
@@ -375,7 +375,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "Set StartPipelineExecutionDate",
+												"activity": "SetStartPipelineExecutionDate",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -390,7 +390,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+											"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
 											"storedProcedureParameters": {
 												"DropName": {
 													"value": {
@@ -426,7 +426,7 @@
 												},
 												"PipelineOrchestratorId": {
 													"value": {
-														"value": "@pipeline().parameters.parOrchestratorId",
+														"value": "@pipeline().parameters.parExecutionConfigurationId",
 														"type": "Expression"
 													},
 													"type": "Int32"
