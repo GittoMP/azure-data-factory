@@ -307,9 +307,16 @@
 							}
 						},
 						{
-							"name": "sp_UpdateLogEvents_OnSuccess_copy2",
+							"name": "sp_UpdateLogEvents_OnFailed",
 							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "sp_UpdateLogEvents_OnError",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -350,7 +357,7 @@
 										"type": "Int32"
 									},
 									"InError": {
-										"value": "No",
+										"value": "Yes",
 										"type": "String"
 									},
 									"PipelineName": {
