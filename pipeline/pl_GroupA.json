@@ -240,7 +240,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+								"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
 								"storedProcedureParameters": {
 									"DropName": {
 										"value": {
@@ -276,7 +276,7 @@
 									},
 									"PipelineOrchestratorId": {
 										"value": {
-											"value": "@pipeline().parameters.parOrchestratorId",
+											"value": "@pipeline().parameters.parExecutionConfigurationId",
 											"type": "Expression"
 										},
 										"type": "Int32"
