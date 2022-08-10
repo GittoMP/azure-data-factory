@@ -234,7 +234,7 @@
 				}
 			},
 			{
-				"name": "GetPipelineOrchestrator",
+				"name": "GetExecutionConfiguration",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -248,7 +248,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelineOrchestrator]",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetExecutionConfiguration]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -284,7 +284,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "GetPipelineOrchestrator",
+						"activity": "GetExecutionConfiguration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
