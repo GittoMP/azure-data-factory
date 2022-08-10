@@ -33,7 +33,7 @@
 							"planId": {
 								"type": "Int32",
 								"value": {
-									"value": "@variables('varPlanId')",
+									"value": "@int(variables('varPlanId'))",
 									"type": "Expression"
 								}
 							}
