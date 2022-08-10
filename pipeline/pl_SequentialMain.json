@@ -340,7 +340,7 @@
 				"typeProperties": {
 					"variableName": "varDropName",
 					"value": {
-						"value": "@activity('GetExecutionConfiguration').output.value[0].DropName",
+						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].DropName",
 						"type": "Expression"
 					}
 				}
@@ -380,7 +380,7 @@
 				"typeProperties": {
 					"variableName": "varDropId",
 					"value": {
-						"value": "@string(activity('GetExecutionConfiguration').output.value[0].DropId)\n",
+						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].DropId)\n",
 						"type": "Expression"
 					}
 				}
@@ -400,7 +400,7 @@
 				"typeProperties": {
 					"variableName": "varExecutionNumber",
 					"value": {
-						"value": "@string(activity('GetExecutionConfiguration').output.value[0].ExecutionNumber)",
+						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].ExecutionNumber)",
 						"type": "Expression"
 					}
 				}
@@ -420,7 +420,7 @@
 				"typeProperties": {
 					"variableName": "varNewExecution",
 					"value": {
-						"value": "@activity('GetExecutionConfiguration').output.value[0].NewExecution",
+						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].NewExecution",
 						"type": "Expression"
 					}
 				}
