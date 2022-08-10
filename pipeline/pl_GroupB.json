@@ -165,7 +165,7 @@
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "SetStartPipelineExecutionDate1",
+												"activity": "SetStartPipelineExecutionDateFalse",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -226,7 +226,7 @@
 										]
 									},
 									{
-										"name": "SetStartPipelineExecutionDate1",
+										"name": "SetStartPipelineExecutionDateFalse",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
@@ -358,7 +358,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "SetStartPipelineExecutionDate",
+										"name": "SetStartPipelineExecutionDateTrue",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
@@ -375,7 +375,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "SetStartPipelineExecutionDate",
+												"activity": "SetStartPipelineExecutionDateTrue",
 												"dependencyConditions": [
 													"Succeeded"
 												]
