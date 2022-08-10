@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "GetPipelineToBeExecuted",
+				"name": "lookup_GetPipelineToBeExecuted",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -42,7 +42,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "GetPipelineToBeExecuted",
+						"activity": "lookup_GetPipelineToBeExecuted",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -51,7 +51,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('GetPipelineToBeExecuted').output.value",
+						"value": "@activity('lookup_GetPipelineToBeExecuted').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -61,7 +61,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "CopyGroupA",
+									"activity": "copy_GroupA",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -143,11 +143,11 @@
 							}
 						},
 						{
-							"name": "CopyGroupA",
+							"name": "copy_GroupA",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "SetStartPipelineExecutionDate",
+									"activity": "setvar_StartPipelineExecutionDate",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -208,7 +208,7 @@
 							]
 						},
 						{
-							"name": "SetStartPipelineExecutionDate",
+							"name": "setvar_StartPipelineExecutionDate",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
@@ -225,7 +225,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "CopyGroupA",
+									"activity": "copy_GroupA",
 									"dependencyConditions": [
 										"Failed"
 									]
