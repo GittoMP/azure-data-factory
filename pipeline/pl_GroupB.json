@@ -79,7 +79,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "CopyGroupB",
+												"activity": "copy_GroupB",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -161,11 +161,11 @@
 										}
 									},
 									{
-										"name": "CopyGroupB",
+										"name": "copy_GroupB",
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "SetStartPipelineExecutionDateFalse",
+												"activity": "setvar_StartPipelineExecutionDate_False",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -226,7 +226,7 @@
 										]
 									},
 									{
-										"name": "SetStartPipelineExecutionDateFalse",
+										"name": "setvar_StartPipelineExecutionDate_False",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
@@ -243,7 +243,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "Stop Execution",
+												"activity": "sp_SetExecutionFailedStatus_Failed",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -325,11 +325,11 @@
 										}
 									},
 									{
-										"name": "Stop Execution",
+										"name": "sp_SetExecutionFailedStatus_Failed",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "CopyGroupB",
+												"activity": "copy_GroupB",
 												"dependencyConditions": [
 													"Failed"
 												]
@@ -344,7 +344,13 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"storedProcedureName": "[dbo].[sp_StopExecution]"
+											"storedProcedureName": "[dbo].[sp_SetExecutionFailedStatus]",
+											"storedProcedureParameters": {
+												"parFailed": {
+													"value": "1",
+													"type": "Boolean"
+												}
+											}
 										},
 										"linkedServiceName": {
 											"referenceName": "ls_migration",
@@ -371,7 +377,7 @@
 										}
 									},
 									{
-										"name": "Error sp_UpdateLogEvents_copy2",
+										"name": "sp_UpdateLogEvents_Skipped",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
