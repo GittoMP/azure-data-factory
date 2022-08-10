@@ -238,6 +238,9 @@
 			},
 			"parNewExecution": {
 				"type": "bool"
+			},
+			"parPlanId": {
+				"type": "int"
 			}
 		},
 		"variables": {
