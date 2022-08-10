@@ -112,7 +112,7 @@
 									},
 									"PipelineOrchestratorId": {
 										"value": {
-											"value": "@pipeline().parameters.parOrchestratorId",
+											"value": "@pipeline().parameters.parExecutionConfigurationId",
 											"type": "Expression"
 										},
 										"type": "Int32"
