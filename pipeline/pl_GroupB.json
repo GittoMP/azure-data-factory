@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "GetPipelineToBeExecuted",
+				"name": "lookup_GetPipelineToBeExecuted",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -42,7 +42,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "GetPipelineToBeExecuted",
+						"activity": "lookup_GetPipelineToBeExecuted",
 						"dependencyConditions": [
 							"Succeeded"
 						]
