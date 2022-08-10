@@ -175,7 +175,7 @@
 											"storedProcedureName": "[dbo].[sp_SetExecutionFailedStatus]",
 											"storedProcedureParameters": {
 												"parFailed": {
-													"value": "1",
+													"value": "true",
 													"type": "Boolean"
 												}
 											}
