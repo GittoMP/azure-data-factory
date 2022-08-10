@@ -258,7 +258,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
+											"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
 											"storedProcedureParameters": {
 												"DropName": {
 													"value": {
