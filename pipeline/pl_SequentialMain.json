@@ -42,7 +42,7 @@
 				}
 			},
 			{
-				"name": "ForEachGroup",
+				"name": "foreach_Group",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -55,7 +55,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('LookupGetGroupPlan').output.value",
+						"value": "@activity('lookup_GetGroupPlan').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
