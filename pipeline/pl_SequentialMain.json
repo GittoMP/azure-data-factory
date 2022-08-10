@@ -27,8 +27,14 @@
 						"sqlReaderStoredProcedureName": "[dbo].[sp_GetGroupPlan]",
 						"storedProcedureParameters": {
 							"isSequential": {
-								"type": "Boolean",
-								"value": "TRUE"
+								"type": "Boolean"
+							},
+							"planId": {
+								"type": "Int32",
+								"value": {
+									"value": "@variables('varPlanId')",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -350,7 +356,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "lookup_GetExecutionConfiguration",
+						"activity": "setvar_ExecutionConfigurationPlanId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -424,6 +430,26 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "setvar_ExecutionConfigurationPlanId",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "lookup_GetExecutionConfiguration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varExecutionNumber",
+					"value": {
+						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].PlanId)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
@@ -443,6 +469,9 @@
 				"type": "Boolean"
 			},
 			"varGlobalError": {
+				"type": "String"
+			},
+			"varPlanId": {
 				"type": "String"
 			}
 		},
