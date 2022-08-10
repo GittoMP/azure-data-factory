@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute pl_Start",
+				"name": "execute_pl_Start",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -51,7 +51,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Execute pl_Start",
+						"activity": "execute_pl_Start",
 						"dependencyConditions": [
 							"Completed"
 						]
