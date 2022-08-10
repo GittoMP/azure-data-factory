@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "SetExecutionConfigurationNewExecution",
+						"activity": "setvar_ExecutionConfigurationNewExecution",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -300,7 +300,7 @@
 				}
 			},
 			{
-				"name": "GetExecutionConfiguration",
+				"name": "lookup_GetExecutionConfiguration",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -326,11 +326,11 @@
 				}
 			},
 			{
-				"name": "SetExecutionConfigurationDropName",
+				"name": "setvar_ExecutionConfigurationDropName",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "SetExecutionConfigurationDropId",
+						"activity": "setvar_ExecutionConfigurationDropId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -346,11 +346,11 @@
 				}
 			},
 			{
-				"name": "SetExecutionConfigurationId",
+				"name": "setvar_ExecutionConfigurationId",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "GetExecutionConfiguration",
+						"activity": "lookup_GetExecutionConfiguration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -360,17 +360,17 @@
 				"typeProperties": {
 					"variableName": "varExecutionConfigurationId",
 					"value": {
-						"value": "@string(activity('GetExecutionConfiguration').output.value[0].Id)\n",
+						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].Id)\n",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "SetExecutionConfigurationDropId",
+				"name": "setvar_ExecutionConfigurationDropId",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "SetExecutionConfigurationId",
+						"activity": "setvar_ExecutionConfigurationId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -386,11 +386,11 @@
 				}
 			},
 			{
-				"name": "SetExecutionConfigurationExecutionNumber",
+				"name": "setvar_ExecutionConfigurationExecutionNumber",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "SetExecutionConfigurationDropName",
+						"activity": "setvar_ExecutionConfigurationDropName",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -406,11 +406,11 @@
 				}
 			},
 			{
-				"name": "SetExecutionConfigurationNewExecution",
+				"name": "setvar_ExecutionConfigurationNewExecution",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "SetExecutionConfigurationExecutionNumber",
+						"activity": "setvar_ExecutionConfigurationExecutionNumber",
 						"dependencyConditions": [
 							"Succeeded"
 						]
