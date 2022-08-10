@@ -74,12 +74,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@activity('LookupExecutionFailedStatus').output.firstRow.Failed",
+									"value": "@activity('lookup_ExecutionFailedStatus').output.firstRow.Failed",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Switch_ForEachGroup",
+										"name": "switch_ForEachGroup",
 										"type": "Switch",
 										"dependsOn": [],
 										"userProperties": [],
