@@ -224,8 +224,8 @@
 																},
 																"waitOnCompletion": false,
 																"parameters": {
-																	"parOrchestratorId": {
-																		"value": "@variables('varOrchestratorId')",
+																	"parExecutionConfigurationId": {
+																		"value": "@variables('varExecutionConfigurationId')",
 																		"type": "Expression"
 																	},
 																	"parDropId": {
