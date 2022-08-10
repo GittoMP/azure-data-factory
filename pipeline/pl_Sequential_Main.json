@@ -142,7 +142,29 @@
 																	"referenceName": "pl_GroupB",
 																	"type": "PipelineReference"
 																},
-																"waitOnCompletion": true
+																"waitOnCompletion": true,
+																"parameters": {
+																	"parExecutionConfigurationId": {
+																		"value": "@variables('varExecutionConfigurationId')",
+																		"type": "Expression"
+																	},
+																	"parDropId": {
+																		"value": "@variables('varDropId')",
+																		"type": "Expression"
+																	},
+																	"parDropName": {
+																		"value": "@variables('varDropName')",
+																		"type": "Expression"
+																	},
+																	"parExecutionNumber": {
+																		"value": "@variables('varExecutionNumber')",
+																		"type": "Expression"
+																	},
+																	"parNewExecution": {
+																		"value": "@variables('varNewExecution')",
+																		"type": "Expression"
+																	}
+																}
 															}
 														}
 													]
