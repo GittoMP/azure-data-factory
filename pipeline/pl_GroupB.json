@@ -70,7 +70,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@activity('lookup_GetPipelineToBeExecuted').output.firstRow.Failed",
+									"value": "@activity('lookup_ReadExecutionFailed').output.firstRow.Failed",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
