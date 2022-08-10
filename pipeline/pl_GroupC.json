@@ -57,92 +57,6 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "sp_UpdateLogEvents_OnSuccess",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "copy_GroupC",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[sp_UpdatePipelineLogEvents]",
-								"storedProcedureParameters": {
-									"DropName": {
-										"value": {
-											"value": "@pipeline().parameters.parDropName",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"ExecutionNumber": {
-										"value": {
-											"value": "@pipeline().parameters.parExecutionNumber",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"InError": {
-										"value": "No",
-										"type": "String"
-									},
-									"PipelineGroupNameId": {
-										"value": {
-											"value": "@item().GroupPlanId",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"PipelineName": {
-										"value": {
-											"value": "@item().PipelineName",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"PipelineOrchestratorId": {
-										"value": {
-											"value": "@pipeline().parameters.parExecutionConfigurationId",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"StartExecutionDate": {
-										"value": {
-											"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
-											"type": "Expression"
-										},
-										"type": "DateTime"
-									},
-									"StopExecutionDate": {
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										},
-										"type": "DateTime"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "ls_migration",
-								"type": "LinkedServiceReference",
-								"parameters": {
-									"ServerName": "sql-server-manpower-dev.database.windows.net",
-									"DatabaseName": "sqldb-migration"
-								}
-							}
-						},
-						{
 							"name": "copy_GroupC",
 							"type": "Copy",
 							"dependsOn": [
@@ -280,6 +194,171 @@
 											"type": "Expression"
 										},
 										"type": "Int32"
+									},
+									"StartExecutionDate": {
+										"value": {
+											"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"StopExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_migration",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"ServerName": "sql-server-manpower-dev.database.windows.net",
+									"DatabaseName": "sqldb-migration"
+								}
+							}
+						},
+						{
+							"name": "sp_UpdateLogEvents_OnSuccess",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "copy_GroupC",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
+								"storedProcedureParameters": {
+									"DropName": {
+										"value": {
+											"value": "@pipeline().parameters.parDropName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionConfigurationId": {
+										"value": {
+											"value": "@pipeline().parameters.parExecutionConfigurationId",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"ExecutionNumber": {
+										"value": {
+											"value": "@pipeline().parameters.parExecutionNumber",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"GroupPlanId": {
+										"value": {
+											"value": "@item().GroupPlanId",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"InError": {
+										"value": "No",
+										"type": "String"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@item().PipelineName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"StartExecutionDate": {
+										"value": {
+											"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"StopExecutionDate": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_migration",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"ServerName": "sql-server-manpower-dev.database.windows.net",
+									"DatabaseName": "sqldb-migration"
+								}
+							}
+						},
+						{
+							"name": "sp_UpdateLogEvents_OnSuccess_copy2",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
+								"storedProcedureParameters": {
+									"DropName": {
+										"value": {
+											"value": "@pipeline().parameters.parDropName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionConfigurationId": {
+										"value": {
+											"value": "@pipeline().parameters.parExecutionConfigurationId",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"ExecutionNumber": {
+										"value": {
+											"value": "@pipeline().parameters.parExecutionNumber",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"GroupPlanId": {
+										"value": {
+											"value": "@item().GroupPlanId",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"InError": {
+										"value": "No",
+										"type": "String"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@item().PipelineName",
+											"type": "Expression"
+										},
+										"type": "String"
 									},
 									"StartExecutionDate": {
 										"value": {
