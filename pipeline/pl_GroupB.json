@@ -61,7 +61,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "Lookup Read Execution Failed",
+									"activity": "Lookup_ReadExecutionFailed",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -70,7 +70,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@activity('Lookup Read Execution Failed').output.firstRow.Failed",
+									"value": "@activity('Lookup_ReadExecutionFailed').output.firstRow.Failed",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
@@ -460,7 +460,7 @@
 							}
 						},
 						{
-							"name": "Lookup Read Execution Failed",
+							"name": "Lookup_ReadExecutionFailed",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
@@ -474,7 +474,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "select Failed from dbo.PipelineOrchestrator where ToBeExecuted = 1",
+									"sqlReaderStoredProcedureName": "[dbo].[sp_GetExecutionFailedStatus]",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
