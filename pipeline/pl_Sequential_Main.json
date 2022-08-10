@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "LookupGetSequentialGroups",
+				"name": "LookupGetGroupPlan",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorNewExecution",
+						"activity": "SetExecutionConfigurationNewExecution",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -24,7 +24,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipeLineGroupNameExecutionOrder]",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetGroupPlan]",
 						"storedProcedureParameters": {
 							"isSequential": {
 								"type": "Boolean",
@@ -46,7 +46,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LookupGetSequentialGroups",
+						"activity": "LookupGetGroupPlan",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -55,7 +55,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('LookupGetSequentialGroups').output.value",
+						"value": "@activity('LookupGetGroupPlan').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -219,7 +219,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "select Failed from dbo.PipelineOrchestrator where ToBeExecuted = 1",
+									"sqlReaderStoredProcedureName": "[dbo].[sp_GetExecutionFailedStatus]",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -260,11 +260,11 @@
 				}
 			},
 			{
-				"name": "Set OrchestratorDropName",
+				"name": "SetExecutionConfigurationDropName",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorDropId",
+						"activity": "SetExecutionConfigurationDropId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -274,7 +274,7 @@
 				"typeProperties": {
 					"variableName": "varDropName",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].DropName",
+						"value": "@activity('GetExecutionConfiguration').output.value[0].DropName",
 						"type": "Expression"
 					}
 				}
@@ -292,7 +292,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "varOrchestratorId",
+					"variableName": "varExecutionConfigurationId",
 					"value": {
 						"value": "@string(activity('GetExecutionConfiguration').output.value[0].Id)\n",
 						"type": "Expression"
@@ -300,7 +300,7 @@
 				}
 			},
 			{
-				"name": "Set OrchestratorDropId",
+				"name": "SetExecutionConfigurationDropId",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -314,17 +314,17 @@
 				"typeProperties": {
 					"variableName": "varDropId",
 					"value": {
-						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].DropId)",
+						"value": "@string(activity('GetExecutionConfiguration').output.value[0].DropId)\n",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Set OrchestratorExecutionNumber",
+				"name": "SetExecutionConfigurationExecutionNumber",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorDropName",
+						"activity": "SetExecutionConfigurationDropName",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -334,17 +334,17 @@
 				"typeProperties": {
 					"variableName": "varExecutionNumber",
 					"value": {
-						"value": "@string(activity('GetPipelineOrchestrator').output.value[0].ExecutionNumber)",
+						"value": "@string(activity('GetExecutionConfiguration').output.value[0].ExecutionNumber)",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Set OrchestratorNewExecution",
+				"name": "SetExecutionConfigurationNewExecution",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set OrchestratorExecutionNumber",
+						"activity": "SetExecutionConfigurationExecutionNumber",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -354,14 +354,14 @@
 				"typeProperties": {
 					"variableName": "varNewExecution",
 					"value": {
-						"value": "@activity('GetPipelineOrchestrator').output.value[0].NewExecution",
+						"value": "@activity('GetExecutionConfiguration').output.value[0].NewExecution",
 						"type": "Expression"
 					}
 				}
 			}
 		],
 		"variables": {
-			"varOrchestratorId": {
+			"varExecutionConfigurationId": {
 				"type": "String"
 			},
 			"varDropId": {
