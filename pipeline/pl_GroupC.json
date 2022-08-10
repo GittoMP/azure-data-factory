@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetGroupPlan]",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetPipelinePlan]",
 						"storedProcedureParameters": {
 							"PipelineName": {
 								"type": "String",
