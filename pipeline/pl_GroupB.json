@@ -75,7 +75,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "sp_UpdateLogEvents",
+										"name": "sp_UpdateLogEvents_OnSuccess",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
@@ -239,7 +239,7 @@
 										}
 									},
 									{
-										"name": "Error sp_UpdateLogEvents",
+										"name": "sp_UpdateLogEvents_OnError",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
