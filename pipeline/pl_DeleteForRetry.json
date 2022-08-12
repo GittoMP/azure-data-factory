@@ -86,7 +86,7 @@
 								"storedProcedureParameters": {
 									"ExecutionConfigurationId": {
 										"value": {
-											"value": "@item().ExecutionConfigurationId",
+											"value": "@pipeline().parameters.parExecutionConfigurationId",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -126,7 +126,7 @@
 								"storedProcedureParameters": {
 									"ExecutionConfigurationId": {
 										"value": {
-											"value": "@item().ExecutionConfigurationId",
+											"value": "@pipeline().parameters.parExecutionConfigurationId",
 											"type": "Expression"
 										},
 										"type": "String"
