@@ -162,6 +162,9 @@
 			},
 			"parStartPipelineFromExecutionOrder": {
 				"type": "int"
+			},
+			"parExecutionConfigurationId": {
+				"type": "int"
 			}
 		},
 		"folder": {
