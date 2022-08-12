@@ -509,6 +509,10 @@
 									"parStartPipelineFromExecutionOrder": {
 										"value": "@variables('varStartPipelineFromExecutionOrder')",
 										"type": "Expression"
+									},
+									"parExecutionConfigurationId": {
+										"value": "@variables('varExecutionConfigurationId')",
+										"type": "Expression"
 									}
 								}
 							}
