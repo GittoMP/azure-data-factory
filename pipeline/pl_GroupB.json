@@ -110,6 +110,13 @@
 															"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
 															"type": "Expression"
 														}
+													},
+													{
+														"name": "TimeStamp",
+														"value": {
+															"value": "@utcnow()",
+															"type": "Expression"
+														}
 													}
 												],
 												"sqlReaderQuery": {
