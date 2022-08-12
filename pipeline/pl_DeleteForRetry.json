@@ -61,7 +61,7 @@
 					},
 					"activities": [
 						{
-							"name": "sp_DeleteEntities",
+							"name": "sp_DeleteDestinationTable",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [],
 							"policy": {
@@ -78,6 +78,39 @@
 									"TableName": {
 										"value": {
 											"value": "@item().Destination",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_raw",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"ServerName": "sql-server-manpower-dev.database.windows.net",
+									"DatabaseName": "sqldb-raw"
+								}
+							}
+						},
+						{
+							"name": "sp_DeleteMatrixTable",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_DeleteTableName]",
+								"storedProcedureParameters": {
+									"TableName": {
+										"value": {
+											"value": "@item().MatrixTableName",
 											"type": "Expression"
 										},
 										"type": "String"
