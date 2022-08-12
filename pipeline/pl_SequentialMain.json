@@ -531,7 +531,7 @@
 				"typeProperties": {
 					"variableName": "varStartGroupFromExecutionOrder",
 					"value": {
-						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder",
+						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder)",
 						"type": "Expression"
 					}
 				}
@@ -551,7 +551,7 @@
 				"typeProperties": {
 					"variableName": "varStartPipelineFromExecutionOrder",
 					"value": {
-						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder",
+						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder)",
 						"type": "Expression"
 					}
 				}
