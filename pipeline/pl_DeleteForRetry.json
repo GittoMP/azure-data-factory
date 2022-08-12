@@ -75,9 +75,16 @@
 							"typeProperties": {
 								"storedProcedureName": "[dbo].[sp_DeleteTableName]",
 								"storedProcedureParameters": {
+									"ExecutionConfigurationId": {
+										"value": {
+											"value": "@item().ExecutionConfigurationId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
 									"TableName": {
 										"value": {
-											"value": "@item().Destination",
+											"value": "@activity('lookup_DeleteForRetry').output.value[0].Destination",
 											"type": "Expression"
 										},
 										"type": "String"
