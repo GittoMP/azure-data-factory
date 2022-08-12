@@ -73,7 +73,6 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[sp_DeleteTableName]",
 								"storedProcedureParameters": {
 									"TableName": {
 										"value": {
@@ -85,11 +84,11 @@
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "ls_migration",
+								"referenceName": "ls_raw",
 								"type": "LinkedServiceReference",
 								"parameters": {
 									"ServerName": "sql-server-manpower-dev.database.windows.net",
-									"DatabaseName": "sqldb-migration"
+									"DatabaseName": "sqldb-raw"
 								}
 							}
 						}
