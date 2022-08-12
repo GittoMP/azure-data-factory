@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "setvar_ExecutionConfigurationNewExecution",
+						"activity": "if_Retry_Delete",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -466,6 +466,40 @@
 						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].PlanId)",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "if_Retry_Delete",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "setvar_ExecutionConfigurationNewExecution",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@and(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder > 0, activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder > 0) ",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "execute_pl_DeleteForRetry",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_DeleteForRetry",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
 				}
 			}
 		],
