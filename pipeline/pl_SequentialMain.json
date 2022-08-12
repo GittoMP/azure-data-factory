@@ -453,7 +453,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "lookup_GetExecutionConfiguration",
+						"activity": "setvar_StartPipelineFromExecutionOrder",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -501,11 +501,59 @@
 									"parPlanId": {
 										"value": "@variables('varPlanId')",
 										"type": "Expression"
+									},
+									"parStartGroupFromExecutionOrder": {
+										"value": "@variables('varStartGroupFromExecutionOrder')",
+										"type": "Expression"
+									},
+									"parStartPipelineFromExecutionOrder": {
+										"value": "@variables('varStartPipelineFromExecutionOrder')",
+										"type": "Expression"
 									}
 								}
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "setvar_StartGroupFromExecutionOrder",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "lookup_GetExecutionConfiguration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varStartGroupFromExecutionOrder",
+					"value": {
+						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setvar_StartPipelineFromExecutionOrder",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setvar_StartGroupFromExecutionOrder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varStartPipelineFromExecutionOrder",
+					"value": {
+						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder",
+						"type": "Expression"
+					}
 				}
 			}
 		],
@@ -529,6 +577,12 @@
 				"type": "String"
 			},
 			"varPlanId": {
+				"type": "String"
+			},
+			"varStartGroupFromExecutionOrder": {
+				"type": "String"
+			},
+			"varStartPipelineFromExecutionOrder": {
 				"type": "String"
 			}
 		},
