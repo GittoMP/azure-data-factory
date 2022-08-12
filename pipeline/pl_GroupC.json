@@ -85,6 +85,15 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"additionalColumns": [
+										{
+											"name": "ExecutionConfigurationId",
+											"value": {
+												"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
+												"type": "Expression"
+											}
+										}
+									],
 									"sqlReaderQuery": {
 										"value": "select * from @{item().Procedure}",
 										"type": "Expression"
