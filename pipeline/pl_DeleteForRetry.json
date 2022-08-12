@@ -73,6 +73,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_DeleteTableName]",
 								"storedProcedureParameters": {
 									"TableName": {
 										"value": {
