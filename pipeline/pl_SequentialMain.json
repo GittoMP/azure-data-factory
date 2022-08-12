@@ -482,7 +482,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@and(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder > 0, activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder > 0) ",
+						"value": "@and(greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder,0), greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder, 0))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
