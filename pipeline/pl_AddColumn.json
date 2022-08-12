@@ -17,6 +17,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"additionalColumns": [
+							{
+								"name": "pippo",
+								"value": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							}
+						],
 						"sqlReaderQuery": "select * from [dbo].[GroupA_1]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
