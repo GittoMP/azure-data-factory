@@ -21,15 +21,24 @@
 						"storedProcedureParameters": {
 							"planId": {
 								"type": "Int32",
-								"value": "1"
+								"value": {
+									"value": "@pipeline().parameters.parPlanId",
+									"type": "Expression"
+								}
 							},
 							"startGroupFromExecutionOrder": {
 								"type": "Int32",
-								"value": "3"
+								"value": {
+									"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+									"type": "Expression"
+								}
 							},
 							"startPipelineFromExecutionOrder": {
 								"type": "Int32",
-								"value": "2"
+								"value": {
+									"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -115,6 +124,13 @@
 							"typeProperties": {
 								"storedProcedureName": "[dbo].[sp_DeleteTableName]",
 								"storedProcedureParameters": {
+									"ExecutionConfigurationId": {
+										"value": {
+											"value": "@item().ExecutionConfigurationId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
 									"TableName": {
 										"value": {
 											"value": "@item().MatrixTableName",
