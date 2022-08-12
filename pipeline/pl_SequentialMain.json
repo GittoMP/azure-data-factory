@@ -9,7 +9,7 @@
 					{
 						"activity": "if_Retry_Delete",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],

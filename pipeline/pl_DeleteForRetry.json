@@ -137,6 +137,17 @@
 				}
 			}
 		],
+		"parameters": {
+			"parPlanId": {
+				"type": "int"
+			},
+			"parStartGroupFromExecutionOrder": {
+				"type": "int"
+			},
+			"parStartPipelineFromExecutionOrder": {
+				"type": "int"
+			}
+		},
 		"folder": {
 			"name": "Prototype"
 		},
