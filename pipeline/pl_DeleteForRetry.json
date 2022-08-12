@@ -1,0 +1,50 @@
+{
+	"name": "pl_DeleteForRetry",
+	"properties": {
+		"activities": [
+			{
+				"name": "lookup_DeleteForRetry",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetEntitiesForDeleteOnRetry]",
+						"storedProcedureParameters": {
+							"planId": {
+								"type": "Int32",
+								"value": "1"
+							},
+							"startGroupFromExecutionOrder": {
+								"type": "Int32",
+								"value": "2"
+							},
+							"startPipelineFromExecutionOrder": {
+								"type": "Int32",
+								"value": "2"
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_migration",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Prototype"
+		},
+		"annotations": []
+	}
+}
