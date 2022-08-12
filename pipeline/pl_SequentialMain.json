@@ -496,7 +496,13 @@
 									"referenceName": "pl_DeleteForRetry",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"parPlanId": {
+										"value": "@variables('varPlanId')",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
