@@ -1,0 +1,10 @@
+{
+	"name": "ls_keyvault_raw",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-migration-migration.vault.azure.net/"
+		}
+	}
+}
