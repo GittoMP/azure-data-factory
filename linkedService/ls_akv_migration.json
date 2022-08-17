@@ -1,0 +1,11 @@
+{
+	"name": "ls_akv_migration",
+	"properties": {
+		"description": "Azure Key Vault linked service to be used to connect to sql db: \"migration\".",
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://credentials-manpower-dev.vault.azure.net/"
+		}
+	}
+}
