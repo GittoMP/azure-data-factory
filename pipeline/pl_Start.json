@@ -76,6 +76,45 @@
 						"DatabaseName": "sqldb-migration"
 					}
 				}
+			},
+			{
+				"name": "if_new_full_execution_or_retry",
+				"description": "This condition prevents incorrect starts of previous completed executions.",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "sp_IsFullyExecutionOrRetry",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			},
+			{
+				"name": "sp_IsFullyExecutionOrRetry",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_IsFullyExecutionOrRetry]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_migration",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"folder": {
