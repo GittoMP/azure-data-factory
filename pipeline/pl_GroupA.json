@@ -338,6 +338,27 @@
 											"type": "Expression"
 										},
 										"type": "DateTime"
+									},
+									"PlanId": {
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StartGroupFromExecutionOrder": {
+										"value": {
+											"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StartPipelineFromExecutionOrder": {
+										"value": {
+											"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+											"type": "Expression"
+										},
+										"type": "Int32"
 									}
 								}
 							},
