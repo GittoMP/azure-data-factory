@@ -240,11 +240,17 @@
 										"type": "Int32"
 									},
 									"StartGroupFromExecutionOrder": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									},
 									"StartPipelineFromExecutionOrder": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									}
 								}
