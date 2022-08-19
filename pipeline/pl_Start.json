@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "if_new_full_execution_or_retry",
+				"name": "if_wrong_execution",
 				"description": "This condition prevents incorrect starts of previous completed executions.",
 				"type": "IfCondition",
 				"dependsOn": [
