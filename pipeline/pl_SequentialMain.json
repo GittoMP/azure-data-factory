@@ -429,26 +429,6 @@
 				}
 			},
 			{
-				"name": "setvar_ExecutionConfigurationNewExecution",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_ExecutionConfigurationExecutionNumber",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varNewExecution",
-					"value": {
-						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].NewExecution",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "setvar_ExecutionConfigurationPlanId",
 				"type": "SetVariable",
 				"dependsOn": [
@@ -473,7 +453,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "setvar_ExecutionConfigurationNewExecution",
+						"activity": "setvar_ExecutionConfigurationExecutionNumber",
 						"dependencyConditions": [
 							"Succeeded"
 						]
