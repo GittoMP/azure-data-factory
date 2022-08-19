@@ -70,7 +70,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "execute_pl_Start_copy1",
+									"activity": "sp_UpdateExecutionPlanHistory",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -86,6 +86,37 @@
 							"userProperties": [],
 							"typeProperties": {
 								"storedProcedureName": "[dbo].[sp_EndDate]"
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_migration",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"ServerName": "sql-server-manpower-dev.database.windows.net",
+									"DatabaseName": "sqldb-migration"
+								}
+							}
+						},
+						{
+							"name": "sp_UpdateExecutionPlanHistory",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "execute_pl_Start_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_InsertPlanExecutionToHistory]"
 							},
 							"linkedServiceName": {
 								"referenceName": "ls_migration",
