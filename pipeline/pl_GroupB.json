@@ -213,16 +213,9 @@
 										}
 									},
 									{
-										"name": "sp_UpdateLogEvents_OnSuccess",
+										"name": "sp_UpdateLogEvents_OnSuccess_old",
 										"type": "SqlServerStoredProcedure",
-										"dependsOn": [
-											{
-												"activity": "copy_GroupB",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
+										"dependsOn": [],
 										"policy": {
 											"timeout": "7.00:00:00",
 											"retry": 0,
