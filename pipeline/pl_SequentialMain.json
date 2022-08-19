@@ -134,6 +134,14 @@
 																	"parPlanId": {
 																		"value": "@variables('varPlanId')",
 																		"type": "Expression"
+																	},
+																	"parStartGroupFromExecutionOrder": {
+																		"value": "@variables('varStartGroupFromExecutionOrder')",
+																		"type": "Expression"
+																	},
+																	"parStartPipelineFromExecutionOrder": {
+																		"value": "@variables('varStartPipelineFromExecutionOrder')",
+																		"type": "Expression"
 																	}
 																}
 															}
