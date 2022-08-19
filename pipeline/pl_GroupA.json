@@ -108,9 +108,30 @@
 											}
 										},
 										{
+											"name": "ExecutionNumber",
+											"value": {
+												"value": "@string(pipeline().parameters.parExecutionNumber)",
+												"type": "Expression"
+											}
+										},
+										{
 											"name": "PlanId",
 											"value": {
 												"value": "@string(pipeline().parameters.parPlanId)",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "StartGroupFromExecutionOrder",
+											"value": {
+												"value": "@string(pipeline().parameters.parStartGroupFromExecutionOrder)",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "StartPipelineFromExecutionOrder",
+											"value": {
+												"value": "@string(pipeline().parameters.parStartPipelineFromExecutionOrder)",
 												"type": "Expression"
 											}
 										}
