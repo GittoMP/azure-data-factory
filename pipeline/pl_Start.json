@@ -8,7 +8,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "sp_IsFullyExecutionOrRetry",
+						"activity": "sp_IsWrongExecution",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -100,7 +100,7 @@
 				}
 			},
 			{
-				"name": "sp_IsFullyExecutionOrRetry",
+				"name": "sp_IsWrongExecution",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
