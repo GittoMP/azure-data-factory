@@ -17,7 +17,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(activity('sp_GetTripletExecution').output.firstRaw,'1-0-0')",
+						"value": "@equals(activity('sp_GetTripletExecution').output.firstRaw.Triplet,'1-0-0')",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
