@@ -233,7 +233,10 @@
 										"type": "DateTime"
 									},
 									"PlanId": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									},
 									"StartGroupFromExecutionOrder": {
@@ -362,6 +365,12 @@
 				"type": "bool"
 			},
 			"parPlanId": {
+				"type": "int"
+			},
+			"parStartGroupFromExecutionOrder": {
+				"type": "int"
+			},
+			"parStartPipelineFromExecutionOrder": {
 				"type": "int"
 			}
 		},
