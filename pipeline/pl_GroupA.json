@@ -99,6 +99,20 @@
 												"value": "@utcnow()",
 												"type": "Expression"
 											}
+										},
+										{
+											"name": "DropName",
+											"value": {
+												"value": "@pipeline().parameters.parDropName",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "PlanId",
+											"value": {
+												"value": "@string(pipeline().parameters.parPlanId)",
+												"type": "Expression"
+											}
 										}
 									],
 									"sqlReaderQuery": {
