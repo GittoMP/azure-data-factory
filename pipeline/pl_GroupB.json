@@ -38,7 +38,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_sqldb_migration",
+						"referenceName": "ds_sqldb_migration3",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -82,11 +82,11 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "copy_GroupB",
+										"name": "copy_GroupA",
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "setvar_StartPipelineExecutionDate_False",
+												"activity": "setvar_StartPipelineExecutionDate",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -117,6 +117,41 @@
 															"value": "@utcnow()",
 															"type": "Expression"
 														}
+													},
+													{
+														"name": "DropName",
+														"value": {
+															"value": "@pipeline().parameters.parDropName",
+															"type": "Expression"
+														}
+													},
+													{
+														"name": "ExecutionNumber",
+														"value": {
+															"value": "@string(pipeline().parameters.parExecutionNumber)",
+															"type": "Expression"
+														}
+													},
+													{
+														"name": "PlanId",
+														"value": {
+															"value": "@string(pipeline().parameters.parPlanId)",
+															"type": "Expression"
+														}
+													},
+													{
+														"name": "StartGroupFromExecutionOrder",
+														"value": {
+															"value": "@string(pipeline().parameters.parStartGroupFromExecutionOrder)",
+															"type": "Expression"
+														}
+													},
+													{
+														"name": "StartPipelineFromExecutionOrder",
+														"value": {
+															"value": "@string(pipeline().parameters.parStartPipelineFromExecutionOrder)",
+															"type": "Expression"
+														}
 													}
 												],
 												"sqlReaderQuery": {
@@ -145,13 +180,13 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "ds_sqldb_my_italy_new",
+												"referenceName": "ds_sqldb_my_italy_new3",
 												"type": "DatasetReference"
 											}
 										],
 										"outputs": [
 											{
-												"referenceName": "ds_sqldb_raw",
+												"referenceName": "ds_sqldb_raw3",
 												"type": "DatasetReference",
 												"parameters": {
 													"DestinationTableName": {
@@ -163,7 +198,7 @@
 										]
 									},
 									{
-										"name": "setvar_StartPipelineExecutionDate_False",
+										"name": "setvar_StartPipelineExecutionDate",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"userProperties": [],
@@ -176,13 +211,13 @@
 										}
 									},
 									{
-										"name": "sp_SetExecutionFailedStatus_Failed",
+										"name": "sp_UpdateLogEvents_OnSuccess",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupB",
+												"activity": "copy_GroupA",
 												"dependencyConditions": [
-													"Failed"
+													"Succeeded"
 												]
 											}
 										],
@@ -195,11 +230,81 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"storedProcedureName": "[dbo].[sp_SetExecutionFailedStatus]",
+											"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
 											"storedProcedureParameters": {
-												"parFailed": {
-													"value": "true",
-													"type": "Boolean"
+												"DropName": {
+													"value": {
+														"value": "@pipeline().parameters.parDropName",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"ExecutionConfigurationId": {
+													"value": {
+														"value": "@pipeline().parameters.parExecutionConfigurationId",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"ExecutionNumber": {
+													"value": {
+														"value": "@pipeline().parameters.parExecutionNumber",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"GroupPlanId": {
+													"value": {
+														"value": "@item().GroupPlanId",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"InError": {
+													"value": "No",
+													"type": "String"
+												},
+												"PipelineName": {
+													"value": {
+														"value": "@item().PipelineName",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"StartExecutionDate": {
+													"value": {
+														"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+														"type": "Expression"
+													},
+													"type": "DateTime"
+												},
+												"StopExecutionDate": {
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													},
+													"type": "DateTime"
+												},
+												"PlanId": {
+													"value": {
+														"value": "@pipeline().parameters.parPlanId",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"StartGroupFromExecutionOrder": {
+													"value": {
+														"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"StartPipelineFromExecutionOrder": {
+													"value": {
+														"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+														"type": "Expression"
+													},
+													"type": "Int32"
 												}
 											}
 										},
@@ -286,6 +391,27 @@
 														"type": "Expression"
 													},
 													"type": "DateTime"
+												},
+												"PlanId": {
+													"value": {
+														"value": "@pipeline().parameters.parPlanId",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"StartGroupFromExecutionOrder": {
+													"value": {
+														"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"StartPipelineFromExecutionOrder": {
+													"value": {
+														"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+														"type": "Expression"
+													},
+													"type": "Int32"
 												}
 											}
 										},
@@ -299,13 +425,13 @@
 										}
 									},
 									{
-										"name": "sp_UpdateLogEvents_OnSuccess",
+										"name": "sp_SetExecutionFailedStatus_Failed",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupB",
+												"activity": "copy_GroupA",
 												"dependencyConditions": [
-													"Succeeded"
+													"Failed"
 												]
 											}
 										],
@@ -318,73 +444,11 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
+											"storedProcedureName": "[dbo].[sp_SetExecutionFailedStatus]",
 											"storedProcedureParameters": {
-												"DropName": {
-													"value": {
-														"value": "@pipeline().parameters.parDropName",
-														"type": "Expression"
-													},
-													"type": "String"
-												},
-												"ExecutionConfigurationId": {
-													"value": {
-														"value": "@pipeline().parameters.parExecutionConfigurationId",
-														"type": "Expression"
-													},
-													"type": "Int32"
-												},
-												"ExecutionNumber": {
-													"value": {
-														"value": "@pipeline().parameters.parExecutionNumber",
-														"type": "Expression"
-													},
-													"type": "Int32"
-												},
-												"GroupPlanId": {
-													"value": {
-														"value": "@item().GroupPlanId",
-														"type": "Expression"
-													},
-													"type": "Int32"
-												},
-												"InError": {
-													"value": "No",
-													"type": "String"
-												},
-												"PipelineName": {
-													"value": {
-														"value": "@item().PipelineName",
-														"type": "Expression"
-													},
-													"type": "String"
-												},
-												"StartExecutionDate": {
-													"value": {
-														"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
-														"type": "Expression"
-													},
-													"type": "DateTime"
-												},
-												"StopExecutionDate": {
-													"value": {
-														"value": "@utcnow()",
-														"type": "Expression"
-													},
-													"type": "DateTime"
-												},
-												"PlanId": {
-													"value": {
-														"value": "@pipeline().parameters.parPlanId",
-														"type": "Expression"
-													},
-													"type": "Int32"
-												},
-												"StartGroupFromExecutionOrder": {
-													"type": "Int32"
-												},
-												"StartPipelineFromExecutionOrder": {
-													"type": "Int32"
+												"parFailed": {
+													"value": "true",
+													"type": "Boolean"
 												}
 											}
 										},
@@ -521,7 +585,7 @@
 									"partitionOption": "None"
 								},
 								"dataset": {
-									"referenceName": "ds_sqldb_migration",
+									"referenceName": "ds_sqldb_migration3",
 									"type": "DatasetReference"
 								}
 							}
@@ -547,6 +611,12 @@
 				"type": "bool"
 			},
 			"parPlanId": {
+				"type": "int"
+			},
+			"parStartGroupFromExecutionOrder": {
+				"type": "int"
+			},
+			"parStartPipelineFromExecutionOrder": {
 				"type": "int"
 			}
 		},
