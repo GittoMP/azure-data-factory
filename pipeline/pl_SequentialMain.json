@@ -279,6 +279,20 @@
 															}
 														}
 													]
+												},
+												{
+													"value": "pl_GroupD",
+													"activities": [
+														{
+															"name": "pl_GroupD",
+															"type": "ExecutePipeline",
+															"dependsOn": [],
+															"userProperties": [],
+															"typeProperties": {
+																"waitOnCompletion": true
+															}
+														}
+													]
 												}
 											]
 										}
