@@ -157,10 +157,6 @@
 															"dependsOn": [],
 															"userProperties": [],
 															"typeProperties": {
-																"pipeline": {
-																	"referenceName": "pl_GroupB",
-																	"type": "PipelineReference"
-																},
 																"waitOnCompletion": true,
 																"parameters": {
 																	"parExecutionConfigurationId": {
@@ -228,60 +224,6 @@
 																		"type": "Expression"
 																	}
 																}
-															}
-														}
-													]
-												},
-												{
-													"value": "pl_GroupCandidate",
-													"activities": [
-														{
-															"name": "Execute pl_GroupCandidate",
-															"type": "ExecutePipeline",
-															"dependsOn": [],
-															"userProperties": [],
-															"typeProperties": {
-																"waitOnCompletion": false,
-																"parameters": {
-																	"parExecutionConfigurationId": {
-																		"value": "@variables('varExecutionConfigurationId')",
-																		"type": "Expression"
-																	},
-																	"parDropId": {
-																		"value": "@variables('varDropId')",
-																		"type": "Expression"
-																	},
-																	"parDropName": {
-																		"value": "@variables('varDropName')",
-																		"type": "Expression"
-																	},
-																	"parExecutionNumber": {
-																		"value": "@variables('varExecutionNumber')",
-																		"type": "Expression"
-																	},
-																	"parNewExecution": {
-																		"value": "@variables('varNewExecution')",
-																		"type": "Expression"
-																	},
-																	"parPlanId": {
-																		"value": "@variables('varPlanId')",
-																		"type": "Expression"
-																	}
-																}
-															}
-														}
-													]
-												},
-												{
-													"value": "pl_GroupD",
-													"activities": [
-														{
-															"name": "pl_GroupD",
-															"type": "ExecutePipeline",
-															"dependsOn": [],
-															"userProperties": [],
-															"typeProperties": {
-																"waitOnCompletion": true
 															}
 														}
 													]
