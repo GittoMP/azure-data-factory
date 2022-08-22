@@ -157,6 +157,10 @@
 															"dependsOn": [],
 															"userProperties": [],
 															"typeProperties": {
+																"pipeline": {
+																	"referenceName": "pl_GroupB",
+																	"type": "PipelineReference"
+																},
 																"waitOnCompletion": true,
 																"parameters": {
 																	"parExecutionConfigurationId": {
@@ -181,6 +185,14 @@
 																	},
 																	"parPlanId": {
 																		"value": "@variables('varPlanId')",
+																		"type": "Expression"
+																	},
+																	"parStartGroupFromExecutionOrder": {
+																		"value": "@variables('varStartGroupFromExecutionOrder')",
+																		"type": "Expression"
+																	},
+																	"parStartPipelineFromExecutionOrder": {
+																		"value": "@variables('varStartPipelineFromExecutionOrder')",
 																		"type": "Expression"
 																	}
 																}
