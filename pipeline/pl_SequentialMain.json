@@ -241,10 +241,6 @@
 															"dependsOn": [],
 															"userProperties": [],
 															"typeProperties": {
-																"pipeline": {
-																	"referenceName": "pl_GroupCandidate",
-																	"type": "PipelineReference"
-																},
 																"waitOnCompletion": false,
 																"parameters": {
 																	"parExecutionConfigurationId": {
