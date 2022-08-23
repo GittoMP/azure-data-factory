@@ -38,7 +38,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_sqldb_migration3",
+						"referenceName": "ds_sqldb_migration",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -168,34 +168,8 @@
 												"tableOption": "autoCreate",
 												"disableMetricsCollection": false
 											},
-											"enableStaging": false,
-											"translator": {
-												"type": "TabularTranslator",
-												"typeConversion": true,
-												"typeConversionSettings": {
-													"allowDataTruncation": true,
-													"treatBooleanAsNumber": false
-												}
-											}
-										},
-										"inputs": [
-											{
-												"referenceName": "ds_sqldb_my_italy_new3",
-												"type": "DatasetReference"
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "ds_sqldb_raw3",
-												"type": "DatasetReference",
-												"parameters": {
-													"DestinationTableName": {
-														"value": "@item().Destination",
-														"type": "Expression"
-													}
-												}
-											}
-										]
+											"enableStaging": false
+										}
 									},
 									{
 										"name": "setvar_StartPipelineExecutionDate",
@@ -583,10 +557,6 @@
 									"sqlReaderStoredProcedureName": "[dbo].[sp_GetExecutionFailedStatus]",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
-								},
-								"dataset": {
-									"referenceName": "ds_sqldb_migration3",
-									"type": "DatasetReference"
 								}
 							}
 						}
