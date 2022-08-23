@@ -37,10 +37,6 @@
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"dataset": {
-						"referenceName": "ds_sqldb_migration4",
-						"type": "DatasetReference"
-					},
 					"firstRowOnly": false
 				}
 			},
@@ -101,66 +97,6 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"source": {
-												"type": "AzureSqlSource",
-												"additionalColumns": [
-													{
-														"name": "ExecutionConfigurationId",
-														"value": {
-															"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
-															"type": "Expression"
-														}
-													},
-													{
-														"name": "TimeStamp",
-														"value": {
-															"value": "@utcnow()",
-															"type": "Expression"
-														}
-													},
-													{
-														"name": "DropName",
-														"value": {
-															"value": "@pipeline().parameters.parDropName",
-															"type": "Expression"
-														}
-													},
-													{
-														"name": "ExecutionNumber",
-														"value": {
-															"value": "@string(pipeline().parameters.parExecutionNumber)",
-															"type": "Expression"
-														}
-													},
-													{
-														"name": "PlanId",
-														"value": {
-															"value": "@string(pipeline().parameters.parPlanId)",
-															"type": "Expression"
-														}
-													},
-													{
-														"name": "StartGroupFromExecutionOrder",
-														"value": {
-															"value": "@string(pipeline().parameters.parStartGroupFromExecutionOrder)",
-															"type": "Expression"
-														}
-													},
-													{
-														"name": "StartPipelineFromExecutionOrder",
-														"value": {
-															"value": "@string(pipeline().parameters.parStartPipelineFromExecutionOrder)",
-															"type": "Expression"
-														}
-													}
-												],
-												"sqlReaderQuery": {
-													"value": "select * from @{item().Procedure}",
-													"type": "Expression"
-												},
-												"queryTimeout": "02:00:00",
-												"partitionOption": "None"
-											},
 											"sink": {
 												"type": "AzureSqlSink",
 												"writeBehavior": "insert",
@@ -168,31 +104,14 @@
 												"tableOption": "autoCreate",
 												"disableMetricsCollection": false
 											},
-											"enableStaging": false,
-											"translator": {
-												"type": "TabularTranslator",
-												"typeConversion": true,
-												"typeConversionSettings": {
-													"allowDataTruncation": true,
-													"treatBooleanAsNumber": false
-												}
-											}
+											"enableStaging": false
 										},
-										"inputs": [
-											{
-												"referenceName": "ds_sqldb_my_italy_new4",
-												"type": "DatasetReference"
-											}
-										],
 										"outputs": [
 											{
-												"referenceName": "ds_sqldb_raw4",
+												"referenceName": "ds_sqldb_raw",
 												"type": "DatasetReference",
 												"parameters": {
-													"DestinationTableName": {
-														"value": "@item().Destination",
-														"type": "Expression"
-													}
+													"DestinationTableName": "@item().Destination"
 												}
 											}
 										]
@@ -583,10 +502,6 @@
 									"sqlReaderStoredProcedureName": "[dbo].[sp_GetExecutionFailedStatus]",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
-								},
-								"dataset": {
-									"referenceName": "ds_sqldb_migration4",
-									"type": "DatasetReference"
 								}
 							}
 						}
