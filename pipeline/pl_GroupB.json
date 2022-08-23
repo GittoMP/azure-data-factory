@@ -164,12 +164,30 @@
 											"sink": {
 												"type": "AzureSqlSink",
 												"writeBehavior": "insert",
-												"sqlWriterUseTableLock": false,
-												"tableOption": "autoCreate",
-												"disableMetricsCollection": false
+												"sqlWriterUseTableLock": false
 											},
-											"enableStaging": false
-										}
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "ds_sqldb_my_italy_new",
+												"type": "DatasetReference"
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_sqldb_raw",
+												"type": "DatasetReference"
+											}
+										]
 									},
 									{
 										"name": "setvar_StartPipelineExecutionDate",
