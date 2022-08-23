@@ -82,7 +82,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "copy_GroupA",
+										"name": "copy_GroupC",
 										"type": "Copy",
 										"dependsOn": [
 											{
@@ -215,7 +215,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupA",
+												"activity": "copy_GroupC",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -429,7 +429,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupA",
+												"activity": "copy_GroupC",
 												"dependencyConditions": [
 													"Failed"
 												]
