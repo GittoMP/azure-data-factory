@@ -86,7 +86,7 @@
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "setvar_MatrixPlanId",
+												"activity": "setvar_GroupPlanId",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -535,7 +535,14 @@
 									{
 										"name": "setvar_GroupPlanId",
 										"type": "SetVariable",
-										"dependsOn": [],
+										"dependsOn": [
+											{
+												"activity": "setvar_MatrixPlanId",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
 										"userProperties": [],
 										"typeProperties": {
 											"variableName": "varGroupPlanId",
