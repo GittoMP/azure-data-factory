@@ -20,7 +20,11 @@
 						"sqlReaderStoredProcedureName": "[dbo].[sp_GetMatrixPlan]",
 						"storedProcedureParameters": {
 							"MatrixPlanId": {
-								"type": "Int32"
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parMatrixPlanId",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
