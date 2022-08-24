@@ -171,7 +171,7 @@
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@item().PipelineName",
+											"value": "@pipeline().Pipeline",
 											"type": "Expression"
 										},
 										"type": "String"
