@@ -548,6 +548,9 @@
 			},
 			"varStartPipelineFromExecutionOrder": {
 				"type": "String"
+			},
+			"varMatrixPlanId": {
+				"type": "String"
 			}
 		},
 		"folder": {
