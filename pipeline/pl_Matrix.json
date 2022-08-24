@@ -53,6 +53,7 @@
 						"value": "@activity('lookup_GetMatrixPlan').output.value",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "copy_MatrixA",
@@ -105,7 +106,7 @@
 									"referenceName": "ds_sqldb_raw",
 									"type": "DatasetReference",
 									"parameters": {
-										"DestinationTableName": "Pippo"
+										"DestinationTableName": "Destination"
 									}
 								}
 							],
