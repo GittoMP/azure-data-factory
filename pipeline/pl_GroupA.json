@@ -480,9 +480,35 @@
 											},
 											"waitOnCompletion": true,
 											"parameters": {
-												"parMatrixPlanId": "@item().",
-												"parDropName": "DROP1",
-												"parExecutionConfigurationId": 10
+												"parMatrixPlanId": {
+													"value": "@variables('varMatrixPlanId')",
+													"type": "Expression"
+												},
+												"parDropName": {
+													"value": "@pipeline().parameters.parDropName",
+													"type": "Expression"
+												},
+												"parExecutionConfigurationId": {
+													"value": "@pipeline().parameters.parExecutionConfigurationId",
+													"type": "Expression"
+												},
+												"parExecutionNumber": {
+													"value": "@pipeline().parameters.parExecutionNumber",
+													"type": "Expression"
+												},
+												"parGroupPlanId": 0,
+												"parPlanId": {
+													"value": "@pipeline().parameters.parPlanId",
+													"type": "Expression"
+												},
+												"parStartGroupFromExecutionOrder": {
+													"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+													"type": "Expression"
+												},
+												"parStartPipelineFromExecutionOrder": {
+													"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+													"type": "Expression"
+												}
 											}
 										}
 									},
