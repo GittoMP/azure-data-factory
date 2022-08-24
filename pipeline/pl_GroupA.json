@@ -474,7 +474,16 @@
 										],
 										"userProperties": [],
 										"typeProperties": {
-											"waitOnCompletion": true
+											"pipeline": {
+												"referenceName": "pl_Matrix",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"parMatrixPlanId": 1,
+												"parDropName": "DROP1",
+												"parExecutionConfigurationId": 10
+											}
 										}
 									}
 								],
