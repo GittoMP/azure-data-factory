@@ -531,6 +531,16 @@
 												"type": "Expression"
 											}
 										}
+									},
+									{
+										"name": "setvar_GroupPlanId",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "varGroupPlanId",
+											"value": "@item().GroupPlanId"
+										}
 									}
 								],
 								"ifTrueActivities": [
