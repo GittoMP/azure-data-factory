@@ -460,6 +460,22 @@
 												"DatabaseName": "sqldb-migration"
 											}
 										}
+									},
+									{
+										"name": "Execute Pipeline1",
+										"type": "ExecutePipeline",
+										"dependsOn": [
+											{
+												"activity": "sp_UpdateLogEvents_OnSuccess",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"waitOnCompletion": true
+										}
 									}
 								],
 								"ifTrueActivities": [
