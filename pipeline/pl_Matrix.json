@@ -33,7 +33,8 @@
 					"dataset": {
 						"referenceName": "ds_sqldb_migration",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -50,7 +51,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('lookup_GetMatrixPlan').output.firstRow.value",
+						"value": "@activity('lookup_GetMatrixPlan').output.value[0].items",
 						"type": "Expression"
 					},
 					"isSequential": true,
