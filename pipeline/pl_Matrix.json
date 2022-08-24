@@ -371,6 +371,21 @@
 			},
 			"parExecutionConfigurationId": {
 				"type": "int"
+			},
+			"parExecutionNumber": {
+				"type": "int"
+			},
+			"parGroupPlanId": {
+				"type": "int"
+			},
+			"parPlanId": {
+				"type": "int"
+			},
+			"parStartGroupFromExecutionOrder": {
+				"type": "int"
+			},
+			"parStartPipelineFromExecutionOrder": {
+				"type": "int"
 			}
 		},
 		"variables": {
