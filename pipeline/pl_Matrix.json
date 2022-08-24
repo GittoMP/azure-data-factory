@@ -49,6 +49,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('lookup_GetMatrixPlan').output.value",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "copy_MatrixA",
@@ -73,7 +77,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().Procedure}\nwhere ExecutionConfigurationId = @{pipeline().parameters.parMatrixPlanId}",
+										"value": "select * from @{item().Procedure}",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
