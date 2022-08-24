@@ -355,6 +355,9 @@
 		"parameters": {
 			"parMatrixPlanId": {
 				"type": "int"
+			},
+			"parDropName": {
+				"type": "string"
 			}
 		},
 		"variables": {
