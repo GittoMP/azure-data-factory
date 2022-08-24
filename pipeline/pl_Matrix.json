@@ -73,7 +73,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().Procedure}",
+										"value": "select * from @{item().Procedure}\nwhere ExecutionConfigurationId = @{pipeline().parameters.parMatrixPlanId}",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
