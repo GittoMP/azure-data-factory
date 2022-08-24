@@ -86,7 +86,7 @@
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "setvar_StartPipelineExecutionDate",
+												"activity": "setvar_MatrixPlanId",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -483,6 +483,26 @@
 												"parMatrixPlanId": "@item().",
 												"parDropName": "DROP1",
 												"parExecutionConfigurationId": 10
+											}
+										}
+									},
+									{
+										"name": "setvar_MatrixPlanId",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "setvar_StartPipelineExecutionDate",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "varMatrixPlanId",
+											"value": {
+												"value": "@item().MatrixPlanId",
+												"type": "Expression"
 											}
 										}
 									}
