@@ -53,7 +53,14 @@
 						{
 							"name": "copy_MatrixA",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "setvar_StartPipelineExecutionDate",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -282,6 +289,19 @@
 								"parameters": {
 									"ServerName": "sql-server-manpower-dev.database.windows.net",
 									"DatabaseName": "sqldb-migration"
+								}
+							}
+						},
+						{
+							"name": "setvar_StartPipelineExecutionDate",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "varStartPipelineExecutionDate",
+								"value": {
+									"value": "@utcnow()",
+									"type": "Expression"
 								}
 							}
 						}
