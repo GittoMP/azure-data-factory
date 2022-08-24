@@ -241,10 +241,7 @@
 										"type": "Int32"
 									},
 									"ExecutionNumber": {
-										"value": {
-											"value": "@pipeline().parameters.parExecutionNumber",
-											"type": "Expression"
-										},
+										"value": "99",
 										"type": "Int32"
 									},
 									"GroupPlanId": {
@@ -280,24 +277,15 @@
 										"type": "DateTime"
 									},
 									"PlanId": {
-										"value": {
-											"value": "@pipeline().parameters.parPlanId",
-											"type": "Expression"
-										},
+										"value": "1",
 										"type": "Int32"
 									},
 									"StartGroupFromExecutionOrder": {
-										"value": {
-											"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
-											"type": "Expression"
-										},
+										"value": "0",
 										"type": "Int32"
 									},
 									"StartPipelineFromExecutionOrder": {
-										"value": {
-											"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
-											"type": "Expression"
-										},
+										"value": "0",
 										"type": "Int32"
 									}
 								}
