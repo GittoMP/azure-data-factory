@@ -57,7 +57,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "copy_MatrixA",
+							"name": "copy_Matrix",
 							"type": "Copy",
 							"dependsOn": [
 								{
@@ -78,9 +78,15 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "select * from @{item().Procedure}",
-										"type": "Expression"
+									"sqlReaderStoredProcedureName": "@{item().Procedure}",
+									"storedProcedureParameters": {
+										"ExecutionConfigurationId": {
+											"type": "Int32",
+											"value": {
+												"value": "@pipeline().parameters.parExecutionConfigurationId",
+												"type": "Expression"
+											}
+										}
 									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
@@ -126,7 +132,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "copy_MatrixA",
+									"activity": "copy_Matrix",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -325,7 +331,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "copy_MatrixA",
+									"activity": "copy_Matrix",
 									"dependencyConditions": [
 										"Failed"
 									]
