@@ -119,6 +119,10 @@
 										"type": "String"
 									},
 									"StartExecutionDate": {
+										"value": {
+											"value": "@variables('varStartPipelineExecutionDate')",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"StopExecutionDate": {
