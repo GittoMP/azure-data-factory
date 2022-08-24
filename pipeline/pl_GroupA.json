@@ -496,7 +496,10 @@
 													"value": "@pipeline().parameters.parExecutionNumber",
 													"type": "Expression"
 												},
-												"parGroupPlanId": 0,
+												"parGroupPlanId": {
+													"value": "@variables('varGroupPlanId')",
+													"type": "Expression"
+												},
 												"parPlanId": {
 													"value": "@pipeline().parameters.parPlanId",
 													"type": "Expression"
