@@ -99,7 +99,10 @@
 							"inputs": [
 								{
 									"referenceName": "ds_sqldb_raw",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"DestinationTableName": "Pippo"
+									}
 								}
 							],
 							"outputs": [
