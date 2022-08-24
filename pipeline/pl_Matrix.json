@@ -314,6 +314,11 @@
 				"type": "int"
 			}
 		},
+		"variables": {
+			"varStartPipelineExecutionDate": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
