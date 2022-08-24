@@ -51,7 +51,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('lookup_GetMatrixPlan').output.value[0].items",
+						"value": "@activity('lookup_GetMatrixPlan').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
