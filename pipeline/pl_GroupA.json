@@ -549,7 +549,10 @@
 										"userProperties": [],
 										"typeProperties": {
 											"variableName": "varGroupPlanId",
-											"value": "@item().GroupPlanId"
+											"value": {
+												"value": "@string(item().GroupPlanId)",
+												"type": "Expression"
+											}
 										}
 									}
 								],
