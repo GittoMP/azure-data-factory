@@ -480,6 +480,7 @@
 											},
 											"waitOnCompletion": true,
 											"parameters": {
+												"parMatrixPlanId": "@item().",
 												"parDropName": "DROP1",
 												"parExecutionConfigurationId": 10
 											}
@@ -642,13 +643,13 @@
 			},
 			"parStartPipelineFromExecutionOrder": {
 				"type": "int"
-			},
-			"parMatrixPlanId": {
-				"type": "int"
 			}
 		},
 		"variables": {
 			"varStartPipelineExecutionDate": {
+				"type": "String"
+			},
+			"varMatrixPlanId": {
 				"type": "String"
 			}
 		},

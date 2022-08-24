@@ -145,6 +145,53 @@
 																	}
 																}
 															}
+														},
+														{
+															"name": "execute_pl_GroupA_copy1",
+															"type": "ExecutePipeline",
+															"dependsOn": [],
+															"userProperties": [],
+															"typeProperties": {
+																"pipeline": {
+																	"referenceName": "pl_GroupA",
+																	"type": "PipelineReference"
+																},
+																"waitOnCompletion": true,
+																"parameters": {
+																	"parExecutionConfigurationId": {
+																		"value": "@variables('varExecutionConfigurationId')",
+																		"type": "Expression"
+																	},
+																	"parDropId": {
+																		"value": "@variables('varDropId')",
+																		"type": "Expression"
+																	},
+																	"parDropName": {
+																		"value": "@variables('varDropName')",
+																		"type": "Expression"
+																	},
+																	"parExecutionNumber": {
+																		"value": "@variables('varExecutionNumber')",
+																		"type": "Expression"
+																	},
+																	"parNewExecution": {
+																		"value": "@variables('varNewExecution')",
+																		"type": "Expression"
+																	},
+																	"parPlanId": {
+																		"value": "@variables('varPlanId')",
+																		"type": "Expression"
+																	},
+																	"parStartGroupFromExecutionOrder": {
+																		"value": "@variables('varStartGroupFromExecutionOrder')",
+																		"type": "Expression"
+																	},
+																	"parStartPipelineFromExecutionOrder": {
+																		"value": "@variables('varStartPipelineFromExecutionOrder')",
+																		"type": "Expression"
+																	}
+																}
+															}
 														}
 													]
 												},
