@@ -530,7 +530,7 @@
 										"typeProperties": {
 											"variableName": "varMatrixPlanId",
 											"value": {
-												"value": "@string(activity('lookup_GetPipelineToBeExecuted').output.value[0].MatrixPlanId)",
+												"value": "@{item().MatrixPlanId}",
 												"type": "Expression"
 											}
 										}
@@ -550,7 +550,7 @@
 										"typeProperties": {
 											"variableName": "varGroupPlanId",
 											"value": {
-												"value": "@string(activity('lookup_GetPipelineToBeExecuted').output.value[0].GroupPlanId)",
+												"value": "@{item().GroupPlanId}",
 												"type": "Expression"
 											}
 										}
