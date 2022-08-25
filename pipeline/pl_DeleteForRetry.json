@@ -146,6 +146,10 @@
 								"storedProcedureName": "[dbo].[sp_DeleteMatrixTableName]",
 								"storedProcedureParameters": {
 									"DropName": {
+										"value": {
+											"value": "@pipeline().parameters.parDropName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"TableName": {
