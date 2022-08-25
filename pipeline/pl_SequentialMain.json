@@ -473,6 +473,10 @@
 									"parExecutionConfigurationId": {
 										"value": "@variables('varExecutionConfigurationId')",
 										"type": "Expression"
+									},
+									"parDropName": {
+										"value": "@variables('varDropName')",
+										"type": "Expression"
 									}
 								}
 							}
