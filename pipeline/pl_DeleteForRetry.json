@@ -52,7 +52,7 @@
 				}
 			},
 			{
-				"name": "foreach_DeteleEntities",
+				"name": "foreach_DeteleDestinationTables",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -108,7 +108,28 @@
 									"DatabaseName": "sqldb-raw"
 								}
 							}
-						},
+						}
+					]
+				}
+			},
+			{
+				"name": "foreach_DeleteMatrix",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "lookup_DeleteMatrixForRetry",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lookup_DeleteMatrixForRetry').output.value",
+						"type": "Expression"
+					},
+					"activities": [
 						{
 							"name": "sp_DeleteMatrixTable",
 							"type": "SqlServerStoredProcedure",
@@ -122,18 +143,14 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[sp_DeleteTableName]",
+								"storedProcedureName": "[dbo].[sp_DeleteMatrixTableName]",
 								"storedProcedureParameters": {
-									"ExecutionConfigurationId": {
-										"value": {
-											"value": "@pipeline().parameters.parExecutionConfigurationId",
-											"type": "Expression"
-										},
+									"DropName": {
 										"type": "String"
 									},
 									"TableName": {
 										"value": {
-											"value": "@item().MatrixPlanId",
+											"value": "@item().MatrixTableName",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -167,10 +184,28 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetMatrixPlan]",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetMatrixForDeleteOnRetry]",
 						"storedProcedureParameters": {
-							"MatrixPlanId": {
-								"type": "Int32"
+							"planId": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parPlanId",
+									"type": "Expression"
+								}
+							},
+							"startGroupFromExecutionOrder": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+									"type": "Expression"
+								}
+							},
+							"startPipelineFromExecutionOrder": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -179,8 +214,7 @@
 					"dataset": {
 						"referenceName": "ds_sqldb_migration",
 						"type": "DatasetReference"
-					},
-					"firstRowOnly": false
+					}
 				}
 			}
 		],
@@ -196,6 +230,9 @@
 			},
 			"parExecutionConfigurationId": {
 				"type": "int"
+			},
+			"parDropName": {
+				"type": "string"
 			}
 		},
 		"folder": {
