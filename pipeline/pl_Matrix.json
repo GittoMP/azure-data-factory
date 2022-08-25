@@ -78,6 +78,26 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"additionalColumns": [
+										{
+											"name": "IWId",
+											"value": ""
+										},
+										{
+											"name": "DropName",
+											"value": {
+												"value": "@pipeline().parameters.parDropName",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "ExecutionConfigurationId",
+											"value": {
+												"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
+												"type": "Expression"
+											}
+										}
+									],
 									"sqlReaderStoredProcedureName": "@{item().Procedure}",
 									"storedProcedureParameters": {
 										"ExecutionConfigurationId": {
