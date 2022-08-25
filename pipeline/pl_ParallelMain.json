@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "copytables",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -17,6 +17,11 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"additionalColumns": [
+							{
+								"value": ""
+							}
+						],
 						"sqlReaderQuery": "SELECT  *   FROM [dbo].[GroupA_1]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
@@ -50,6 +55,66 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"DestinationTableName": "test01"
+						}
+					}
+				]
+			},
+			{
+				"name": "Log",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "copytables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT '@{pipeline().DataFactory}'as DataFactory_Name,\n'@{pipeline().Pipeline}'as Pipeline_Name,\n'@{activity('copytables').output.rowsRead}'as RowsRead\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqldb_my_italy_new",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sqldb_raw",
+						"type": "DatasetReference",
+						"parameters": {
+							"DestinationTableName": "testlog"
 						}
 					}
 				]
