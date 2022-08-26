@@ -447,42 +447,29 @@
 					},
 					"ifFalseActivities": [
 						{
-							"name": "sp_DeleteMatrixTable",
-							"type": "SqlServerStoredProcedure",
+							"name": "execute_pl_DeleteAllMatrix",
+							"type": "ExecutePipeline",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[sp_DeleteMatrixTableName]",
-								"storedProcedureParameters": {
-									"DropName": {
-										"value": {
-											"value": "@pipeline().parameters.parDropName",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"TableName": {
-										"value": {
-											"value": "@item().Destination",
-											"type": "Expression"
-										},
-										"type": "String"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "ls_raw",
-								"type": "LinkedServiceReference",
+								"pipeline": {
+									"referenceName": "pl_DeleteAllMatrix",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
 								"parameters": {
-									"ServerName": "sql-server-manpower-dev.database.windows.net",
-									"DatabaseName": "sqldb-raw"
+									"parPlanId": {
+										"value": "@variables('varPlanId')",
+										"type": "Expression"
+									},
+									"parStartGroupFromExecutionOrder": {
+										"value": "@variables('varStartGroupFromExecutionOrder')",
+										"type": "Expression"
+									},
+									"parStartPipelineFromExecutionOrder": {
+										"value": "@variables('varStartPipelineFromExecutionOrder')",
+										"type": "Expression"
+									}
 								}
 							}
 						}
