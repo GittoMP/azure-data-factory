@@ -86,7 +86,7 @@
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "setvar_StartPipelineExecutionDate",
+												"activity": "setvar_GroupPlanId",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -509,6 +509,46 @@
 													"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
 													"type": "Expression"
 												}
+											}
+										}
+									},
+									{
+										"name": "setvar_MatrixPlanId",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "setvar_StartPipelineExecutionDate",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "varMatrixPlanId",
+											"value": {
+												"value": "@{item().MatrixPlanId}",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "setvar_GroupPlanId",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "setvar_MatrixPlanId",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "varGroupPlanId",
+											"value": {
+												"value": "@{item().GroupPlanId}",
+												"type": "Expression"
 											}
 										}
 									}
