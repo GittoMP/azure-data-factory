@@ -305,6 +305,27 @@
 														"type": "Expression"
 													},
 													"type": "Int32"
+												},
+												"RowsRead": {
+													"value": {
+														"value": "@{activity('copy_PipelineGroupA').output.rowsRead}\n",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"RowsCopied": {
+													"value": {
+														"value": "@{activity('copy_PipelineGroupA').output.rowsCopied}",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"CopyDuration": {
+													"value": {
+														"value": "@{activity('copy_PipelineGroupA').output.copyDuration}\n",
+														"type": "Expression"
+													},
+													"type": "Int32"
 												}
 											}
 										},
