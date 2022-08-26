@@ -461,6 +461,10 @@
 									"parPlanId": {
 										"value": "@variables('varPlanId')",
 										"type": "Expression"
+									},
+									"parDropName": {
+										"value": "@variables('varDropName')",
+										"type": "Expression"
 									}
 								}
 							}
