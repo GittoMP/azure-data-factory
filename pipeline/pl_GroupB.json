@@ -82,7 +82,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "copy_GroupB",
+										"name": "copy_PipelineGroupB",
 										"type": "Copy",
 										"dependsOn": [
 											{
@@ -212,7 +212,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupB",
+												"activity": "copy_PipelineGroupB",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -426,7 +426,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupB",
+												"activity": "copy_PipelineGroupB",
 												"dependencyConditions": [
 													"Failed"
 												]
