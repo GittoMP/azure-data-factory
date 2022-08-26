@@ -426,21 +426,21 @@
 									},
 									"RowsRead": {
 										"value": {
-											"value": "@{activity('copy_PipelineGroupA').output.rowsRead}\n",
+											"value": "@{activity('copy_Matrix').output.rowsRead}\n",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"RowsCopied": {
 										"value": {
-											"value": "@{activity('copy_PipelineGroupA').output.rowsCopied}",
+											"value": "@{activity('copy_Matrix').output.rowsCopied}",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"CopyDuration": {
 										"value": {
-											"value": "@{activity('copy_PipelineGroupA').output.copyDuration}\n",
+											"value": "@{activity('copy_Matrix').output.copyDuration}\n",
 											"type": "Expression"
 										},
 										"type": "Int32"
