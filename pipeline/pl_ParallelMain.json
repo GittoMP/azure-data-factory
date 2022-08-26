@@ -77,7 +77,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT '@{pipeline().DataFactory}'as DataFactory_Name,\n'@{pipeline().Pipeline}'as Pipeline_Name,\n'@{activity('copytables').output.rowsRead}'as RowsRead,\n'@{activity('copytables').output.rowsCopied}'as RowsWritten\n",
+							"value": "SELECT '@{pipeline().DataFactory}'as DataFactory_Name,\n'@{pipeline().Pipeline}'as Pipeline_Name,\n'@{activity('copytables').output.rowsRead}'as RowsRead,\n'@{activity('copytables').output.copyDuration}'as RowsWritten\n",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
