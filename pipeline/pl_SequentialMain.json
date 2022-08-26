@@ -445,6 +445,48 @@
 						"value": "@and(greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder,0), greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder, 0))",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "sp_DeleteMatrixTable",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_DeleteMatrixTableName]",
+								"storedProcedureParameters": {
+									"DropName": {
+										"value": {
+											"value": "@pipeline().parameters.parDropName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TableName": {
+										"value": {
+											"value": "@item().Destination",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_raw",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"ServerName": "sql-server-manpower-dev.database.windows.net",
+									"DatabaseName": "sqldb-raw"
+								}
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "execute_pl_DeleteForRetry",
