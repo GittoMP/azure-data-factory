@@ -36,15 +36,11 @@
 								"storedProcedureName": "[dbo].[sp_DeleteMatrixTableName]",
 								"storedProcedureParameters": {
 									"DropName": {
-										"value": {
-											"value": "@pipeline().parameters.parDropName",
-											"type": "Expression"
-										},
 										"type": "String"
 									},
 									"TableName": {
 										"value": {
-											"value": "@item().MatrixTableName",
+											"value": "@item().Destination",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -102,11 +98,8 @@
 			"parPlanId": {
 				"type": "int"
 			},
-			"parStartGroupFromExecutionOrder": {
-				"type": "int"
-			},
-			"parStartPipelineFromExecutionOrder": {
-				"type": "int"
+			"parDropName": {
+				"type": "string"
 			}
 		},
 		"folder": {
