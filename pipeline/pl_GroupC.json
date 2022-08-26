@@ -99,7 +99,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupC",
+												"activity": "copy_PipelineGroupC",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -313,7 +313,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupC",
+												"activity": "copy_PipelineGroupC",
 												"dependencyConditions": [
 													"Failed"
 												]
@@ -346,11 +346,11 @@
 										}
 									},
 									{
-										"name": "copy_GroupC",
+										"name": "copy_PipelineGroupC",
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "setvar_StartPipelineExecutionDate",
+												"activity": "setvar_GroupPlanId",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -457,6 +457,100 @@
 												}
 											}
 										]
+									},
+									{
+										"name": "setvar_MatrixPlanId",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "setvar_StartPipelineExecutionDate",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "varMatrixPlanId",
+											"value": {
+												"value": "@{item().MatrixPlanId}",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "setvar_GroupPlanId",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "setvar_MatrixPlanId",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "varGroupPlanId",
+											"value": {
+												"value": "@{item().GroupPlanId}",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "execute_pl_Matrix",
+										"type": "ExecutePipeline",
+										"dependsOn": [
+											{
+												"activity": "sp_UpdateLogEvents_OnSuccess",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "pl_Matrix",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"parMatrixPlanId": {
+													"value": "@variables('varMatrixPlanId')",
+													"type": "Expression"
+												},
+												"parDropName": {
+													"value": "@pipeline().parameters.parDropName",
+													"type": "Expression"
+												},
+												"parExecutionConfigurationId": {
+													"value": "@pipeline().parameters.parExecutionConfigurationId",
+													"type": "Expression"
+												},
+												"parExecutionNumber": {
+													"value": "@pipeline().parameters.parExecutionNumber",
+													"type": "Expression"
+												},
+												"parGroupPlanId": {
+													"value": "@variables('varGroupPlanId')",
+													"type": "Expression"
+												},
+												"parPlanId": {
+													"value": "@pipeline().parameters.parPlanId",
+													"type": "Expression"
+												},
+												"parStartGroupFromExecutionOrder": {
+													"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+													"type": "Expression"
+												},
+												"parStartPipelineFromExecutionOrder": {
+													"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+													"type": "Expression"
+												}
+											}
+										}
 									}
 								],
 								"ifTrueActivities": [
@@ -619,6 +713,12 @@
 		},
 		"variables": {
 			"varStartPipelineExecutionDate": {
+				"type": "String"
+			},
+			"varMatrixPlanId": {
+				"type": "String"
+			},
+			"varGroupPlanId": {
 				"type": "String"
 			}
 		},

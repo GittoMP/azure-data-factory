@@ -1,0 +1,115 @@
+{
+	"name": "pl_DeleteAllMatrix",
+	"properties": {
+		"activities": [
+			{
+				"name": "foreach_DeleteMatrix",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "lookup_GetAllMatrix",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lookup_GetAllMatrix').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "sp_DeleteMatrixTable",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_DeleteMatrixTableName]",
+								"storedProcedureParameters": {
+									"DropName": {
+										"value": {
+											"value": "@pipeline().parameters.parDropName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TableName": {
+										"value": {
+											"value": "@item().Destination",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_raw",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"ServerName": "sql-server-manpower-dev.database.windows.net",
+									"DatabaseName": "sqldb-raw"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "lookup_GetAllMatrix",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetAllMatrixByPlanId]",
+						"storedProcedureParameters": {
+							"planId": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parPlanId",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_migration",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"parameters": {
+			"parPlanId": {
+				"type": "int"
+			},
+			"parDropName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Prototype"
+		},
+		"annotations": []
+	}
+}

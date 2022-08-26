@@ -445,6 +445,31 @@
 						"value": "@and(greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder,0), greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder, 0))",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "execute_pl_DeleteAllMatrix",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_DeleteAllMatrix",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"parPlanId": {
+										"value": "@variables('varPlanId')",
+										"type": "Expression"
+									},
+									"parDropName": {
+										"value": "@variables('varDropName')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "execute_pl_DeleteForRetry",
@@ -472,6 +497,10 @@
 									},
 									"parExecutionConfigurationId": {
 										"value": "@variables('varExecutionConfigurationId')",
+										"type": "Expression"
+									},
+									"parDropName": {
+										"value": "@variables('varDropName')",
 										"type": "Expression"
 									}
 								}
@@ -547,6 +576,9 @@
 				"type": "String"
 			},
 			"varStartPipelineFromExecutionOrder": {
+				"type": "String"
+			},
+			"varMatrixPlanId": {
 				"type": "String"
 			}
 		},
