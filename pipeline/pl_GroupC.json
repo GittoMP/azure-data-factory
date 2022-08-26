@@ -99,7 +99,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupC",
+												"activity": "copy_PipelineGroupC",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -313,7 +313,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_GroupC",
+												"activity": "copy_PipelineGroupC",
 												"dependencyConditions": [
 													"Failed"
 												]
@@ -346,7 +346,7 @@
 										}
 									},
 									{
-										"name": "copy_GroupC",
+										"name": "copy_PipelineGroupC",
 										"type": "Copy",
 										"dependsOn": [
 											{
