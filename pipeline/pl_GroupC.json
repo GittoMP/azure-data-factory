@@ -620,6 +620,9 @@
 		"variables": {
 			"varStartPipelineExecutionDate": {
 				"type": "String"
+			},
+			"varMatrixPlanId": {
+				"type": "String"
 			}
 		},
 		"folder": {
