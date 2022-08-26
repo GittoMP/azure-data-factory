@@ -457,6 +457,60 @@
 												"DatabaseName": "sqldb-migration"
 											}
 										}
+									},
+									{
+										"name": "execute_pl_Matrix",
+										"type": "ExecutePipeline",
+										"dependsOn": [
+											{
+												"activity": "sp_UpdateLogEvents_OnSuccess",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "pl_Matrix",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"parMatrixPlanId": {
+													"value": "@variables('varMatrixPlanId')",
+													"type": "Expression"
+												},
+												"parDropName": {
+													"value": "@pipeline().parameters.parDropName",
+													"type": "Expression"
+												},
+												"parExecutionConfigurationId": {
+													"value": "@pipeline().parameters.parExecutionConfigurationId",
+													"type": "Expression"
+												},
+												"parExecutionNumber": {
+													"value": "@pipeline().parameters.parExecutionNumber",
+													"type": "Expression"
+												},
+												"parGroupPlanId": {
+													"value": "@variables('varGroupPlanId')",
+													"type": "Expression"
+												},
+												"parPlanId": {
+													"value": "@pipeline().parameters.parPlanId",
+													"type": "Expression"
+												},
+												"parStartGroupFromExecutionOrder": {
+													"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+													"type": "Expression"
+												},
+												"parStartPipelineFromExecutionOrder": {
+													"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+													"type": "Expression"
+												}
+											}
+										}
 									}
 								],
 								"ifTrueActivities": [
@@ -619,6 +673,9 @@
 		},
 		"variables": {
 			"varStartPipelineExecutionDate": {
+				"type": "String"
+			},
+			"varMatrixPlanId": {
 				"type": "String"
 			}
 		},
