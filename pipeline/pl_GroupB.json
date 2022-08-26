@@ -677,6 +677,9 @@
 			},
 			"varMatrixPlanId": {
 				"type": "String"
+			},
+			"varGroupPlanId": {
+				"type": "String"
 			}
 		},
 		"folder": {
