@@ -61,7 +61,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "setvar_StartPipelineExecutionDate",
+									"activity": "if_first_execution",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -98,7 +98,10 @@
 											}
 										}
 									],
-									"sqlReaderStoredProcedureName": "@{item().Procedure}",
+									"sqlReaderStoredProcedureName": {
+										"value": "@{item().Procedure}",
+										"type": "Expression"
+									},
 									"storedProcedureParameters": {
 										"ExecutionConfigurationId": {
 											"type": "Int32",
@@ -409,6 +412,63 @@
 									"value": "@utcnow()",
 									"type": "Expression"
 								}
+							}
+						},
+						{
+							"name": "if_first_execution",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "setvar_StartPipelineExecutionDate",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"ifTrueActivities": [
+									{
+										"name": "sp_DeleteMatrixTable",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[sp_DeleteMatrixTableName]",
+											"storedProcedureParameters": {
+												"DropName": {
+													"value": {
+														"value": "@pipeline().parameters.parDropName",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"TableName": {
+													"value": {
+														"value": "@item().Destination",
+														"type": "Expression"
+													},
+													"type": "String"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ls_raw",
+											"type": "LinkedServiceReference",
+											"parameters": {
+												"ServerName": "sql-server-manpower-dev.database.windows.net",
+												"DatabaseName": "sqldb-raw"
+											}
+										}
+									}
+								]
 							}
 						}
 					]
