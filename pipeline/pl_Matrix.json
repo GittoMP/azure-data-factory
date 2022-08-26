@@ -245,7 +245,7 @@
 									},
 									"GroupPlanId": {
 										"value": {
-											"value": "@item().GroupPlanId",
+											"value": "@pipeline().parameters.parGroupPlanId",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -256,7 +256,7 @@
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@item().PipelineName",
+											"value": "@pipeline().Pipeline",
 											"type": "Expression"
 										},
 										"type": "String"
