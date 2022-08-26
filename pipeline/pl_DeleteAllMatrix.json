@@ -78,16 +78,14 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetMatrixForDeleteOnRetry]",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetAllMatrixByPlanId]",
 						"storedProcedureParameters": {
 							"planId": {
-								"type": "Int32"
-							},
-							"startGroupFromExecutionOrder": {
-								"type": "Int32"
-							},
-							"startPipelineFromExecutionOrder": {
-								"type": "Int32"
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.parPlanId",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
