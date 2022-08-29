@@ -436,24 +436,31 @@
 												},
 												"RowsRead": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupC').output.rowsRead}\n\n",
+														"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"RowsCopied": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupC').output.rowsCopied}",
+														"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"CopyDuration": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupC').output.copyDuration}\n",
+														"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
+												},
+												"Destination": {
+													"value": {
+														"value": "@item().Destination",
+														"type": "Expression"
+													},
+													"type": "String"
 												}
 											}
 										},
@@ -564,24 +571,31 @@
 												},
 												"RowsRead": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupC').output.rowsRead}\n\n",
+														"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"RowsCopied": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupc').output.rowsCopied}",
+														"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"CopyDuration": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupC').output.copyDuration}\n",
+														"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
+												},
+												"Destination": {
+													"value": {
+														"value": "@item().Destination",
+														"type": "Expression"
+													},
+													"type": "String"
 												}
 											}
 										},
