@@ -1,0 +1,4440 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-manpower-migration-dev-01"
+		},
+		"ls_azure_key_vault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://credentials-manpower-dev.vault.azure.net/"
+		},
+		"ls_migration_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "secret-connection-sqldb-migration"
+		},
+		"ls_my_italy_new_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "secret-connection-sqldb-my-italy-new"
+		},
+		"ls_raw_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "secret-connection-sqldb-raw"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_DeleteAllMatrix')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "foreach_DeleteMatrix",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetAllMatrix",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_GetAllMatrix').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "sp_DeleteMatrixTable",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_DeleteMatrixTableName]",
+										"storedProcedureParameters": {
+											"DropName": {
+												"value": {
+													"value": "@pipeline().parameters.parDropName",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"TableName": {
+												"value": {
+													"value": "@item().Destination",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_raw",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-raw"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "lookup_GetAllMatrix",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetAllMatrixByPlanId]",
+								"storedProcedureParameters": {
+									"planId": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"parPlanId": {
+						"type": "int"
+					},
+					"parDropName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_raw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_DeleteForRetry')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "lookup_DeleteForRetry",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetEntitiesForDeleteOnRetry]",
+								"storedProcedureParameters": {
+									"planId": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										}
+									},
+									"startGroupFromExecutionOrder": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+											"type": "Expression"
+										}
+									},
+									"startPipelineFromExecutionOrder": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "foreach_DeteleDestinationTables",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_DeleteForRetry",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_DeleteForRetry').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "sp_DeleteDestinationTable",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_DeleteTableName]",
+										"storedProcedureParameters": {
+											"ExecutionConfigurationId": {
+												"value": {
+													"value": "@pipeline().parameters.parExecutionConfigurationId",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"TableName": {
+												"value": {
+													"value": "@item().Destination",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_raw",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-raw"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "foreach_DeleteMatrix",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_DeleteMatrixForRetry",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_DeleteMatrixForRetry').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "sp_DeleteMatrixTable",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_DeleteMatrixTableName]",
+										"storedProcedureParameters": {
+											"DropName": {
+												"value": {
+													"value": "@pipeline().parameters.parDropName",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"TableName": {
+												"value": {
+													"value": "@item().MatrixTableName",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_raw",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-raw"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "lookup_DeleteMatrixForRetry",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetMatrixForDeleteOnRetry]",
+								"storedProcedureParameters": {
+									"planId": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										}
+									},
+									"startGroupFromExecutionOrder": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+											"type": "Expression"
+										}
+									},
+									"startPipelineFromExecutionOrder": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"parPlanId": {
+						"type": "int"
+					},
+					"parStartGroupFromExecutionOrder": {
+						"type": "int"
+					},
+					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					},
+					"parExecutionConfigurationId": {
+						"type": "int"
+					},
+					"parDropName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_raw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_GroupA')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "lookup_GetPipelineToBeExecuted",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetPipelinePlan]",
+								"storedProcedureParameters": {
+									"PipelineName": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										}
+									},
+									"PlanId": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute each pipeline per group",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetPipelineToBeExecuted",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_GetPipelineToBeExecuted').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "if_PipelineFailed",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "lookup_ReadExecutionFailed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@activity('lookup_ReadExecutionFailed').output.firstRow.Failed",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "copy_PipelineGroup",
+												"type": "Copy",
+												"dependsOn": [
+													{
+														"activity": "setvar_GroupPlanId",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"additionalColumns": [
+															{
+																"name": "ExecutionConfigurationId",
+																"value": {
+																	"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "TimeStamp",
+																"value": {
+																	"value": "@utcnow()",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "DropName",
+																"value": {
+																	"value": "@pipeline().parameters.parDropName",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "ExecutionNumber",
+																"value": {
+																	"value": "@string(pipeline().parameters.parExecutionNumber)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "PlanId",
+																"value": {
+																	"value": "@string(pipeline().parameters.parPlanId)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "StartGroupFromExecutionOrder",
+																"value": {
+																	"value": "@string(pipeline().parameters.parStartGroupFromExecutionOrder)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "StartPipelineFromExecutionOrder",
+																"value": {
+																	"value": "@string(pipeline().parameters.parStartPipelineFromExecutionOrder)",
+																	"type": "Expression"
+																}
+															}
+														],
+														"sqlReaderQuery": {
+															"value": "select * from @{item().Procedure}",
+															"type": "Expression"
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"sink": {
+														"type": "AzureSqlSink",
+														"writeBehavior": "insert",
+														"sqlWriterUseTableLock": false,
+														"tableOption": "autoCreate",
+														"disableMetricsCollection": false
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "ds_sqldb_my_italy_new",
+														"type": "DatasetReference",
+														"parameters": {}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "ds_sqldb_raw",
+														"type": "DatasetReference",
+														"parameters": {
+															"DestinationTableName": {
+																"value": "@item().Destination",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											},
+											{
+												"name": "setvar_StartPipelineExecutionDate",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varStartPipelineExecutionDate",
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_OnSuccess",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "copy_PipelineGroup",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "No",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"PlanId": {
+															"value": {
+																"value": "@pipeline().parameters.parPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartGroupFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartPipelineFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsRead": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsCopied": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"CopyDuration": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"Destination": {
+															"value": {
+																"value": "@item().Destination",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											},
+											{
+												"name": "sp_SetExecutionFailedStatus_Failed",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "copy_PipelineGroup",
+														"dependencyConditions": [
+															"Failed"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_SetExecutionFailedStatus]",
+													"storedProcedureParameters": {
+														"parFailed": {
+															"value": "true",
+															"type": "Boolean"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											},
+											{
+												"name": "execute_pl_Matrix",
+												"type": "ExecutePipeline",
+												"dependsOn": [
+													{
+														"activity": "sp_UpdateLogEvents_OnSuccess",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_Matrix",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"parMatrixPlanId": {
+															"value": "@variables('varMatrixPlanId')",
+															"type": "Expression"
+														},
+														"parDropName": {
+															"value": "@pipeline().parameters.parDropName",
+															"type": "Expression"
+														},
+														"parExecutionConfigurationId": {
+															"value": "@pipeline().parameters.parExecutionConfigurationId",
+															"type": "Expression"
+														},
+														"parExecutionNumber": {
+															"value": "@pipeline().parameters.parExecutionNumber",
+															"type": "Expression"
+														},
+														"parGroupPlanId": {
+															"value": "@variables('varGroupPlanId')",
+															"type": "Expression"
+														},
+														"parPlanId": {
+															"value": "@pipeline().parameters.parPlanId",
+															"type": "Expression"
+														},
+														"parStartGroupFromExecutionOrder": {
+															"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+															"type": "Expression"
+														},
+														"parStartPipelineFromExecutionOrder": {
+															"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+															"type": "Expression"
+														}
+													}
+												}
+											},
+											{
+												"name": "setvar_MatrixPlanId",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "setvar_StartPipelineExecutionDate",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varMatrixPlanId",
+													"value": {
+														"value": "@{item().MatrixPlanId}",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "setvar_GroupPlanId",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "setvar_MatrixPlanId",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varGroupPlanId",
+													"value": {
+														"value": "@{item().GroupPlanId}",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_OnFailed",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "sp_SetExecutionFailedStatus_Failed",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "Yes",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"PlanId": {
+															"value": {
+																"value": "@pipeline().parameters.parPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartGroupFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartPipelineFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsRead": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsCopied": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"CopyDuration": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"Destination": {
+															"value": {
+																"value": "@item().Destination",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "setvar_StartPipelineExecutionDateTrue",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varStartPipelineExecutionDate",
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_Skipped",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "setvar_StartPipelineExecutionDateTrue",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "Skipped",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "lookup_ReadExecutionFailed",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": "[[dbo].[sp_GetExecutionFailedStatus]",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_sqldb_migration",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"parExecutionConfigurationId": {
+						"type": "int"
+					},
+					"parDropId": {
+						"type": "int"
+					},
+					"parDropName": {
+						"type": "string"
+					},
+					"parExecutionNumber": {
+						"type": "int"
+					},
+					"parNewExecution": {
+						"type": "bool"
+					},
+					"parPlanId": {
+						"type": "int"
+					},
+					"parStartGroupFromExecutionOrder": {
+						"type": "int"
+					},
+					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					}
+				},
+				"variables": {
+					"varStartPipelineExecutionDate": {
+						"type": "String"
+					},
+					"varMatrixPlanId": {
+						"type": "String"
+					},
+					"varGroupPlanId": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype/Sequential Groups"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_my_italy_new')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_raw')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_Matrix')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_GroupB')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "lookup_GetPipelineToBeExecuted",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetPipelinePlan]",
+								"storedProcedureParameters": {
+									"PipelineName": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										}
+									},
+									"PlanId": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute each pipeline per group",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetPipelineToBeExecuted",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_GetPipelineToBeExecuted').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "if_PipelineFailed",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "lookup_ReadExecutionFailed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@activity('lookup_ReadExecutionFailed').output.firstRow.Failed",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "copy_PipelineGroup",
+												"type": "Copy",
+												"dependsOn": [
+													{
+														"activity": "setvar_GroupPlanId",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"additionalColumns": [
+															{
+																"name": "ExecutionConfigurationId",
+																"value": {
+																	"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "TimeStamp",
+																"value": {
+																	"value": "@utcnow()",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "DropName",
+																"value": {
+																	"value": "@pipeline().parameters.parDropName",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "ExecutionNumber",
+																"value": {
+																	"value": "@string(pipeline().parameters.parExecutionNumber)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "PlanId",
+																"value": {
+																	"value": "@string(pipeline().parameters.parPlanId)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "StartGroupFromExecutionOrder",
+																"value": {
+																	"value": "@string(pipeline().parameters.parStartGroupFromExecutionOrder)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "StartPipelineFromExecutionOrder",
+																"value": {
+																	"value": "@string(pipeline().parameters.parStartPipelineFromExecutionOrder)",
+																	"type": "Expression"
+																}
+															}
+														],
+														"sqlReaderQuery": {
+															"value": "select * from @{item().Procedure}",
+															"type": "Expression"
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"sink": {
+														"type": "AzureSqlSink",
+														"writeBehavior": "insert",
+														"sqlWriterUseTableLock": false,
+														"tableOption": "autoCreate",
+														"disableMetricsCollection": false
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "ds_sqldb_my_italy_new",
+														"type": "DatasetReference",
+														"parameters": {}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "ds_sqldb_raw",
+														"type": "DatasetReference",
+														"parameters": {
+															"DestinationTableName": "@item().Destination"
+														}
+													}
+												]
+											},
+											{
+												"name": "setvar_StartPipelineExecutionDate",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varStartPipelineExecutionDate",
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_SetExecutionFailedStatus_Failed",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "copy_PipelineGroup",
+														"dependencyConditions": [
+															"Failed"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_SetExecutionFailedStatus]",
+													"storedProcedureParameters": {
+														"parFailed": {
+															"value": "true",
+															"type": "Boolean"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											},
+											{
+												"name": "execute_pl_Matrix",
+												"type": "ExecutePipeline",
+												"dependsOn": [
+													{
+														"activity": "sp_UpdateLogEvents_OnSuccess",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_Matrix",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"parMatrixPlanId": {
+															"value": "@variables('varMatrixPlanId')",
+															"type": "Expression"
+														},
+														"parDropName": {
+															"value": "@pipeline().parameters.parDropName",
+															"type": "Expression"
+														},
+														"parExecutionConfigurationId": {
+															"value": "@pipeline().parameters.parExecutionConfigurationId",
+															"type": "Expression"
+														},
+														"parExecutionNumber": {
+															"value": "@pipeline().parameters.parExecutionNumber",
+															"type": "Expression"
+														},
+														"parGroupPlanId": {
+															"value": "@variables('varGroupPlanId')",
+															"type": "Expression"
+														},
+														"parPlanId": {
+															"value": "@pipeline().parameters.parPlanId",
+															"type": "Expression"
+														},
+														"parStartGroupFromExecutionOrder": {
+															"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+															"type": "Expression"
+														},
+														"parStartPipelineFromExecutionOrder": {
+															"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+															"type": "Expression"
+														}
+													}
+												}
+											},
+											{
+												"name": "setvar_MatrixPlanId",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "setvar_StartPipelineExecutionDate",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varMatrixPlanId",
+													"value": {
+														"value": "@{item().MatrixPlanId}",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "setvar_GroupPlanId",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "setvar_MatrixPlanId",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varGroupPlanId",
+													"value": {
+														"value": "@{item().GroupPlanId}",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_OnSuccess",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "copy_PipelineGroup",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "No",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"PlanId": {
+															"value": {
+																"value": "@pipeline().parameters.parPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartGroupFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartPipelineFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsRead": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsCopied": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"CopyDuration": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"Destination": {
+															"value": {
+																"value": "@item().Destination",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_OnFailed",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "sp_SetExecutionFailedStatus_Failed",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "Yes",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"PlanId": {
+															"value": {
+																"value": "@pipeline().parameters.parPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartGroupFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartPipelineFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsRead": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsCopied": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"CopyDuration": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"Destination": {
+															"value": {
+																"value": "@item().Destination",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "setvar_StartPipelineExecutionDateTrue",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varStartPipelineExecutionDate",
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_Skipped",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "setvar_StartPipelineExecutionDateTrue",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "Skipped",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "lookup_ReadExecutionFailed",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": "[[dbo].[sp_GetExecutionFailedStatus]",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_sqldb_migration",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"parExecutionConfigurationId": {
+						"type": "int"
+					},
+					"parDropId": {
+						"type": "int"
+					},
+					"parDropName": {
+						"type": "string"
+					},
+					"parExecutionNumber": {
+						"type": "int"
+					},
+					"parNewExecution": {
+						"type": "bool"
+					},
+					"parPlanId": {
+						"type": "int"
+					},
+					"parStartGroupFromExecutionOrder": {
+						"type": "int"
+					},
+					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					}
+				},
+				"variables": {
+					"varStartPipelineExecutionDate": {
+						"type": "String"
+					},
+					"varMatrixPlanId": {
+						"type": "String"
+					},
+					"varGroupPlanId": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype/Sequential Groups"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_my_italy_new')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_raw')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_Matrix')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_GroupC')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "lookup_GetPipelineToBeExecuted",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetPipelinePlan]",
+								"storedProcedureParameters": {
+									"PipelineName": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										}
+									},
+									"PlanId": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parPlanId",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute each pipeline per group",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetPipelineToBeExecuted",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_GetPipelineToBeExecuted').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "if_PipelineFailed",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "lookup_ReadExecutionFailed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@activity('lookup_ReadExecutionFailed').output.firstRow.Failed",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "setvar_StartPipelineExecutionDate",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varStartPipelineExecutionDate",
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_SetExecutionFailedStatus_Failed",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "copy_PipelineGroup",
+														"dependencyConditions": [
+															"Failed"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_SetExecutionFailedStatus]",
+													"storedProcedureParameters": {
+														"parFailed": {
+															"value": "true",
+															"type": "Boolean"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											},
+											{
+												"name": "copy_PipelineGroup",
+												"type": "Copy",
+												"dependsOn": [
+													{
+														"activity": "setvar_GroupPlanId",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"additionalColumns": [
+															{
+																"name": "ExecutionConfigurationId",
+																"value": {
+																	"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "TimeStamp",
+																"value": {
+																	"value": "@utcnow()",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "DropName",
+																"value": {
+																	"value": "@pipeline().parameters.parDropName",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "ExecutionNumber",
+																"value": {
+																	"value": "@string(pipeline().parameters.parExecutionNumber)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "PlanId",
+																"value": {
+																	"value": "@string(pipeline().parameters.parPlanId)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "StartGroupFromExecutionOrder",
+																"value": {
+																	"value": "@string(pipeline().parameters.parStartGroupFromExecutionOrder)",
+																	"type": "Expression"
+																}
+															},
+															{
+																"name": "StartPipelineFromExecutionOrder",
+																"value": {
+																	"value": "@string(pipeline().parameters.parStartPipelineFromExecutionOrder)",
+																	"type": "Expression"
+																}
+															}
+														],
+														"sqlReaderQuery": {
+															"value": "select * from @{item().Procedure}",
+															"type": "Expression"
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"sink": {
+														"type": "AzureSqlSink",
+														"writeBehavior": "insert",
+														"sqlWriterUseTableLock": false,
+														"tableOption": "autoCreate",
+														"disableMetricsCollection": false
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "ds_sqldb_my_italy_new",
+														"type": "DatasetReference",
+														"parameters": {}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "ds_sqldb_raw",
+														"type": "DatasetReference",
+														"parameters": {
+															"DestinationTableName": "@item().Destination"
+														}
+													}
+												]
+											},
+											{
+												"name": "setvar_MatrixPlanId",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "setvar_StartPipelineExecutionDate",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varMatrixPlanId",
+													"value": {
+														"value": "@{item().MatrixPlanId}",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "setvar_GroupPlanId",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "setvar_MatrixPlanId",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varGroupPlanId",
+													"value": {
+														"value": "@{item().GroupPlanId}",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "execute_pl_Matrix",
+												"type": "ExecutePipeline",
+												"dependsOn": [
+													{
+														"activity": "sp_UpdateLogEvents_OnSuccess",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "pl_Matrix",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"parMatrixPlanId": {
+															"value": "@variables('varMatrixPlanId')",
+															"type": "Expression"
+														},
+														"parDropName": {
+															"value": "@pipeline().parameters.parDropName",
+															"type": "Expression"
+														},
+														"parExecutionConfigurationId": {
+															"value": "@pipeline().parameters.parExecutionConfigurationId",
+															"type": "Expression"
+														},
+														"parExecutionNumber": {
+															"value": "@pipeline().parameters.parExecutionNumber",
+															"type": "Expression"
+														},
+														"parGroupPlanId": {
+															"value": "@variables('varGroupPlanId')",
+															"type": "Expression"
+														},
+														"parPlanId": {
+															"value": "@pipeline().parameters.parPlanId",
+															"type": "Expression"
+														},
+														"parStartGroupFromExecutionOrder": {
+															"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+															"type": "Expression"
+														},
+														"parStartPipelineFromExecutionOrder": {
+															"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+															"type": "Expression"
+														}
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_OnSuccess",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "copy_PipelineGroup",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "No",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"PlanId": {
+															"value": {
+																"value": "@pipeline().parameters.parPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartGroupFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartPipelineFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsRead": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsCopied": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"CopyDuration": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"Destination": {
+															"value": {
+																"value": "@item().Destination",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_OnFailed",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "sp_SetExecutionFailedStatus_Failed",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "Yes",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"PlanId": {
+															"value": {
+																"value": "@pipeline().parameters.parPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartGroupFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"StartPipelineFromExecutionOrder": {
+															"value": {
+																"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsRead": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"RowsCopied": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"CopyDuration": {
+															"value": {
+																"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"Destination": {
+															"value": {
+																"value": "@item().Destination",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "setvar_StartPipelineExecutionDateTrue",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varStartPipelineExecutionDate",
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "sp_UpdateLogEvents_Skipped",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "setvar_StartPipelineExecutionDateTrue",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+													"storedProcedureParameters": {
+														"DropName": {
+															"value": {
+																"value": "@pipeline().parameters.parDropName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"ExecutionConfigurationId": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionConfigurationId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"ExecutionNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parExecutionNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"GroupPlanId": {
+															"value": {
+																"value": "@item().GroupPlanId",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"InError": {
+															"value": "Skipped",
+															"type": "String"
+														},
+														"PipelineName": {
+															"value": {
+																"value": "@item().PipelineName",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"StartExecutionDate": {
+															"value": {
+																"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														},
+														"StopExecutionDate": {
+															"value": {
+																"value": "@utcnow()",
+																"type": "Expression"
+															},
+															"type": "DateTime"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "ls_migration",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"ServerName": "sql-server-manpower-dev.database.windows.net",
+														"DatabaseName": "sqldb-migration"
+													}
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "lookup_ReadExecutionFailed",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": "[[dbo].[sp_GetExecutionFailedStatus]",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_sqldb_migration",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"parExecutionConfigurationId": {
+						"type": "int"
+					},
+					"parDropId": {
+						"type": "int"
+					},
+					"parDropName": {
+						"type": "string"
+					},
+					"parExecutionNumber": {
+						"type": "int"
+					},
+					"parNewExecution": {
+						"type": "bool"
+					},
+					"parPlanId": {
+						"type": "int"
+					},
+					"parStartGroupFromExecutionOrder": {
+						"type": "int"
+					},
+					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					}
+				},
+				"variables": {
+					"varStartPipelineExecutionDate": {
+						"type": "String"
+					},
+					"varMatrixPlanId": {
+						"type": "String"
+					},
+					"varGroupPlanId": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype/Sequential Groups"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_my_italy_new')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_raw')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_Matrix')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_Matrix')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "lookup_GetMatrixPlan",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetMatrixPlan]",
+								"storedProcedureParameters": {
+									"MatrixPlanId": {
+										"type": "Int32",
+										"value": {
+											"value": "@pipeline().parameters.parMatrixPlanId",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "foreach_Matrix",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetMatrixPlan",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_GetMatrixPlan').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "copy_Matrix",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "setvar_StartPipelineExecutionDate",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"additionalColumns": [
+												{
+													"name": "IWId",
+													"value": ""
+												},
+												{
+													"name": "DropName",
+													"value": {
+														"value": "@pipeline().parameters.parDropName",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "ExecutionConfigurationId",
+													"value": {
+														"value": "@string(pipeline().parameters.parExecutionConfigurationId)",
+														"type": "Expression"
+													}
+												}
+											],
+											"sqlReaderStoredProcedureName": {
+												"value": "@{item().Procedure}",
+												"type": "Expression"
+											},
+											"storedProcedureParameters": {
+												"ExecutionConfigurationId": {
+													"type": "Int32",
+													"value": {
+														"value": "@pipeline().parameters.parExecutionConfigurationId",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"tableOption": "autoCreate",
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_sqldb_raw",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTableName": "Destination"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_sqldb_raw",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTableName": "@item().Destination"
+											}
+										}
+									]
+								},
+								{
+									"name": "sp_SetExecutionFailedStatus_Failed",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "copy_Matrix",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_SetExecutionFailedStatus]",
+										"storedProcedureParameters": {
+											"parFailed": {
+												"value": "true",
+												"type": "Boolean"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_migration",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-migration"
+										}
+									}
+								},
+								{
+									"name": "setvar_StartPipelineExecutionDate",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "varStartPipelineExecutionDate",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "sp_UpdateLogEvents_OnSuccess",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "copy_Matrix",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+										"storedProcedureParameters": {
+											"DropName": {
+												"value": {
+													"value": "@pipeline().parameters.parDropName",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"ExecutionConfigurationId": {
+												"value": {
+													"value": "@pipeline().parameters.parExecutionConfigurationId",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"ExecutionNumber": {
+												"value": {
+													"value": "@pipeline().parameters.parExecutionNumber",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"GroupPlanId": {
+												"value": {
+													"value": "@pipeline().parameters.parGroupPlanId",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"InError": {
+												"value": "No",
+												"type": "String"
+											},
+											"PipelineName": {
+												"value": {
+													"value": "@pipeline().Pipeline",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"StartExecutionDate": {
+												"value": {
+													"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"StopExecutionDate": {
+												"value": {
+													"value": "@utcnow()",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"PlanId": {
+												"value": {
+													"value": "@pipeline().parameters.parPlanId",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"StartGroupFromExecutionOrder": {
+												"value": {
+													"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"StartPipelineFromExecutionOrder": {
+												"value": {
+													"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"RowsRead": {
+												"value": {
+													"value": "@{activity('copy_Matrix').output.rowsRead}\n",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"RowsCopied": {
+												"value": {
+													"value": "@{activity('copy_Matrix').output.rowsCopied}",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"CopyDuration": {
+												"value": {
+													"value": "@{activity('copy_Matrix').output.copyDuration}\n",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"Destination": {
+												"value": {
+													"value": "@item().Destination",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_migration",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-migration"
+										}
+									}
+								},
+								{
+									"name": "sp_UpdateLogEvents_OnFailed",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "sp_SetExecutionFailedStatus_Failed",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_UpdateLogEvents]",
+										"storedProcedureParameters": {
+											"DropName": {
+												"value": {
+													"value": "@pipeline().parameters.parDropName",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"ExecutionConfigurationId": {
+												"value": {
+													"value": "@pipeline().parameters.parExecutionConfigurationId",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"ExecutionNumber": {
+												"value": {
+													"value": "@pipeline().parameters.parExecutionNumber",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"GroupPlanId": {
+												"value": {
+													"value": "@pipeline().parameters.parGroupPlanId",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"InError": {
+												"value": "Yes",
+												"type": "String"
+											},
+											"PipelineName": {
+												"value": {
+													"value": "@pipeline().Pipeline",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"StartExecutionDate": {
+												"value": {
+													"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"StopExecutionDate": {
+												"value": {
+													"value": "@utcnow()",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"PlanId": {
+												"value": {
+													"value": "@pipeline().parameters.parPlanId",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"StartGroupFromExecutionOrder": {
+												"value": {
+													"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"StartPipelineFromExecutionOrder": {
+												"value": {
+													"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"RowsRead": {
+												"value": {
+													"value": "@{activity('copy_Matrix').output.rowsRead}\n",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"RowsCopied": {
+												"value": {
+													"value": "@{activity('copy_Matrix').output.rowsCopied}",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"CopyDuration": {
+												"value": {
+													"value": "@{activity('copy_Matrix').output.copyDuration}\n",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"Destination": {
+												"value": {
+													"value": "@item().Destination",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_migration",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-migration"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"parMatrixPlanId": {
+						"type": "int"
+					},
+					"parDropName": {
+						"type": "string"
+					},
+					"parExecutionConfigurationId": {
+						"type": "int"
+					},
+					"parExecutionNumber": {
+						"type": "int"
+					},
+					"parGroupPlanId": {
+						"type": "int"
+					},
+					"parPlanId": {
+						"type": "int"
+					},
+					"parStartGroupFromExecutionOrder": {
+						"type": "int"
+					},
+					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					}
+				},
+				"variables": {
+					"varStartPipelineExecutionDate": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype/Sequential Groups"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_raw')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_ParallelMain')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Append variable1",
+						"type": "AppendVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Parallel",
+							"value": "YES"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"Parallel": {
+						"type": "Array"
+					}
+				},
+				"folder": {
+					"name": "Prototype/Parallel Groups"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_PipelinesExecution')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "execute_pl_ParallelMain",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_ParallelMain",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "execute_pl_SequentialMain",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_SequentialMain",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_ParallelMain')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_SequentialMain')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_SequentialMain')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "lookup_GetGroupPlan",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "if_Retry_Delete",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetGroupPlan]",
+								"storedProcedureParameters": {
+									"isSequential": {
+										"type": "Boolean",
+										"value": "True"
+									},
+									"planId": {
+										"type": "Int32",
+										"value": {
+											"value": "@int(variables('varPlanId'))",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "foreach_Group",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetGroupPlan",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('lookup_GetGroupPlan').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "if_GroupExecutionFailed",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "lookup_ExecutionFailedStatus",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@activity('lookup_ExecutionFailedStatus').output.firstRow.Failed",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "switch_ForEachGroup",
+												"type": "Switch",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"on": {
+														"value": "@item().GroupName",
+														"type": "Expression"
+													},
+													"cases": [
+														{
+															"value": "pl_GroupA",
+															"activities": [
+																{
+																	"name": "execute_pl_GroupA",
+																	"type": "ExecutePipeline",
+																	"dependsOn": [],
+																	"userProperties": [],
+																	"typeProperties": {
+																		"pipeline": {
+																			"referenceName": "pl_GroupA",
+																			"type": "PipelineReference"
+																		},
+																		"waitOnCompletion": true,
+																		"parameters": {
+																			"parExecutionConfigurationId": {
+																				"value": "@variables('varExecutionConfigurationId')",
+																				"type": "Expression"
+																			},
+																			"parDropId": {
+																				"value": "@variables('varDropId')",
+																				"type": "Expression"
+																			},
+																			"parDropName": {
+																				"value": "@variables('varDropName')",
+																				"type": "Expression"
+																			},
+																			"parExecutionNumber": {
+																				"value": "@variables('varExecutionNumber')",
+																				"type": "Expression"
+																			},
+																			"parNewExecution": {
+																				"value": "@variables('varNewExecution')",
+																				"type": "Expression"
+																			},
+																			"parPlanId": {
+																				"value": "@variables('varPlanId')",
+																				"type": "Expression"
+																			},
+																			"parStartGroupFromExecutionOrder": {
+																				"value": "@variables('varStartGroupFromExecutionOrder')",
+																				"type": "Expression"
+																			},
+																			"parStartPipelineFromExecutionOrder": {
+																				"value": "@variables('varStartPipelineFromExecutionOrder')",
+																				"type": "Expression"
+																			}
+																		}
+																	}
+																}
+															]
+														},
+														{
+															"value": "pl_GroupB",
+															"activities": [
+																{
+																	"name": "pl_GroupB",
+																	"type": "ExecutePipeline",
+																	"dependsOn": [],
+																	"userProperties": [],
+																	"typeProperties": {
+																		"pipeline": {
+																			"referenceName": "pl_GroupB",
+																			"type": "PipelineReference"
+																		},
+																		"waitOnCompletion": true,
+																		"parameters": {
+																			"parExecutionConfigurationId": {
+																				"value": "@variables('varExecutionConfigurationId')",
+																				"type": "Expression"
+																			},
+																			"parDropId": {
+																				"value": "@variables('varDropId')",
+																				"type": "Expression"
+																			},
+																			"parDropName": {
+																				"value": "@variables('varDropName')",
+																				"type": "Expression"
+																			},
+																			"parExecutionNumber": {
+																				"value": "@variables('varExecutionNumber')",
+																				"type": "Expression"
+																			},
+																			"parNewExecution": {
+																				"value": "@variables('varNewExecution')",
+																				"type": "Expression"
+																			},
+																			"parPlanId": {
+																				"value": "@variables('varPlanId')",
+																				"type": "Expression"
+																			},
+																			"parStartGroupFromExecutionOrder": {
+																				"value": "@variables('varStartGroupFromExecutionOrder')",
+																				"type": "Expression"
+																			},
+																			"parStartPipelineFromExecutionOrder": {
+																				"value": "@variables('varStartPipelineFromExecutionOrder')",
+																				"type": "Expression"
+																			}
+																		}
+																	}
+																}
+															]
+														},
+														{
+															"value": "pl_GroupC",
+															"activities": [
+																{
+																	"name": "pl_GroupC",
+																	"type": "ExecutePipeline",
+																	"dependsOn": [],
+																	"userProperties": [],
+																	"typeProperties": {
+																		"pipeline": {
+																			"referenceName": "pl_GroupC",
+																			"type": "PipelineReference"
+																		},
+																		"waitOnCompletion": true,
+																		"parameters": {
+																			"parExecutionConfigurationId": {
+																				"value": "@variables('varExecutionConfigurationId')",
+																				"type": "Expression"
+																			},
+																			"parDropId": {
+																				"value": "@variables('varDropId')",
+																				"type": "Expression"
+																			},
+																			"parDropName": {
+																				"value": "@variables('varDropName')",
+																				"type": "Expression"
+																			},
+																			"parExecutionNumber": {
+																				"value": "@variables('varExecutionNumber')",
+																				"type": "Expression"
+																			},
+																			"parNewExecution": {
+																				"value": "@variables('varNewExecution')",
+																				"type": "Expression"
+																			},
+																			"parPlanId": {
+																				"value": "@variables('varPlanId')",
+																				"type": "Expression"
+																			},
+																			"parStartGroupFromExecutionOrder": {
+																				"value": "@variables('varStartGroupFromExecutionOrder')",
+																				"type": "Expression"
+																			},
+																			"parStartPipelineFromExecutionOrder": {
+																				"value": "@variables('varStartPipelineFromExecutionOrder')",
+																				"type": "Expression"
+																			}
+																		}
+																	}
+																}
+															]
+														}
+													]
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "setvar_varGlobalError",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "varGlobalError",
+													"value": {
+														"value": "@pipeline().RunId",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "lookup_ExecutionFailedStatus",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": "[[dbo].[sp_GetExecutionFailedStatus]",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_sqldb_migration",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": true
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "lookup_GetExecutionConfiguration",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetExecutionConfiguration]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "setvar_ExecutionConfigurationDropName",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "setvar_ExecutionConfigurationDropId",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varDropName",
+							"value": {
+								"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].DropName",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "setvar_ExecutionConfigurationId",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "setvar_ExecutionConfigurationPlanId",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varExecutionConfigurationId",
+							"value": {
+								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].Id)\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "setvar_ExecutionConfigurationDropId",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "setvar_ExecutionConfigurationId",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varDropId",
+							"value": {
+								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].DropId)\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "setvar_ExecutionConfigurationExecutionNumber",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "setvar_ExecutionConfigurationDropName",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varExecutionNumber",
+							"value": {
+								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].ExecutionNumber)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "setvar_ExecutionConfigurationPlanId",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "setvar_StartPipelineFromExecutionOrder",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varPlanId",
+							"value": {
+								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].PlanId)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "if_Retry_Delete",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "setvar_ExecutionConfigurationExecutionNumber",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@and(greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder,0), greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder, 0))",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "execute_pl_DeleteAllMatrix",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pl_DeleteAllMatrix",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"parPlanId": {
+												"value": "@variables('varPlanId')",
+												"type": "Expression"
+											},
+											"parDropName": {
+												"value": "@variables('varDropName')",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "execute_pl_DeleteForRetry",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pl_DeleteForRetry",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"parPlanId": {
+												"value": "@variables('varPlanId')",
+												"type": "Expression"
+											},
+											"parStartGroupFromExecutionOrder": {
+												"value": "@variables('varStartGroupFromExecutionOrder')",
+												"type": "Expression"
+											},
+											"parStartPipelineFromExecutionOrder": {
+												"value": "@variables('varStartPipelineFromExecutionOrder')",
+												"type": "Expression"
+											},
+											"parExecutionConfigurationId": {
+												"value": "@variables('varExecutionConfigurationId')",
+												"type": "Expression"
+											},
+											"parDropName": {
+												"value": "@variables('varDropName')",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "setvar_StartGroupFromExecutionOrder",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetExecutionConfiguration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varStartGroupFromExecutionOrder",
+							"value": {
+								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "setvar_StartPipelineFromExecutionOrder",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "setvar_StartGroupFromExecutionOrder",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varStartPipelineFromExecutionOrder",
+							"value": {
+								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"varExecutionConfigurationId": {
+						"type": "String"
+					},
+					"varDropId": {
+						"type": "String"
+					},
+					"varDropName": {
+						"type": "String"
+					},
+					"varExecutionNumber": {
+						"type": "String"
+					},
+					"varNewExecution": {
+						"type": "Boolean"
+					},
+					"varGlobalError": {
+						"type": "String"
+					},
+					"varPlanId": {
+						"type": "String"
+					},
+					"varStartGroupFromExecutionOrder": {
+						"type": "String"
+					},
+					"varStartPipelineFromExecutionOrder": {
+						"type": "String"
+					},
+					"varMatrixPlanId": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype/Sequential Groups"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_DeleteAllMatrix')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_DeleteForRetry')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_GroupA')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_GroupB')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_GroupC')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_Start')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "if_wrong_execution",
+						"description": "This condition prevents incorrect starts of previous completed executions.",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "sp_GetTripletExecution",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('sp_GetTripletExecution').output.firstRow.Triplet,'1-0-0')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "execute_pl_Start",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "sp_ResetFailedStatus",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pl_PipelinesExecution",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								},
+								{
+									"name": "sp_UpdateStartDate",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_StartDate]"
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_migration",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-migration"
+										}
+									}
+								},
+								{
+									"name": "sp_UpdateEndDate",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "sp_UpdateExecutionPlanHistory",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_EndDate]"
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_migration",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-migration"
+										}
+									}
+								},
+								{
+									"name": "sp_UpdateExecutionPlanHistory",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "execute_pl_Start",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_InsertPlanExecutionToHistory]"
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_migration",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-migration"
+										}
+									}
+								},
+								{
+									"name": "sp_ResetFailedStatus",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "sp_UpdateStartDate",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[sp_ResetFailFlag]",
+										"storedProcedureParameters": {
+											"num": {
+												"value": "0",
+												"type": "Int32"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_migration",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"ServerName": "sql-server-manpower-dev.database.windows.net",
+											"DatabaseName": "sqldb-migration"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "sp_GetTripletExecution",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetTripletExecution]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_PipelinesExecution')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sqldb_migration')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_migration",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": "sql-server-manpower-dev.database.windows.net",
+						"DatabaseName": "sqldb-migration"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sqldb_my_italy_new')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_my_italy_new",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": "sql-server-manpower-dev.database.windows.net",
+						"DatabaseName": "sqldb-my_italy_new"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_my_italy_new')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sqldb_raw')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_raw",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": "sql-server-manpower-dev.database.windows.net",
+						"DatabaseName": "sqldb-raw"
+					}
+				},
+				"parameters": {
+					"DestinationTableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().DestinationTableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_raw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azure_key_vault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('ls_azure_key_vault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_migration')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "sql-server-manpower-dev.database.windows.net"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "sqldb-migration"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_azure_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('ls_migration_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_key_vault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_my_italy_new')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "sql-server-manpower-dev.database.windows.net"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "sqldb-my_italy_new"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_azure_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('ls_my_italy_new_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_key_vault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_raw')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "sql-server-manpower-dev.database.windows.net"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "sqldb-raw"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_azure_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('ls_raw_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_key_vault')]"
+			]
+		}
+	]
+}

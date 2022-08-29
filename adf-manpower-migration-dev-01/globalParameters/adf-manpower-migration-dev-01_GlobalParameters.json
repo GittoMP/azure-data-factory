@@ -1,0 +1,6 @@
+{
+	"GlobalStopExecution": {
+		"type": "bool",
+		"value": false
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-manpower-migration-dev-01"
+		},
+		"ls_azure_key_vault_properties_typeProperties_baseUrl": {
+			"value": "https://credentials-manpower-dev.vault.azure.net/"
+		},
+		"ls_migration_properties_typeProperties_connectionString_secretName": {
+			"value": "secret-connection-sqldb-migration"
+		},
+		"ls_my_italy_new_properties_typeProperties_connectionString_secretName": {
+			"value": "secret-connection-sqldb-my-italy-new"
+		},
+		"ls_raw_properties_typeProperties_connectionString_secretName": {
+			"value": "secret-connection-sqldb-raw"
+		}
+	}
+}
