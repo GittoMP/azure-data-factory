@@ -2,15 +2,14 @@
 	"name": "triggertest",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
 				"frequency": "Minute",
-				"interval": 15,
+				"interval": 1,
 				"startTime": "2022-08-29T15:21:00Z",
-				"endTime": "2022-08-30T15:21:00Z",
 				"timeZone": "UTC"
 			}
 		}
