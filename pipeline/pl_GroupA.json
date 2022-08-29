@@ -82,7 +82,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "copy_PipelineGroupA",
+										"name": "copy_PipelineGroup",
 										"type": "Copy",
 										"dependsOn": [
 											{
@@ -215,7 +215,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_PipelineGroupA",
+												"activity": "copy_PipelineGroup",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -308,21 +308,21 @@
 												},
 												"RowsRead": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupA').output.rowsRead}\n",
+														"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"RowsCopied": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupA').output.rowsCopied}",
+														"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"CopyDuration": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupA').output.copyDuration}\n",
+														"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
@@ -343,7 +343,7 @@
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [
 											{
-												"activity": "copy_PipelineGroupA",
+												"activity": "copy_PipelineGroup",
 												"dependencyConditions": [
 													"Failed"
 												]
@@ -567,21 +567,21 @@
 												},
 												"RowsRead": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupA').output.rowsRead}\n",
+														"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"RowsCopied": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupA').output.rowsCopied}",
+														"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
 														"type": "Expression"
 													},
 													"type": "Int32"
 												},
 												"CopyDuration": {
 													"value": {
-														"value": "@{activity('copy_PipelineGroupA').output.copyDuration}\n",
+														"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
 														"type": "Expression"
 													},
 													"type": "Int32"
