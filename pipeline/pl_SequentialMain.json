@@ -333,7 +333,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "setvar_ExecutionConfigurationDropId",
+						"activity": "setvar_ExecutionConfigurationId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -364,26 +364,6 @@
 					"variableName": "varExecutionConfigurationId",
 					"value": {
 						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].Id)\n",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "setvar_ExecutionConfigurationDropId",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_ExecutionConfigurationId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varDropId",
-					"value": {
-						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].DropId)\n",
 						"type": "Expression"
 					}
 				}
