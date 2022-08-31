@@ -504,7 +504,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@coalesce(activity('lookup_DeleteMatrixForRetry').output.value,0)\n",
+								"value": "@activity('lookup_DeleteMatrixForRetry').output.value",
 								"type": "Expression"
 							},
 							"activities": [
@@ -597,7 +597,8 @@
 								"referenceName": "ds_sqldb_migration",
 								"type": "DatasetReference",
 								"parameters": {}
-							}
+							},
+							"firstRowOnly": false
 						}
 					}
 				],
