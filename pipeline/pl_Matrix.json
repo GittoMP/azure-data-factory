@@ -323,6 +323,13 @@
 											"type": "Expression"
 										},
 										"type": "String"
+									},
+									"RetryNumber": {
+										"value": {
+											"value": "@pipeline().parameters.parGroupPlanId",
+											"type": "Expression"
+										},
+										"type": "Int32"
 									}
 								}
 							},
