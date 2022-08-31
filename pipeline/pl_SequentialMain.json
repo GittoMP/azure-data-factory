@@ -494,7 +494,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "lookup_GetExecutionConfiguration",
+						"activity": "setvar_RetryNumberFromExecutionHistory",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -525,6 +525,26 @@
 					"variableName": "varStartPipelineFromExecutionOrder",
 					"value": {
 						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setvar_RetryNumberFromExecutionHistory",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "lookup_GetExecutionConfiguration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varRetryNumber",
+					"value": {
+						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].RetryNumber)",
 						"type": "Expression"
 					}
 				}
@@ -559,6 +579,9 @@
 				"type": "String"
 			},
 			"varMatrixPlanId": {
+				"type": "String"
+			},
+			"varRetryNumber": {
 				"type": "String"
 			}
 		},
