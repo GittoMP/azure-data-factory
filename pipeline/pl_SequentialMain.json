@@ -198,6 +198,10 @@
 																	"parStartPipelineFromExecutionOrder": {
 																		"value": "@variables('varStartPipelineFromExecutionOrder')",
 																		"type": "Expression"
+																	},
+																	"RetryNumber": {
+																		"value": "@variables('varRetryNumber')",
+																		"type": "Expression"
 																	}
 																}
 															}
