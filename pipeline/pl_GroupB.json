@@ -294,6 +294,10 @@
 												"parStartPipelineFromExecutionOrder": {
 													"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
 													"type": "Expression"
+												},
+												"parRetryNumber": {
+													"value": "@pipeline().parameters.RetryNumber",
+													"type": "Expression"
 												}
 											}
 										}
