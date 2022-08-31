@@ -285,7 +285,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('lookup_DeleteMatrixForRetry').output.value",
+								"value": "@coalesce(activity('lookup_DeleteMatrixForRetry').output.value,0)\n",
 								"type": "Expression"
 							},
 							"activities": [
@@ -752,6 +752,13 @@
 																"type": "Expression"
 															},
 															"type": "String"
+														},
+														"RetryNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parRetryNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
 														}
 													}
 												},
@@ -850,6 +857,10 @@
 														},
 														"parStartPipelineFromExecutionOrder": {
 															"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
+															"type": "Expression"
+														},
+														"parRetryNumber": {
+															"value": "@pipeline().parameters.parRetryNumber",
 															"type": "Expression"
 														}
 													}
@@ -1018,6 +1029,13 @@
 																"type": "Expression"
 															},
 															"type": "String"
+														},
+														"RetryNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parRetryNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
 														}
 													}
 												},
@@ -1191,6 +1209,9 @@
 						"type": "int"
 					},
 					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					},
+					"parRetryNumber": {
 						"type": "int"
 					}
 				},
@@ -1518,6 +1539,10 @@
 														"parStartPipelineFromExecutionOrder": {
 															"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
 															"type": "Expression"
+														},
+														"parRetryNumber": {
+															"value": "@pipeline().parameters.RetryNumber",
+															"type": "Expression"
 														}
 													}
 												}
@@ -1685,6 +1710,13 @@
 																"type": "Expression"
 															},
 															"type": "String"
+														},
+														"RetryNumber": {
+															"value": {
+																"value": "@pipeline().parameters.RetryNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
 														}
 													}
 												},
@@ -1820,6 +1852,13 @@
 																"type": "Expression"
 															},
 															"type": "String"
+														},
+														"RetryNumber": {
+															"value": {
+																"value": "@pipeline().parameters.RetryNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
 														}
 													}
 												},
@@ -1993,6 +2032,9 @@
 						"type": "int"
 					},
 					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					},
+					"RetryNumber": {
 						"type": "int"
 					}
 				},
@@ -2360,6 +2402,10 @@
 														"parStartPipelineFromExecutionOrder": {
 															"value": "@pipeline().parameters.parStartPipelineFromExecutionOrder",
 															"type": "Expression"
+														},
+														"parRetryNumber": {
+															"value": "@pipeline().parameters.parRetryNumber",
+															"type": "Expression"
 														}
 													}
 												}
@@ -2487,6 +2533,13 @@
 																"type": "Expression"
 															},
 															"type": "String"
+														},
+														"RetryNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parRetryNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
 														}
 													}
 												},
@@ -2622,6 +2675,13 @@
 																"type": "Expression"
 															},
 															"type": "String"
+														},
+														"RetryNumber": {
+															"value": {
+																"value": "@pipeline().parameters.parRetryNumber",
+																"type": "Expression"
+															},
+															"type": "Int32"
 														}
 													}
 												},
@@ -2795,6 +2855,9 @@
 						"type": "int"
 					},
 					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					},
+					"parRetryNumber": {
 						"type": "int"
 					}
 				},
@@ -3150,6 +3213,13 @@
 													"type": "Expression"
 												},
 												"type": "String"
+											},
+											"RetryNumber": {
+												"value": {
+													"value": "@pipeline().parameters.parRetryNumber",
+													"type": "Expression"
+												},
+												"type": "Int32"
 											}
 										}
 									},
@@ -3285,6 +3355,13 @@
 													"type": "Expression"
 												},
 												"type": "String"
+											},
+											"RetryNumber": {
+												"value": {
+													"value": "@pipeline().parameters.parRetryNumber",
+													"type": "Expression"
+												},
+												"type": "Int32"
 											}
 										}
 									},
@@ -3328,6 +3405,9 @@
 						"type": "int"
 					},
 					"parStartPipelineFromExecutionOrder": {
+						"type": "int"
+					},
+					"parRetryNumber": {
 						"type": "int"
 					}
 				},
@@ -3576,6 +3656,10 @@
 																			"parStartPipelineFromExecutionOrder": {
 																				"value": "@variables('varStartPipelineFromExecutionOrder')",
 																				"type": "Expression"
+																			},
+																			"parRetryNumber": {
+																				"value": "@variables('varRetryNumber')",
+																				"type": "Expression"
 																			}
 																		}
 																	}
@@ -3628,6 +3712,10 @@
 																			"parStartPipelineFromExecutionOrder": {
 																				"value": "@variables('varStartPipelineFromExecutionOrder')",
 																				"type": "Expression"
+																			},
+																			"RetryNumber": {
+																				"value": "@variables('varRetryNumber')",
+																				"type": "Expression"
 																			}
 																		}
 																	}
@@ -3679,6 +3767,10 @@
 																			},
 																			"parStartPipelineFromExecutionOrder": {
 																				"value": "@variables('varStartPipelineFromExecutionOrder')",
+																				"type": "Expression"
+																			},
+																			"parRetryNumber": {
+																				"value": "@variables('varRetryNumber')",
 																				"type": "Expression"
 																			}
 																		}
@@ -3930,7 +4022,7 @@
 						"type": "SetVariable",
 						"dependsOn": [
 							{
-								"activity": "lookup_GetExecutionConfiguration",
+								"activity": "setvar_RetryNumberFromExecutionHistory",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -3961,6 +4053,26 @@
 							"variableName": "varStartPipelineFromExecutionOrder",
 							"value": {
 								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "setvar_RetryNumberFromExecutionHistory",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "lookup_GetExecutionConfiguration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varRetryNumber",
+							"value": {
+								"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].RetryNumber)",
 								"type": "Expression"
 							}
 						}
@@ -3999,6 +4111,9 @@
 						"type": "String"
 					},
 					"varMatrixPlanId": {
+						"type": "String"
+					},
+					"varRetryNumber": {
 						"type": "String"
 					}
 				},
