@@ -333,6 +333,13 @@
 														"type": "Expression"
 													},
 													"type": "String"
+												},
+												"RetryNumber": {
+													"value": {
+														"value": "@pipeline().parameters.parRetryNumber",
+														"type": "Expression"
+													},
+													"type": "Int32"
 												}
 											}
 										},
