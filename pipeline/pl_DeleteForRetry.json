@@ -126,7 +126,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('lookup_DeleteMatrixForRetry').output.value",
+						"value": "@coalesce(activity('lookup_DeleteMatrixForRetry').output.value,0)\n",
 						"type": "Expression"
 					},
 					"activities": [

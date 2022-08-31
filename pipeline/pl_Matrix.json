@@ -323,6 +323,13 @@
 											"type": "Expression"
 										},
 										"type": "String"
+									},
+									"RetryNumber": {
+										"value": {
+											"value": "@pipeline().parameters.parRetryNumber",
+											"type": "Expression"
+										},
+										"type": "Int32"
 									}
 								}
 							},
@@ -458,6 +465,13 @@
 											"type": "Expression"
 										},
 										"type": "String"
+									},
+									"RetryNumber": {
+										"value": {
+											"value": "@pipeline().parameters.parRetryNumber",
+											"type": "Expression"
+										},
+										"type": "Int32"
 									}
 								}
 							},
@@ -497,6 +511,9 @@
 				"type": "int"
 			},
 			"parStartPipelineFromExecutionOrder": {
+				"type": "int"
+			},
+			"parRetryNumber": {
 				"type": "int"
 			}
 		},
