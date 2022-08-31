@@ -765,6 +765,9 @@
 			},
 			"parStartPipelineFromExecutionOrder": {
 				"type": "int"
+			},
+			"RetryNumber": {
+				"type": "int"
 			}
 		},
 		"variables": {
