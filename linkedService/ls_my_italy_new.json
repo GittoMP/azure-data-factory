@@ -22,6 +22,10 @@
 				},
 				"secretName": "secret-connection-sqldb-my-italy-new"
 			}
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime30minTTL",
+			"type": "IntegrationRuntimeReference"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
