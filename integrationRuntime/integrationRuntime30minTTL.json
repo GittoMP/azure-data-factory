@@ -1,0 +1,17 @@
+{
+	"name": "integrationRuntime30minTTL",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "West Europe",
+				"dataFlowProperties": {
+					"computeType": "General",
+					"coreCount": 8,
+					"timeToLive": 30,
+					"cleanup": false
+				}
+			}
+		}
+	}
+}
