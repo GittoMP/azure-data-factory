@@ -22,6 +22,10 @@
 				},
 				"secretName": "secret-connection-sqldb-migration"
 			}
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime30minTTL",
+			"type": "IntegrationRuntimeReference"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
