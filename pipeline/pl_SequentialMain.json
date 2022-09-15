@@ -81,11 +81,15 @@
 							}
 						},
 						{
-							"name": "Execute Pipeline1",
+							"name": "PipelineA2",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pipelineA2",
+									"type": "PipelineReference"
+								},
 								"waitOnCompletion": true
 							}
 						}
