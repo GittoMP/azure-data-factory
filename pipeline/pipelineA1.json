@@ -76,7 +76,7 @@
 							}
 						],
 						"sqlReaderQuery": {
-							"value": "select * from @{item().Procedure}",
+							"value": "select * from vGroupA_1",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
