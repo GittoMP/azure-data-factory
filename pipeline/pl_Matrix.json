@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(pipeline().parameters.parMatrixPlanId,0)",
+						"value": "@not(equals(pipeline().parameters.parMatrixPlanId,0))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
