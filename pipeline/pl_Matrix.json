@@ -489,35 +489,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"parMatrixPlanId": {
-				"type": "int"
-			},
-			"parDropName": {
-				"type": "string"
-			},
-			"parExecutionConfigurationId": {
-				"type": "int"
-			},
-			"parExecutionNumber": {
-				"type": "int"
-			},
-			"parGroupPlanId": {
-				"type": "int"
-			},
-			"parPlanId": {
-				"type": "int"
-			},
-			"parStartGroupFromExecutionOrder": {
-				"type": "int"
-			},
-			"parStartPipelineFromExecutionOrder": {
-				"type": "int"
-			},
-			"parRetryNumber": {
-				"type": "int"
-			}
-		},
 		"variables": {
 			"varStartPipelineExecutionDate": {
 				"type": "String"
