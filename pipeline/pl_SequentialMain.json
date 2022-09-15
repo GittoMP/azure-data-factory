@@ -351,41 +351,6 @@
 				}
 			}
 		],
-		"variables": {
-			"varExecutionConfigurationId": {
-				"type": "String"
-			},
-			"varDropId": {
-				"type": "String"
-			},
-			"varDropName": {
-				"type": "String"
-			},
-			"varExecutionNumber": {
-				"type": "String"
-			},
-			"varNewExecution": {
-				"type": "Boolean"
-			},
-			"varGlobalError": {
-				"type": "String"
-			},
-			"varPlanId": {
-				"type": "String"
-			},
-			"varStartGroupFromExecutionOrder": {
-				"type": "String"
-			},
-			"varStartPipelineFromExecutionOrder": {
-				"type": "String"
-			},
-			"varMatrixPlanId": {
-				"type": "String"
-			},
-			"varRetryNumber": {
-				"type": "String"
-			}
-		},
 		"folder": {
 			"name": "Prototype/Sequential Groups"
 		},
