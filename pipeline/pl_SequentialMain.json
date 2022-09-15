@@ -99,6 +99,19 @@
 								},
 								"waitOnCompletion": true
 							}
+						},
+						{
+							"name": "PipelineA1_copy1",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pipelineA1",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
 						}
 					]
 				}
