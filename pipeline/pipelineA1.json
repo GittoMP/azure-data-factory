@@ -5,14 +5,7 @@
 			{
 				"name": "copy_PipelineGroup",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "setvar_MatrixPlanId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -117,19 +110,6 @@
 						}
 					}
 				]
-			},
-			{
-				"name": "setvar_StartPipelineExecutionDate",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varStartPipelineExecutionDate",
-					"value": {
-						"value": "@utcnow()",
-						"type": "Expression"
-					}
-				}
 			},
 			{
 				"name": "sp_UpdateLogEvents_OnSuccess",
@@ -362,46 +342,6 @@
 							"value": "@pipeline().parameters.parRetryNumber",
 							"type": "Expression"
 						}
-					}
-				}
-			},
-			{
-				"name": "setvar_MatrixPlanId",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_GroupPlanId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varMatrixPlanId",
-					"value": {
-						"value": "@{item().MatrixPlanId}",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "setvar_GroupPlanId",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_StartPipelineExecutionDate",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varGroupPlanId",
-					"value": {
-						"value": "@{item().GroupPlanId}",
-						"type": "Expression"
 					}
 				}
 			},
