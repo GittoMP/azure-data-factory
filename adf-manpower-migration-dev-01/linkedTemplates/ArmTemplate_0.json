@@ -4568,20 +4568,6 @@
 											"DatabaseName": "sqldb-migration"
 										}
 									}
-								},
-								{
-									"name": "execute_pl_Start_copy1",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "pl_PipelinesExecution",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
 								}
 							]
 						}
