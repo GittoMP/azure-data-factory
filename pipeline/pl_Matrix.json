@@ -230,29 +230,26 @@
 								"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
 								"storedProcedureParameters": {
 									"DropName": {
-										"value": {
-											"value": "@pipeline().parameters.parDropName",
-											"type": "Expression"
-										},
+										"value": "DROP1",
 										"type": "String"
 									},
 									"ExecutionConfigurationId": {
 										"value": {
-											"value": "@pipeline().parameters.parExecutionConfigurationId",
+											"value": "100",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"ExecutionNumber": {
 										"value": {
-											"value": "@pipeline().parameters.parExecutionNumber",
+											"value": "200",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"GroupPlanId": {
 										"value": {
-											"value": "@pipeline().parameters.parGroupPlanId",
+											"value": "300",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -263,14 +260,14 @@
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@pipeline().Pipeline",
+											"value": "400",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"StartExecutionDate": {
 										"value": {
-											"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+											"value": "@utcnow()",
 											"type": "Expression"
 										},
 										"type": "DateTime"
@@ -284,14 +281,14 @@
 									},
 									"PlanId": {
 										"value": {
-											"value": "@pipeline().parameters.parPlanId",
+											"value": "1",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"StartGroupFromExecutionOrder": {
 										"value": {
-											"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+											"value": "1",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -305,35 +302,35 @@
 									},
 									"RowsRead": {
 										"value": {
-											"value": "@{activity('copy_Matrix').output.rowsRead}\n",
+											"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"RowsCopied": {
 										"value": {
-											"value": "@{activity('copy_Matrix').output.rowsCopied}",
+											"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"CopyDuration": {
 										"value": {
-											"value": "@{activity('copy_Matrix').output.copyDuration}\n",
+											"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"Destination": {
 										"value": {
-											"value": "@item().Destination",
+											"value": "www",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"RetryNumber": {
 										"value": {
-											"value": "@pipeline().parameters.parRetryNumber",
+											"value": "1",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -372,47 +369,44 @@
 								"storedProcedureName": "[dbo].[sp_UpdateLogEvents]",
 								"storedProcedureParameters": {
 									"DropName": {
-										"value": {
-											"value": "@pipeline().parameters.parDropName",
-											"type": "Expression"
-										},
+										"value": "DROP1",
 										"type": "String"
 									},
 									"ExecutionConfigurationId": {
 										"value": {
-											"value": "@pipeline().parameters.parExecutionConfigurationId",
+											"value": "100",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"ExecutionNumber": {
 										"value": {
-											"value": "@pipeline().parameters.parExecutionNumber",
+											"value": "200",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"GroupPlanId": {
 										"value": {
-											"value": "@pipeline().parameters.parGroupPlanId",
+											"value": "300",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"InError": {
-										"value": "Yes",
+										"value": "No",
 										"type": "String"
 									},
 									"PipelineName": {
 										"value": {
-											"value": "@pipeline().Pipeline",
+											"value": "400",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"StartExecutionDate": {
 										"value": {
-											"value": "@formatDateTime(variables('varStartPipelineExecutionDate'))",
+											"value": "@utcnow()",
 											"type": "Expression"
 										},
 										"type": "DateTime"
@@ -426,14 +420,14 @@
 									},
 									"PlanId": {
 										"value": {
-											"value": "@pipeline().parameters.parPlanId",
+											"value": "1",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"StartGroupFromExecutionOrder": {
 										"value": {
-											"value": "@pipeline().parameters.parStartGroupFromExecutionOrder",
+											"value": "1",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -447,35 +441,35 @@
 									},
 									"RowsRead": {
 										"value": {
-											"value": "@{activity('copy_Matrix').output.rowsRead}\n",
+											"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"RowsCopied": {
 										"value": {
-											"value": "@{activity('copy_Matrix').output.rowsCopied}",
+											"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"CopyDuration": {
 										"value": {
-											"value": "@{activity('copy_Matrix').output.copyDuration}\n",
+											"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"Destination": {
 										"value": {
-											"value": "@item().Destination",
+											"value": "www",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"RetryNumber": {
 										"value": {
-											"value": "@pipeline().parameters.parRetryNumber",
+											"value": "1",
 											"type": "Expression"
 										},
 										"type": "Int32"
