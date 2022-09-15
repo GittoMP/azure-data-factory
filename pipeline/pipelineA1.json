@@ -382,23 +382,15 @@
 						},
 						"RowsRead": {
 							"value": {
-								"value": "@{activity('copy_PipelineGroup').output.rowsRead}\n",
+								"value": "5\n",
 								"type": "Expression"
 							},
 							"type": "Int32"
 						},
 						"RowsCopied": {
-							"value": {
-								"value": "@{activity('copy_PipelineGroup').output.rowsCopied}",
-								"type": "Expression"
-							},
 							"type": "Int32"
 						},
 						"CopyDuration": {
-							"value": {
-								"value": "@{activity('copy_PipelineGroup').output.copyDuration}\n",
-								"type": "Expression"
-							},
 							"type": "Int32"
 						},
 						"Destination": {
