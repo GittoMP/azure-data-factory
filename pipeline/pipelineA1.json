@@ -1,0 +1,9 @@
+{
+	"name": "pipelineA1",
+	"properties": {
+		"folder": {
+			"name": "Prototype/Sequential Groups"
+		},
+		"annotations": []
+	}
+}
