@@ -3587,7 +3587,7 @@
 								"value": "@activity('lookup_GetGroupPlan').output.value",
 								"type": "Expression"
 							},
-							"isSequential": false,
+							"isSequential": true,
 							"activities": [
 								{
 									"name": "if_GroupExecutionFailed",
@@ -4307,6 +4307,20 @@
 											"DatabaseName": "sqldb-migration"
 										}
 									}
+								},
+								{
+									"name": "execute_pl_Start_copy1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pl_PipelinesExecution",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
 								}
 							]
 						}
@@ -4508,12 +4522,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "integrationRuntime30minTTL",
+					"referenceName": "integrationRuntimeMyItalyNew",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime30minTTL')]",
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntimeMyItalyNew')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_azure_key_vault')]"
 			]
 		},
@@ -4545,17 +4559,57 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "integrationRuntime30minTTL",
+					"referenceName": "integrationRuntimeRaw",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime30minTTL')]",
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntimeRaw')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_azure_key_vault')]"
 			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime30minTTL')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "West Europe",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 30,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntimeMyItalyNew')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "West Europe",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 30,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntimeRaw')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
