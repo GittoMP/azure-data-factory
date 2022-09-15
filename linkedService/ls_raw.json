@@ -24,7 +24,7 @@
 			}
 		},
 		"connectVia": {
-			"referenceName": "integrationRuntime30minTTL",
+			"referenceName": "integrationRuntimeRaw",
 			"type": "IntegrationRuntimeReference"
 		}
 	},
