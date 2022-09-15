@@ -3,107 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "lookup_GetGroupPlan",
-				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "if_Retry_Delete",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[sp_GetGroupPlan]",
-						"storedProcedureParameters": {
-							"isSequential": {
-								"type": "Boolean",
-								"value": "True"
-							},
-							"planId": {
-								"type": "Int32",
-								"value": {
-									"value": "@int(variables('varPlanId'))",
-									"type": "Expression"
-								}
-							}
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_sqldb_migration",
-						"type": "DatasetReference"
-					},
-					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "foreach_Group",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "lookup_GetGroupPlan",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('lookup_GetGroupPlan').output.value",
-						"type": "Expression"
-					},
-					"isSequential": true,
-					"activities": [
-						{
-							"name": "PipelineA1",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pipelineA1",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
-							}
-						},
-						{
-							"name": "PipelineA2",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "PipelineA1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pipelineA2",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "lookup_GetExecutionConfiguration",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -127,167 +26,6 @@
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "setvar_ExecutionConfigurationDropName",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_ExecutionConfigurationId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varDropName",
-					"value": {
-						"value": "@activity('lookup_GetExecutionConfiguration').output.value[0].DropName",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "setvar_ExecutionConfigurationId",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_ExecutionConfigurationPlanId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varExecutionConfigurationId",
-					"value": {
-						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].Id)\n",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "setvar_ExecutionConfigurationExecutionNumber",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_ExecutionConfigurationDropName",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varExecutionNumber",
-					"value": {
-						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].ExecutionNumber)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "setvar_ExecutionConfigurationPlanId",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "setvar_StartPipelineFromExecutionOrder",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varPlanId",
-					"value": {
-						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].PlanId)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "if_Retry_Delete",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "setvar_ExecutionConfigurationExecutionNumber",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@and(greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartGroupFromExecutionOrder,0), greater(activity('lookup_GetExecutionConfiguration').output.value[0].StartPipelineFromExecutionOrder, 0))",
-						"type": "Expression"
-					},
-					"ifFalseActivities": [
-						{
-							"name": "execute_pl_DeleteAllMatrix",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pl_DeleteAllMatrix",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"parPlanId": {
-										"value": "@variables('varPlanId')",
-										"type": "Expression"
-									},
-									"parDropName": {
-										"value": "@variables('varDropName')",
-										"type": "Expression"
-									}
-								}
-							}
-						}
-					],
-					"ifTrueActivities": [
-						{
-							"name": "execute_pl_DeleteForRetry",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pl_DeleteForRetry",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"parPlanId": {
-										"value": "@variables('varPlanId')",
-										"type": "Expression"
-									},
-									"parStartGroupFromExecutionOrder": {
-										"value": "@variables('varStartGroupFromExecutionOrder')",
-										"type": "Expression"
-									},
-									"parStartPipelineFromExecutionOrder": {
-										"value": "@variables('varStartPipelineFromExecutionOrder')",
-										"type": "Expression"
-									},
-									"parExecutionConfigurationId": {
-										"value": "@variables('varExecutionConfigurationId')",
-										"type": "Expression"
-									},
-									"parDropName": {
-										"value": "@variables('varDropName')",
-										"type": "Expression"
-									}
-								}
-							}
-						}
-					]
 				}
 			},
 			{
@@ -348,6 +86,39 @@
 						"value": "@string(activity('lookup_GetExecutionConfiguration').output.value[0].RetryNumber)",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "PipelineA1_copy1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipelineA1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PipelineA2_copy1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PipelineA1_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipelineA2",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			}
 		],
