@@ -5,7 +5,14 @@
 			{
 				"name": "sp_GetTripletExecution",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -26,8 +33,50 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Sginal compete",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "sp_GetTripletExecution",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"body": {
+						"value": "@json(variables('myId'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "myId",
+					"value": "1"
+				}
 			}
 		],
+		"variables": {
+			"myId": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Prototype"
 		},
