@@ -18,7 +18,7 @@
 					"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
 					"method": "POST",
 					"body": {
-						"value": "@json(variables('myid'))",
+						"value": "@json(variables('myid2'))",
 						"type": "Expression"
 					},
 					"timeout": "00:00:30"
