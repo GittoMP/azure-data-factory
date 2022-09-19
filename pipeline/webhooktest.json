@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "myid2",
-					"value": "20"
+					"value": "giovanni"
 				}
 			},
 			{
@@ -34,7 +34,10 @@
 				"typeProperties": {
 					"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=",
 					"method": "POST",
-					"body": "@json(variables('myid'))"
+					"body": {
+						"value": "@json(variables('myid2'))",
+						"type": "Expression"
+					}
 				}
 			}
 		],
