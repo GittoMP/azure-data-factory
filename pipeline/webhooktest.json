@@ -13,9 +13,16 @@
 				}
 			},
 			{
-				"name": "Web1",
+				"name": "Web2",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -25,7 +32,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
+					"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=",
 					"method": "POST",
 					"body": "@json(variables('myid'))"
 				}
