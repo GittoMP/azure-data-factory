@@ -3797,7 +3797,7 @@
 				],
 				"type": "CustomEventsTrigger",
 				"typeProperties": {
-					"subjectEndsWith": "",
+					"subjectEndsWith": "A",
 					"subjectBeginsWith": "",
 					"scope": "[parameters('triggerEG01_properties_typeProperties_scope')]",
 					"events": [
