@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-manpower-migration-dev-01"
 		},
+		"trigger1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pipelineCompleted"
+		},
 		"triggerEG01_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
@@ -14,10 +18,6 @@
 		"triggerEGB_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
-		},
-		"trigger1_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pipelineCompleted"
 		}
 	},
 	"variables": {
@@ -842,6 +842,34 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipelineeventreceiver",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "CustomEventsTrigger",
+				"typeProperties": {
+					"subjectEndsWith": "",
+					"subjectBeginsWith": "",
+					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
+					"events": [
+						"pipelineCompleted"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/triggerEG01')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -892,34 +920,6 @@
 					"scope": "[parameters('triggerEGB_properties_typeProperties_scope')]",
 					"events": [
 						"pippevent1000"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pipelineeventreceiver",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "CustomEventsTrigger",
-				"typeProperties": {
-					"subjectEndsWith": "",
-					"subjectBeginsWith": "",
-					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
-					"events": [
-						"pipelineCompleted"
 					]
 				}
 			},

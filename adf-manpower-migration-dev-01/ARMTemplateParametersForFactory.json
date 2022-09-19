@@ -17,14 +17,14 @@
 		"ls_raw_properties_typeProperties_connectionString_secretName": {
 			"value": "secret-connection-sqldb-raw"
 		},
+		"trigger1_properties_typeProperties_scope": {
+			"value": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pipelineCompleted"
+		},
 		"triggerEG01_properties_typeProperties_scope": {
 			"value": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
 		},
 		"triggerEGB_properties_typeProperties_scope": {
 			"value": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
-		},
-		"trigger1_properties_typeProperties_scope": {
-			"value": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pipelineCompleted"
 		}
 	}
 }

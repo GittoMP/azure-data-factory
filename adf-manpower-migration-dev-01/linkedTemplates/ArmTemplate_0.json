@@ -62,6 +62,68 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/webhooktest')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "myid2",
+							"value": "giovanni"
+						}
+					},
+					{
+						"name": "Web2",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Set variable2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "@json(variables('myid2'))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"myid2": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_azure_key_vault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -131,65 +193,6 @@
 						}
 					}
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/webhooktest')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Set variable2",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "myid2",
-							"value": "20"
-						}
-					},
-					{
-						"name": "Web1",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Set variable2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
-							"method": "POST",
-							"headers": {},
-							"body": "@json(variables('myid'))"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"myid2": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "Prototype"
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -418,14 +421,6 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"variables": {
-					"myid": {
-						"type": "String"
-					},
-					"myid2": {
-						"type": "String"
-					}
-				},
 				"folder": {
 					"name": "Prototype"
 				},
@@ -471,14 +466,6 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
-				},
-				"variables": {
-					"myid": {
-						"type": "String"
-					},
-					"myid2": {
-						"type": "String"
-					}
 				},
 				"folder": {
 					"name": "Prototype"
@@ -566,7 +553,10 @@
 							"headers": {
 								"aeg-sas-key": "BD6IrE2MXUxyaWCS3FM69QsTey3QBfEFP9a/OY4WtMk="
 							},
-							"body": "@json(variables('myid'))"
+							"body": {
+								"value": "@json(variables('myid'))",
+								"type": "Expression"
+							}
 						}
 					}
 				],

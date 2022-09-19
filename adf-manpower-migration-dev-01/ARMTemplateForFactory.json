@@ -23,6 +23,10 @@
 			"type": "string",
 			"defaultValue": "secret-connection-sqldb-raw"
 		},
+		"trigger1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pipelineCompleted"
+		},
 		"triggerEG01_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
@@ -30,10 +34,6 @@
 		"triggerEGB_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
-		},
-		"trigger1_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pipelineCompleted"
 		}
 	},
 	"variables": {
@@ -76,14 +76,6 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
-				},
-				"variables": {
-					"myid": {
-						"type": "String"
-					},
-					"myid2": {
-						"type": "String"
-					}
 				},
 				"folder": {
 					"name": "Prototype"
@@ -130,14 +122,6 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
-				},
-				"variables": {
-					"myid": {
-						"type": "String"
-					},
-					"myid2": {
-						"type": "String"
-					}
 				},
 				"folder": {
 					"name": "Prototype"
@@ -225,7 +209,10 @@
 							"headers": {
 								"aeg-sas-key": "BD6IrE2MXUxyaWCS3FM69QsTey3QBfEFP9a/OY4WtMk="
 							},
-							"body": "@json(variables('myid'))"
+							"body": {
+								"value": "@json(variables('myid'))",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -4573,6 +4560,68 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/webhooktest')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "myid2",
+							"value": "giovanni"
+						}
+					},
+					{
+						"name": "Web2",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Set variable2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "@json(variables('myid2'))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"myid2": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_sqldb_migration')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4774,6 +4823,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipelineeventreceiver",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "CustomEventsTrigger",
+				"typeProperties": {
+					"subjectEndsWith": "",
+					"subjectBeginsWith": "",
+					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
+					"events": [
+						"pipelineCompleted"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipelineeventreceiver')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/triggerEG01')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -4892,95 +4971,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/webhooktest')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Set variable2",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "myid2",
-							"value": "20"
-						}
-					},
-					{
-						"name": "Web1",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Set variable2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
-							"method": "POST",
-							"headers": {},
-							"body": "@json(variables('myid'))"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"myid2": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "Prototype"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pipelineeventreceiver",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "CustomEventsTrigger",
-				"typeProperties": {
-					"subjectEndsWith": "",
-					"subjectBeginsWith": "",
-					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
-					"events": [
-						"pipelineCompleted"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipelineeventreceiver')]"
-			]
 		}
 	]
 }
