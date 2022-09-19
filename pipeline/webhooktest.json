@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=",
+					"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=gio",
 					"method": "POST"
 				}
 			}
