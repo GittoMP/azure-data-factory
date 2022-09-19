@@ -22,6 +22,10 @@
 		"ls_raw_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "secret-connection-sqldb-raw"
+		},
+		"triggerEG01_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
 		}
 	},
 	"variables": {
@@ -1255,6 +1259,52 @@
 				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
 				"[concat(variables('factoryId'), '/datasets/ds_sqldb_raw')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipelinetestevent')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "sp_GetTripletExecution",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetTripletExecution]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_migration",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]"
 			]
 		},
 		{
@@ -3730,6 +3780,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/triggerEG01')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipelinetestevent",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "CustomEventsTrigger",
+				"typeProperties": {
+					"subjectEndsWith": "",
+					"subjectBeginsWith": "",
+					"scope": "[parameters('triggerEG01_properties_typeProperties_scope')]",
+					"events": [
+						"pippevent1000"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipelinetestevent')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_SequentialMain')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -4349,269 +4429,6 @@
 				"[concat(variables('factoryId'), '/pipelines/pl_GroupA')]",
 				"[concat(variables('factoryId'), '/pipelines/pl_GroupB')]",
 				"[concat(variables('factoryId'), '/pipelines/pl_GroupC')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_PipelinesExecution')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "execute_pl_ParallelMain",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "pl_ParallelMain",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "execute_pl_SequentialMain",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "pl_SequentialMain",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Prototype"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_ParallelMain')]",
-				"[concat(variables('factoryId'), '/pipelines/pl_SequentialMain')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_Start')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "if_wrong_execution",
-						"description": "This condition prevents incorrect starts of previous completed executions.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "sp_GetTripletExecution",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('sp_GetTripletExecution').output.firstRow.Triplet,'1-0-0')",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "execute_pl_Start",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "sp_ResetFailedStatus",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "pl_PipelinesExecution",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
-								},
-								{
-									"name": "sp_UpdateStartDate",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[sp_StartDate]"
-									},
-									"linkedServiceName": {
-										"referenceName": "ls_migration",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": "sql-server-manpower-dev.database.windows.net",
-											"DatabaseName": "sqldb-migration"
-										}
-									}
-								},
-								{
-									"name": "sp_UpdateEndDate",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "sp_UpdateExecutionPlanHistory",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[sp_EndDate]"
-									},
-									"linkedServiceName": {
-										"referenceName": "ls_migration",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": "sql-server-manpower-dev.database.windows.net",
-											"DatabaseName": "sqldb-migration"
-										}
-									}
-								},
-								{
-									"name": "sp_UpdateExecutionPlanHistory",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "execute_pl_Start",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[sp_InsertPlanExecutionToHistory]"
-									},
-									"linkedServiceName": {
-										"referenceName": "ls_migration",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": "sql-server-manpower-dev.database.windows.net",
-											"DatabaseName": "sqldb-migration"
-										}
-									}
-								},
-								{
-									"name": "sp_ResetFailedStatus",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "sp_UpdateStartDate",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[sp_ResetFailFlag]",
-										"storedProcedureParameters": {
-											"num": {
-												"value": "0",
-												"type": "Int32"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "ls_migration",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ServerName": "sql-server-manpower-dev.database.windows.net",
-											"DatabaseName": "sqldb-migration"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "sp_GetTripletExecution",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[sp_GetTripletExecution]",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "ds_sqldb_migration",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Prototype"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_sqldb_migration')]",
-				"[concat(variables('factoryId'), '/pipelines/pl_PipelinesExecution')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_migration')]"
 			]
 		}
 	]
