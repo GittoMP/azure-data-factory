@@ -80,7 +80,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01",
+							"url": "https://fnmigrationesecution.azurewebsites.net",
 							"method": "POST",
 							"headers": {},
 							"body": "ciao"
