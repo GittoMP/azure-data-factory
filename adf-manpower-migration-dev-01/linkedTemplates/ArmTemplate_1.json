@@ -7,15 +7,51 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-manpower-migration-dev-01"
 		},
+		"triggerEG01_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
+		},
 		"triggerEGB_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
+		},
+		"triggerEGReceiver_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/eventcompleted"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/triggerEG01')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipelinetestevent",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "CustomEventsTrigger",
+				"typeProperties": {
+					"subjectEndsWith": "A",
+					"subjectBeginsWith": "",
+					"scope": "[parameters('triggerEG01_properties_typeProperties_scope')]",
+					"events": [
+						"pippevent1000"
+					]
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/triggerEGB')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
@@ -39,6 +75,34 @@
 					"scope": "[parameters('triggerEGB_properties_typeProperties_scope')]",
 					"events": [
 						"pippevent1000"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/triggerEGReceiver')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipelineeventreceiver",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "CustomEventsTrigger",
+				"typeProperties": {
+					"subjectEndsWith": "",
+					"subjectBeginsWith": "",
+					"scope": "[parameters('triggerEGReceiver_properties_typeProperties_scope')]",
+					"events": [
+						"eventcompleted"
 					]
 				}
 			},

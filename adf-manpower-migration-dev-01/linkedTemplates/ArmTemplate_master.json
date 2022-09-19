@@ -31,6 +31,10 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
 		},
+		"triggerEGReceiver_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/eventcompleted"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -69,9 +73,6 @@
 					},
 					"ls_raw_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('ls_raw_properties_typeProperties_connectionString_secretName')]"
-					},
-					"triggerEG01_properties_typeProperties_scope": {
-						"value": "[parameters('triggerEG01_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -91,8 +92,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"triggerEG01_properties_typeProperties_scope": {
+						"value": "[parameters('triggerEG01_properties_typeProperties_scope')]"
+					},
 					"triggerEGB_properties_typeProperties_scope": {
 						"value": "[parameters('triggerEGB_properties_typeProperties_scope')]"
+					},
+					"triggerEGReceiver_properties_typeProperties_scope": {
+						"value": "[parameters('triggerEGReceiver_properties_typeProperties_scope')]"
 					}
 				}
 			},
