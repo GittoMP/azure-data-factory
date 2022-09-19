@@ -68,26 +68,9 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Set variable2",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "myid2",
-							"value": "giovanni"
-						}
-					},
-					{
 						"name": "Web2",
 						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Set variable2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -97,13 +80,10 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=",
+							"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=gio",
 							"method": "POST",
 							"headers": {},
-							"body": {
-								"value": "@json(variables('myid2'))",
-								"type": "Expression"
-							}
+							"body": "ciao"
 						}
 					}
 				],
