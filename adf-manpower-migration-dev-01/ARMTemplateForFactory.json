@@ -31,9 +31,9 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000"
 		},
-		"triggerEGReceiver_properties_typeProperties_scope": {
+		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
-			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/eventcompleted"
+			"defaultValue": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pipelineCompleted"
 		}
 	},
 	"variables": {
@@ -4834,36 +4834,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/triggerEGReceiver')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pipelineeventreceiver",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "CustomEventsTrigger",
-				"typeProperties": {
-					"subjectEndsWith": "",
-					"subjectBeginsWith": "",
-					"scope": "[parameters('triggerEGReceiver_properties_typeProperties_scope')]",
-					"events": [
-						"eventcompleted"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipelineeventreceiver')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime30minTTL')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -4981,6 +4951,36 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipelineeventreceiver",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "CustomEventsTrigger",
+				"typeProperties": {
+					"subjectEndsWith": "",
+					"subjectBeginsWith": "",
+					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
+					"events": [
+						"pipelineCompleted"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipelineeventreceiver')]"
+			]
 		}
 	]
 }
