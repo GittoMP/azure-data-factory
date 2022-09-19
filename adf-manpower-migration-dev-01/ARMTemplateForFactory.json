@@ -4578,7 +4578,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01?name=gio",
+							"url": "https://fnmigrationesecution.azurewebsites.net/api/HttpTrigger01",
 							"method": "POST",
 							"headers": {},
 							"body": "ciao"
