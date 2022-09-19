@@ -35,28 +35,6 @@
 				}
 			},
 			{
-				"name": "WebHook1",
-				"type": "WebHook",
-				"dependsOn": [
-					{
-						"activity": "sp_GetTripletExecution",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
-					"method": "POST",
-					"body": {
-						"value": "@json(variables('myid'))",
-						"type": "Expression"
-					},
-					"timeout": "00:00:30"
-				}
-			},
-			{
 				"name": "Set variable1",
 				"type": "SetVariable",
 				"dependsOn": [],
