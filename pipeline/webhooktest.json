@@ -3,28 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "WebHook1",
-				"type": "WebHook",
-				"dependsOn": [
-					{
-						"activity": "Set variable2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
-					"method": "POST",
-					"body": {
-						"value": "@json(variables('myid2'))",
-						"type": "Expression"
-					},
-					"timeout": "00:00:30"
-				}
-			},
-			{
 				"name": "Set variable2",
 				"type": "SetVariable",
 				"dependsOn": [],
@@ -32,6 +10,24 @@
 				"typeProperties": {
 					"variableName": "myid2",
 					"value": "20"
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
+					"method": "POST",
+					"body": "@json(variables('myid'))"
 				}
 			}
 		],
