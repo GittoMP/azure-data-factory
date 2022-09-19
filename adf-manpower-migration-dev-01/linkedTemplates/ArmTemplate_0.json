@@ -561,10 +561,10 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
+							"url": "https://pipelinecompleted.westeurope-1.eventgrid.azure.net/api/events",
 							"method": "POST",
 							"headers": {
-								"aeg-sas-key": "Umptk0FhodJE4XmfsW+x+Ru7x8DN8pz/heUwWfLsDVk="
+								"aeg-sas-key": "BD6IrE2MXUxyaWCS3FM69QsTey3QBfEFP9a/OY4WtMk="
 							},
 							"body": "@json(variables('myid'))"
 						}
