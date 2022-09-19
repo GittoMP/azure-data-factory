@@ -68,6 +68,31 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "sp_GetTripletExecution",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
+					"method": "POST",
+					"body": "@json(variables('myid'))"
+				}
 			}
 		],
 		"variables": {
