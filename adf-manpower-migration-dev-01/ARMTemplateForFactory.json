@@ -77,6 +77,14 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"variables": {
+					"myid": {
+						"type": "String"
+					},
+					"myid2": {
+						"type": "String"
+					}
+				},
 				"folder": {
 					"name": "Prototype"
 				},
@@ -122,6 +130,14 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"variables": {
+					"myid": {
+						"type": "String"
+					},
+					"myid2": {
+						"type": "String"
+					}
 				},
 				"folder": {
 					"name": "Prototype"
@@ -214,6 +230,9 @@
 				},
 				"variables": {
 					"myid": {
+						"type": "String"
+					},
+					"myid2": {
 						"type": "String"
 					}
 				},
@@ -4899,6 +4918,65 @@
 						}
 					}
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/webhooktest')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "WebHook1",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Set variable2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "@json(variables('myid2'))",
+								"type": "Expression"
+							},
+							"timeout": "00:00:30"
+						}
+					},
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "myid2",
+							"value": "20"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"myid": {
+						"type": "String"
+					},
+					"myid2": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Prototype"
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		}
