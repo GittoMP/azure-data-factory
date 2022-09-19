@@ -73,6 +73,9 @@
 		"variables": {
 			"myid": {
 				"type": "String"
+			},
+			"myid2": {
+				"type": "String"
 			}
 		},
 		"folder": {
