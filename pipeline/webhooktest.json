@@ -36,13 +36,7 @@
 			}
 		],
 		"variables": {
-			"myid": {
-				"type": "String"
-			},
 			"myid2": {
-				"type": "String"
-			},
-			"test": {
 				"type": "String"
 			}
 		},
