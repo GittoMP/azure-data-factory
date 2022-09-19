@@ -5,7 +5,14 @@
 			{
 				"name": "sp_GetTripletExecution",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -26,8 +33,48 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "WebHook1",
+				"type": "WebHook",
+				"dependsOn": [
+					{
+						"activity": "sp_GetTripletExecution",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
+					"method": "POST",
+					"body": {
+						"value": "@json(variables('myid'))",
+						"type": "Expression"
+					},
+					"timeout": "00:10:00"
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "myid",
+					"value": {
+						"value": "10",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"myid": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Prototype"
 		},
