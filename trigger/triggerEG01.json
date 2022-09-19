@@ -13,7 +13,7 @@
 		],
 		"type": "CustomEventsTrigger",
 		"typeProperties": {
-			"subjectEndsWith": "",
+			"subjectEndsWith": "A",
 			"subjectBeginsWith": "",
 			"scope": "/subscriptions/ec78c6ac-1e72-4e40-8c1d-69dcb474e84d/resourceGroups/MPG-IT-Intiway-POC/providers/Microsoft.EventGrid/topics/pippevent1000",
 			"events": [
