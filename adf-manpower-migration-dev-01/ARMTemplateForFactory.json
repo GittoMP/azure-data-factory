@@ -222,7 +222,9 @@
 						"typeProperties": {
 							"url": "https://eventcompleted.westeurope-1.eventgrid.azure.net/api/events",
 							"method": "POST",
-							"headers": {},
+							"headers": {
+								"aeg-sas-key": "Umptk0FhodJE4XmfsW+x+Ru7x8DN8pz/heUwWfLsDVk="
+							},
 							"body": "@json(variables('myid'))"
 						}
 					}
