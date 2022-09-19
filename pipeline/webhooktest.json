@@ -30,16 +30,16 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "myid",
-					"value": {
-						"value": "10",
-						"type": "Expression"
-					}
+					"variableName": "myid2",
+					"value": "20"
 				}
 			}
 		],
 		"variables": {
 			"myid": {
+				"type": "String"
+			},
+			"myid2": {
 				"type": "String"
 			}
 		},
